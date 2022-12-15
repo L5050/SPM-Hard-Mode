@@ -44,8 +44,8 @@ static void setBossHP() {//doesn't work for some reason
 }
 static void setBossXp() {
   for (int i = 0; i < 535; i++) {//o'chunks 1 defense
-    if (spm::npcdrv::npcTribes[i].killXp >= 2) {
-     int newXp = spm::npcdrv::npcTribes[i].killXp / 2;
+    if (spm::npcdrv::npcTribes[i].killXp >= 3) {
+     int newXp = spm::npcdrv::npcTribes[i].killXp / 3;
      spm::npcdrv::npcTribes[i].killXp = newXp;
     }
   }
