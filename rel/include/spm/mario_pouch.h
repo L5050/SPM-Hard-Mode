@@ -81,4 +81,3 @@ int pouchCountPixls();
 }
 
 }
-

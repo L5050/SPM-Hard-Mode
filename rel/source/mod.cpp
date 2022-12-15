@@ -4,9 +4,9 @@
 #include <spm/fontmgr.h>
 #include <spm/seqdrv.h>
 #include <spm/npcdrv.h>
+#include <spm/mario_pouch.h>
 #include <spm/seqdef.h>
 #include <wii/OSError.h>
-
 namespace mod {
 
 /*
@@ -38,10 +38,18 @@ static void titleScreenCustomTextPatch()
 static void setBossHP() {//doesn't work for some reason
   spm::npcdrv::npcTribes[270].maxHp = 15; //O'Chunks 1
   spm::npcdrv::npcTribes[315].maxHp = 6; //Bowser 1
+  spm::npcdrv::npcTribes[286].maxHp = 12; //Dimentio 1
   spm::npcdrv::npcTribes[305].maxHp = 16; //Count Bleck
   spm::npcdrv::npcTribes[309].maxHp = 40; //Super Dimentio
 }
-
+static void setBossXp() {
+  for (int i = 0; i < 535; i++) {//o'chunks 1 defense
+    if (spm::npcdrv::npcTribes[i].killXp >= 2) {
+     int newXp = spm::npcdrv::npcTribes[i].killXp / 2;
+     spm::npcdrv::npcTribes[i].killXp = newXp;
+    }
+  }
+}
 /*
     General mod functions
 */
@@ -50,6 +58,7 @@ void main() {
   wii::OSError::OSReport("SPM Rel Loader: the mod has ran!\n");
   titleScreenCustomTextPatch();
   setBossHP();
+  setBossXp();
   spm::npcdrv::NPCDefense def;
   def.type = 0x0;
   def.defense = 0x0;
