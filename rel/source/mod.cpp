@@ -43,10 +43,21 @@ static void setBossHP() {//doesn't work for some reason
   spm::npcdrv::npcTribes[309].maxHp = 40; //Super Dimentio
 }
 static void setBossXp() {
-  for (int i = 0; i < 535; i++) {//o'chunks 1 defense
+  for (int i = 0; i < 535; i++) {
     if (spm::npcdrv::npcTribes[i].killXp >= 3) {
      int newXp = spm::npcdrv::npcTribes[i].killXp / 3;
      spm::npcdrv::npcTribes[i].killXp = newXp;
+    }
+  }
+}
+static void setBossDef() {
+  spm::npcdrv::NPCDefense def;
+  def.type = 0x0;
+  def.defense = 0x0;
+  def.flags = 0x2;
+  for (int i = 0; i < 7; i++) {//o'chunks 1 defense
+    if (spm::npcdrv::npcTribes[270].parts[i].id == 1) {
+     spm::npcdrv::npcTribes[270].parts[i].defenses[0] = def;
     }
   }
 }
@@ -59,20 +70,7 @@ void main() {
   titleScreenCustomTextPatch();
   setBossHP();
   setBossXp();
-  spm::npcdrv::NPCDefense def;
-  def.type = 0x0;
-  def.defense = 0x0;
-  def.flags = 0x2;
-  for (int i = 0; i < 7; i++) {//o'chunks 1 defense
-    if (spm::npcdrv::npcTribes[270].parts[i].id == 1) {
-     spm::npcdrv::npcTribes[270].parts[i].defenses[0] = def;
-    }
-  }
-  for (int i = 0; i < 3; i++) {//count bleck's defense
-    if (spm::npcdrv::npcTribes[305].parts[i].id == 0) {
-          spm::npcdrv::npcTribes[305].parts[i].defenses[0] = def;
-    }
-  }
+  setBossDef();
 }
 
 }
