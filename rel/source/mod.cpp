@@ -60,6 +60,11 @@ static void setBossDef() {
      spm::npcdrv::npcTribes[270].parts[i].defenses[0] = def;
     }
   }
+  for (int i = 0; i < 2; i++) {//bowser 1 defense
+    if (spm::npcdrv::npcTribes[315].parts[i].id == 1) {
+     spm::npcdrv::npcTribes[315].parts[i].defenses[0] = def;
+    }
+  }
 }
 /*
     General mod functions
