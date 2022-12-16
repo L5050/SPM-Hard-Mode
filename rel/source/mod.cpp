@@ -55,6 +55,10 @@ static void setBossDef() {
   def.type = 0x0;
   def.defense = 0x0;
   def.flags = 0x2;
+  spm::npcdrv::NPCDefense fireDef;
+  fireDef.type = 0xA;
+  fireDef.defense = 0x64;
+  fireDef.flags = 0x0;
   for (int i = 0; i < 7; i++) {//o'chunks 1 defense
     if (spm::npcdrv::npcTribes[270].parts[i].id == 1) {
      spm::npcdrv::npcTribes[270].parts[i].defenses[0] = def;
@@ -63,6 +67,12 @@ static void setBossDef() {
   for (int i = 0; i < 2; i++) {//bowser 1 defense
     if (spm::npcdrv::npcTribes[315].parts[i].id == 1) {
      spm::npcdrv::npcTribes[315].parts[i].defenses[0] = def;
+    }
+  }
+  for (int i = 0; i < 3; i++) {//Dimentio 1 defense
+    if (spm::npcdrv::npcTribes[286].parts[i].id == 1) {
+     spm::npcdrv::npcTribes[286].parts[i].defenses[0] = def;
+     spm::npcdrv::npcTribes[286].parts[i].defenses[1] = fireDef;
     }
   }
 }
