@@ -39,6 +39,8 @@ static void setBossHP() {//doesn't work for some reason
   spm::npcdrv::npcTribes[270].maxHp = 15; //O'Chunks 1
   spm::npcdrv::npcTribes[315].maxHp = 6; //Bowser 1
   spm::npcdrv::npcTribes[286].maxHp = 12; //Dimentio 1
+  spm::npcdrv::npcTribes[295].maxHp = 16; //Mr. L
+  spm::npcdrv::npcTribes[271].maxHp = 20; //O'Chunks 2
   spm::npcdrv::npcTribes[305].maxHp = 16; //Count Bleck
   spm::npcdrv::npcTribes[309].maxHp = 40; //Super Dimentio
 }
@@ -61,7 +63,8 @@ static void setBossDef() {
   fireDef.flags = 0x0;
   for (int i = 0; i < 7; i++) {//o'chunks 1 defense
     if (spm::npcdrv::npcTribes[270].parts[i].id == 1) {
-     spm::npcdrv::npcTribes[270].parts[i].defenses[0] = def;
+     spm::npcdrv::npcTribes[270].parts[i].defenses[0] = fireDef;
+     spm::npcdrv::npcTribes[270].parts[i].defenses[5] = def;
     }
   }
   for (int i = 0; i < 2; i++) {//bowser 1 defense
@@ -71,10 +74,21 @@ static void setBossDef() {
   }
   for (int i = 0; i < 3; i++) {//Dimentio 1 defense
     if (spm::npcdrv::npcTribes[286].parts[i].id == 1) {
-     spm::npcdrv::npcTribes[286].parts[i].defenses[0] = def;
-     spm::npcdrv::npcTribes[286].parts[i].defenses[1] = fireDef;
+     spm::npcdrv::npcTribes[286].parts[i].defenses[0] = fireDef;
+     spm::npcdrv::npcTribes[286].parts[i].defenses[5] = def;
     }
   }
+//Mr. L defense
+   spm::npcdrv::npcTribes[295].parts[0].defenses[0] = def;
+   for (int i = 0; i < 7; i++) {//Brobot defense
+      spm::npcdrv::npcTribes[296].parts[i].defenses[0] = def;
+   }
+   for (int i = 0; i < 7; i++) {//o'chunks 2 defense
+     if (spm::npcdrv::npcTribes[271].parts[i].id == 1) {
+      spm::npcdrv::npcTribes[271].parts[i].defenses[0] = fireDef;
+      spm::npcdrv::npcTribes[271].parts[i].defenses[5] = def;
+     }
+   }
 }
 /*
     General mod functions
