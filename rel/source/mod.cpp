@@ -11,7 +11,7 @@ namespace mod {
 
 /*
     Title Screen Custom Text
-    Prints "SPM Rel Loader" at the top of the title screen
+    Prints "SPM Hard Mode" at the top of the title screen
 */
 
 static spm::seqdef::SeqFunc *seq_titleMainReal;
