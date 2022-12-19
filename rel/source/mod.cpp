@@ -19,7 +19,7 @@ static void seq_titleMainOverride(spm::seqdrv::SeqWork *wp)
 {
     wii::RGBA green {0, 255, 0, 255};
     f32 scale = 0.8f;
-    const char * msg = "SPM Rel Loader";
+    const char * msg = "SPM Hard Mode";
     spm::fontmgr::FontDrawStart();
     spm::fontmgr::FontDrawEdge();
     spm::fontmgr::FontDrawColor(&green);
@@ -35,14 +35,18 @@ static void titleScreenCustomTextPatch()
     seq_titleMainReal = spm::seqdef::seq_data[spm::seqdrv::SEQ_TITLE].main;
     spm::seqdef::seq_data[spm::seqdrv::SEQ_TITLE].main = &seq_titleMainOverride;
 }
-static void setBossHP() {//doesn't work for some reason
+static void setBossHP() {
   spm::npcdrv::npcTribes[270].maxHp = 15; //O'Chunks 1
   spm::npcdrv::npcTribes[315].maxHp = 6; //Bowser 1
   spm::npcdrv::npcTribes[286].maxHp = 12; //Dimentio 1
   spm::npcdrv::npcTribes[295].maxHp = 16; //Mr. L
   spm::npcdrv::npcTribes[271].maxHp = 20; //O'Chunks 2
+  spm::npcdrv::npcTribes[272].maxHp = 100; //O'Cabbage
+  spm::npcdrv::npcTribes[319].maxHp = 20; //King Croacus
+  spm::npcdrv::npcTribes[282].maxHp = 10; //Mimi
+  spm::npcdrv::npcTribes[300].maxHp = 16; //Brobot L-Type
   spm::npcdrv::npcTribes[305].maxHp = 16; //Count Bleck
-  spm::npcdrv::npcTribes[309].maxHp = 40; //Super Dimentio
+  //spm::npcdrv::npcTribes[309].maxHp = 300; //Super Dimentio
 }
 static void setBossXp() {
   for (int i = 0; i < 535; i++) {
@@ -55,8 +59,12 @@ static void setBossXp() {
 static void setBossDef() {
   spm::npcdrv::NPCDefense def;
   def.type = 0x0;
-  def.defense = 0x0;
+  def.defense = 0x2;
   def.flags = 0x2;
+  spm::npcdrv::NPCDefense chunkDef;
+  chunkDef.type = 0x0;
+  chunkDef.defense = 0x0;
+  chunkDef.flags = 0x2;
   spm::npcdrv::NPCDefense fireDef;
   fireDef.type = 0xA;
   fireDef.defense = 0x64;
@@ -64,7 +72,7 @@ static void setBossDef() {
   for (int i = 0; i < 7; i++) {//o'chunks 1 defense
     if (spm::npcdrv::npcTribes[270].parts[i].id == 1) {
      spm::npcdrv::npcTribes[270].parts[i].defenses[0] = fireDef;
-     spm::npcdrv::npcTribes[270].parts[i].defenses[5] = def;
+     spm::npcdrv::npcTribes[270].parts[i].defenses[5] = chunkDef;
     }
   }
   for (int i = 0; i < 2; i++) {//bowser 1 defense
@@ -89,7 +97,21 @@ static void setBossDef() {
       spm::npcdrv::npcTribes[271].parts[i].defenses[5] = def;
      }
    }
-}
+   /*for (int i = 0; i < 7; i++) {//o'cabbage defense
+    spm::npcdrv::npcTribes[272].parts[i].defenses[0] = fireDef;
+    spm::npcdrv::npcTribes[272].parts[i].defenses[1] = def;
+  }*/
+   for (int i = 0; i < 3; i++) {//king croacus defense
+     if (spm::npcdrv::npcTribes[319].parts[i].id == 2) {
+      spm::npcdrv::npcTribes[319].parts[i].defenses[0] = fireDef;
+      spm::npcdrv::npcTribes[319].parts[i].defenses[5] = def;
+     }
+   }
+   spm::npcdrv::npcTribes[282].parts[0].defenses[0] = def;//mimi defense
+   for (int i = 0; i < 15; i++) {//Brobot L-Type defense
+      spm::npcdrv::npcTribes[300].parts[i].defenses[0] = def;
+   }
+   }
 /*
     General mod functions
 */
