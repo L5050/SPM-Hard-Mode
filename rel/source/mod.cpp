@@ -4,9 +4,11 @@
 #include <spm/fontmgr.h>
 #include <spm/seqdrv.h>
 #include <spm/npcdrv.h>
+#include <spm/mario.h>
 #include <spm/mario_pouch.h>
 #include <spm/seqdef.h>
 #include <wii/OSError.h>
+#include <patch.h>
 namespace mod {
 
 /*
@@ -45,8 +47,11 @@ static void setBossHP() {
   spm::npcdrv::npcTribes[319].maxHp = 20; //King Croacus
   spm::npcdrv::npcTribes[282].maxHp = 10; //Mimi
   spm::npcdrv::npcTribes[300].maxHp = 16; //Brobot L-Type
+  spm::npcdrv::npcTribes[316].maxHp = 12; //Bowser 2
+  //spm::npcdrv::npcTribes[327].maxHp = 30; //Bonechill
+  spm::npcdrv::npcTribes[273].maxHp = 200; //O'Chunks 3
+  spm::npcdrv::npcTribes[292].maxHp = 16; //Dimentio 2
   spm::npcdrv::npcTribes[305].maxHp = 16; //Count Bleck
-  //spm::npcdrv::npcTribes[309].maxHp = 300; //Super Dimentio
 }
 static void setBossXp() {
   for (int i = 0; i < 535; i++) {
@@ -56,6 +61,9 @@ static void setBossXp() {
     }
   }
 }
+/*
+  Gives all bosses the megabite defense stat
+*/
 static void setBossDef() {
   spm::npcdrv::NPCDefense def;
   def.type = 0x0;
@@ -111,7 +119,36 @@ static void setBossDef() {
    for (int i = 0; i < 15; i++) {//Brobot L-Type defense
       spm::npcdrv::npcTribes[300].parts[i].defenses[0] = def;
    }
+   for (int i = 0; i < 2; i++) {//bowser 2 defense
+     if (spm::npcdrv::npcTribes[316].parts[i].id == 1) {
+      spm::npcdrv::npcTribes[316].parts[i].defenses[0] = def;
+     }
    }
+   for (int i = 0; i < 9; i++) {//underchomp defense
+     if (spm::npcdrv::npcTribes[316].parts[i].id == 1) {
+      spm::npcdrv::npcTribes[316].parts[i].defenses[0] = def;
+     }
+   }
+   for (int i = 0; i < 21; i++) {//bonechill defense
+     if (spm::npcdrv::npcTribes[327].parts[i].id == 2) {
+      spm::npcdrv::npcTribes[327].parts[i].defenses[2] = def;
+     }
+     if (spm::npcdrv::npcTribes[327].parts[i].id == 3) {
+      spm::npcdrv::npcTribes[327].parts[i].defenses[2] = def;
+     }
+     if (spm::npcdrv::npcTribes[327].parts[i].id == 4) {
+      spm::npcdrv::npcTribes[327].parts[i].defenses[2] = def;
+     }
+   }
+   for (int i = 0; i < 3; i++) {//Dimentio 2 defense
+      spm::npcdrv::npcTribes[292].parts[i].defenses[0] = def;
+      spm::npcdrv::npcTribes[293].parts[i].defenses[0] = def;
+   }
+
+   }
+//static void newMarioTakeDamage() {
+
+//}
 /*
     General mod functions
 */

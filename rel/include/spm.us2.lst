@@ -3,7 +3,7 @@
 800030c8:firstRel
 800030cc:lastRel
 
-// Automatically generated from spm.eu0.lst 
+// Automatically generated from spm.eu0.lst
 80004000:memcpy
 80004104:memset
 80029364:mapDataPtr
@@ -61,6 +61,7 @@
 8012253C:marioCtrlOffChk
 80122550:marioKeyOffChk
 8012AEC0:marioSetGravity
+8012A054:marioTakeDamage
 80146870:func_80146f0c
 8014B9EC:pouchGetPtr
 8014CDBC:pouchGetHp
