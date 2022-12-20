@@ -41,7 +41,8 @@ static void setBossHP() {
   spm::npcdrv::npcTribes[270].maxHp = 15; //O'Chunks 1
   spm::npcdrv::npcTribes[315].maxHp = 6; //Bowser 1
   spm::npcdrv::npcTribes[286].maxHp = 12; //Dimentio 1
-  spm::npcdrv::npcTribes[295].maxHp = 16; //Mr. L
+  spm::npcdrv::npcTribes[318].maxHp = 100; //Francis
+  spm::npcdrv::npcTribes[295].maxHp = 120; //Mr. L
   spm::npcdrv::npcTribes[271].maxHp = 20; //O'Chunks 2
   spm::npcdrv::npcTribes[272].maxHp = 100; //O'Cabbage
   spm::npcdrv::npcTribes[319].maxHp = 20; //King Croacus
@@ -50,8 +51,12 @@ static void setBossHP() {
   spm::npcdrv::npcTribes[316].maxHp = 12; //Bowser 2
   //spm::npcdrv::npcTribes[327].maxHp = 30; //Bonechill
   spm::npcdrv::npcTribes[273].maxHp = 200; //O'Chunks 3
-  spm::npcdrv::npcTribes[292].maxHp = 16; //Dimentio 2
+  spm::npcdrv::npcTribes[292].maxHp = 160; //Dimentio 2
   spm::npcdrv::npcTribes[305].maxHp = 16; //Count Bleck
+  spm::npcdrv::npcTribes[330].maxHp = 12; //Dark Mario
+  spm::npcdrv::npcTribes[331].maxHp = 12; //Dark Luigi
+  spm::npcdrv::npcTribes[332].maxHp = 12; //Dark Peach
+  spm::npcdrv::npcTribes[333].maxHp = 12; //Dark Bowser
 }
 static void setBossXp() {
   for (int i = 0; i < 535; i++) {
@@ -94,8 +99,6 @@ static void setBossDef() {
      spm::npcdrv::npcTribes[286].parts[i].defenses[5] = def;
     }
   }
-//Mr. L defense
-   spm::npcdrv::npcTribes[295].parts[0].defenses[0] = def;
    for (int i = 0; i < 7; i++) {//Brobot defense
       spm::npcdrv::npcTribes[296].parts[i].defenses[0] = def;
    }
@@ -143,6 +146,19 @@ static void setBossDef() {
    for (int i = 0; i < 3; i++) {//Dimentio 2 defense
       spm::npcdrv::npcTribes[292].parts[i].defenses[0] = def;
       spm::npcdrv::npcTribes[293].parts[i].defenses[0] = def;
+   }
+   for (int i = 0; i < 2; i++) {//Dark Mario defense
+     if (spm::npcdrv::npcTribes[330].parts[i].id == 1) {
+      spm::npcdrv::npcTribes[330].parts[i].defenses[0] = def;
+     }
+   }
+   //Dark Peach and Luigi defense
+   spm::npcdrv::npcTribes[331].parts[0].defenses[0] = def;
+   spm::npcdrv::npcTribes[332].parts[0].defenses[0] = def;
+   for (int i = 0; i < 2; i++) {//Dark bowser defense
+     if (spm::npcdrv::npcTribes[333].parts[i].id == 1) {
+      spm::npcdrv::npcTribes[333].parts[i].defenses[0] = def;
+     }
    }
 
    }
