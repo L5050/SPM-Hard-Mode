@@ -20,5 +20,5 @@ Rel mod and gecko code for my SPM Hard Mode mod. No full release yet, but coming
 - [X] Nerf bowser and other damage doublers with a gecko code
 - [X] Make it twice as hard to level up
 - [X] Reduce all bosses health while increasing their defense so that you only deal one damage per hit
+- [X] Make an INSTALLING.md file with instructions on how to install the mod
 - [ ] Port the mod to all versions of the game
-- [ ] Make an INSTALLING.md file with instructions on how to install the mod
