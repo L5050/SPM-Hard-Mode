@@ -1,5 +1,5 @@
 # SPM-Hard-Mode
-Rel mod and gecko code for my SPM Hard Mode mod. No full release yet, but coming soon
+Rel mod and gecko code for my SPM Hard Mode mod. Full releases available for US2 and PAL versions of SPM
 
 # Contents
 * Gecko code that gets rid of most effects that double your damage, including bowser and items like the Mighty Tonic
