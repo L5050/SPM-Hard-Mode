@@ -252,6 +252,7 @@
 80122bf4:marioKeyOff
 80122c2c:marioKeyOn
 8012b50c:marioSetGravity
+8012a680:marioTakeDamage
 // more
 
 // mario_motion.c
@@ -290,6 +291,7 @@
 
 // seq_game.c
 8017ce44:seq_gameInit
+8017cf64:seq_gameMain
 // more
 
 // seqdrv.c
@@ -664,12 +666,12 @@
 
 // Sections:
 //   00000000 0 none
-//   80c458fc 1 .text 
-//   80ca9ad8 2 .ctors 
-//   80ca9adc 3 .dtors 
-//   80ca9ae8 4 .rodata 
-//   80cf5180 5 .data 
-//   80f64340 6 .bss 
+//   80c458fc 1 .text
+//   80ca9ad8 2 .ctors
+//   80ca9adc 3 .dtors
+//   80ca9ae8 4 .rodata
+//   80cf5180 5 .data
+//   80f64340 6 .bss
 
 // machi.c
 1,1,000052e4:evt_machi_set_elv_descs

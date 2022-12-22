@@ -1,8 +1,10 @@
 #include "mod.h"
 #include "patch.h"
 
+#include <spm/wpadmgr.h>
 #include <spm/fontmgr.h>
 #include <spm/seqdrv.h>
+#include <spm/seq_game.h>
 #include <spm/npcdrv.h>
 #include <spm/mario.h>
 #include <spm/mario_pouch.h>
@@ -162,19 +164,41 @@ static void setBossDef() {
    }
 
    }
-//static void newMarioTakeDamage() {
+/*
+    Function patching
+*/
+void (*marioTakeDamage)(wii::Vec3 * position, u32 flags, s32 damage);
+void (*seq_gameMain)(spm::seqdrv::SeqWork *param_1);
 
-//}
+void patchGameMain() {
+  seq_gameMain = patch::hookFunction(spm:seq_game::seq_gameMain,
+    [](spm::seqdrv::SeqWork *param_1)
+            {
+
+                seq_gameMain(param_1);
+            }
+        );
+
+}
+
+void patchMarioDamage(){
+  marioTakeDamage = patch::hookFunction(spm::mario::marioTakeDamage,
+    [](wii::Vec3 * position, u32 flags, s32 damage)
+            {
+                marioTakeDamage(position, flags, damage * 2);
+            }
+        );
+}
 /*
     General mod functions
 */
-
 void main() {
   wii::OSError::OSReport("SPM Rel Loader: the mod has ran!\n");
   titleScreenCustomTextPatch();
   setBossHP();
   setBossXp();
   setBossDef();
+  patchMarioDamage();
 }
 
 }

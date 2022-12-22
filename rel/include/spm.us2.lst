@@ -78,6 +78,7 @@
 8014F5D4:pouchCountPixls
 80178988:seq_logoMain
 8017C604:seq_gameInit
+8017C724:seq_gameMain
 8017B6EC:seqInit_SPMARIO
 8017B72C:seqMain
 8017B834:seqSetSeq
