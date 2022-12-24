@@ -76,18 +76,13 @@ static void setBossDef() {
   def.type = 0x0;
   def.defense = 0x2;
   def.flags = 0x2;
-  spm::npcdrv::NPCDefense chunkDef;
-  chunkDef.type = 0x0;
-  chunkDef.defense = 0x0;
-  chunkDef.flags = 0x2;
   spm::npcdrv::NPCDefense fireDef;
   fireDef.type = 0xA;
   fireDef.defense = 0x64;
   fireDef.flags = 0x0;
   /*for (int i = 0; i < 7; i++) {//o'chunks 1 defense
     if (spm::npcdrv::npcTribes[270].parts[i].id == 1) {
-     spm::npcdrv::npcTribes[270].parts[i].defenses[0] = fireDef;
-     spm::npcdrv::npcTribes[270].parts[i].defenses[5] = chunkDef;
+     spm::npcdrv::npcTribes[270].parts[i].defenses[0] = chunkDef;
     }
   }*/
   for (int i = 0; i < 2; i++) {//bowser 1 defense
@@ -200,7 +195,7 @@ void patchMarioDamage(){
                 damage = 1;
                 break;
                 case 270:
-                damage = 1;
+                damage = 100;
                 break;
                 case 305:
                 damage = 1;
@@ -220,6 +215,9 @@ void patchMarioDamage(){
                 default:
                 damage = marioCalcDamageToEnemy(damageType, tribeId);
                               }
+                /*if (damageType == 8) {
+                  damage = 0;
+                }*/
                 return damage;
             }
         );
