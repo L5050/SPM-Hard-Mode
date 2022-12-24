@@ -22,3 +22,4 @@ Rel mod and gecko code for my SPM Hard Mode mod. Full releases available for US0
 - [X] Reduce all bosses health while increasing their defense so that you only deal one damage per hit
 - [X] Make an INSTALLING.md file with instructions on how to install the mod
 - [ ] Port the mod to all versions of the game
+- [ ] Various bug fixes
