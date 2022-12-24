@@ -48,6 +48,7 @@ bool marioKeyOffChk();
 int marioKeyOff();
 int marioKeyOn();
 void marioSetGravity(s32 type);
+int marioCalcDamageToEnemy(s32 damageType, s32 tribeId);
 void marioTakeDamage(wii::Vec3 * position, u32 flags, s32 damage);
 
 }

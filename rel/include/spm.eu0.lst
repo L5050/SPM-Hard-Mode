@@ -253,6 +253,7 @@
 80122c2c:marioKeyOn
 8012b50c:marioSetGravity
 8012a680:marioTakeDamage
+8012a3a8:marioCalcDamageToEnemy
 // more
 
 // mario_motion.c

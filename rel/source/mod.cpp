@@ -44,15 +44,15 @@ static void setBossHP() {
   spm::npcdrv::npcTribes[315].maxHp = 6; //Bowser 1
   spm::npcdrv::npcTribes[286].maxHp = 12; //Dimentio 1
   spm::npcdrv::npcTribes[318].maxHp = 100; //Francis
-  spm::npcdrv::npcTribes[295].maxHp = 120; //Mr. L
+  spm::npcdrv::npcTribes[295].maxHp = 16; //Mr. L
   spm::npcdrv::npcTribes[271].maxHp = 20; //O'Chunks 2
-  spm::npcdrv::npcTribes[272].maxHp = 100; //O'Cabbage
+  spm::npcdrv::npcTribes[272].maxHp = 15; //O'Cabbage
   spm::npcdrv::npcTribes[319].maxHp = 20; //King Croacus
   spm::npcdrv::npcTribes[282].maxHp = 10; //Mimi
   spm::npcdrv::npcTribes[300].maxHp = 16; //Brobot L-Type
   spm::npcdrv::npcTribes[316].maxHp = 12; //Bowser 2
   //spm::npcdrv::npcTribes[327].maxHp = 30; //Bonechill
-  spm::npcdrv::npcTribes[273].maxHp = 200; //O'Chunks 3
+  spm::npcdrv::npcTribes[273].maxHp = 100; //O'Chunks 3
   spm::npcdrv::npcTribes[292].maxHp = 160; //Dimentio 2
   spm::npcdrv::npcTribes[305].maxHp = 16; //Count Bleck
   spm::npcdrv::npcTribes[330].maxHp = 12; //Dark Mario
@@ -169,9 +169,10 @@ static void setBossDef() {
 */
 void (*marioTakeDamage)(wii::Vec3 * position, u32 flags, s32 damage);
 void (*seq_gameMain)(spm::seqdrv::SeqWork *param_1);
+int (*marioCalcDamageToEnemy)(s32 damageType, s32 tribeId);
 
 void patchGameMain() {
-  seq_gameMain = patch::hookFunction(spm:seq_game::seq_gameMain,
+  seq_gameMain = patch::hookFunction(spm::seq_game::seq_gameMain,
     [](spm::seqdrv::SeqWork *param_1)
             {
 
@@ -186,6 +187,41 @@ void patchMarioDamage(){
     [](wii::Vec3 * position, u32 flags, s32 damage)
             {
                 marioTakeDamage(position, flags, damage * 2);
+            }
+        );
+  marioCalcDamageToEnemy = patch::hookFunction(spm::mario::marioCalcDamageToEnemy,
+    [](s32 damageType, s32 tribeId)
+            {
+              int damage = 0;
+              switch(tribeId) {
+                case 295:
+                damage = 1;
+                break;
+                case 273:
+                damage = 1;
+                break;
+                case 272:
+                damage = 1;
+                break;
+                case 305:
+                damage = 1;
+                break;
+                case 330:
+                damage = 1;
+                break;
+                case 331:
+                damage = 1;
+                break;
+                case 332:
+                damage = 1;
+                break;
+                case 333:
+                damage = 5;
+                break;
+                default:
+                damage = marioCalcDamageToEnemy(damageType, tribeId);
+                              }
+                return damage;
             }
         );
 }

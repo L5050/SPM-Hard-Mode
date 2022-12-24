@@ -62,6 +62,7 @@
 80122120:marioKeyOffChk
 8012AA90:marioSetGravity
 80129C24:marioTakeDamage
+8012994C:marioCalcDamageToEnemy
 80146418:func_80146f0c
 8014B594:pouchGetPtr
 8014C964:pouchGetHp
