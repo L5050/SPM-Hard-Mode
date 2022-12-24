@@ -84,12 +84,12 @@ static void setBossDef() {
   fireDef.type = 0xA;
   fireDef.defense = 0x64;
   fireDef.flags = 0x0;
-  for (int i = 0; i < 7; i++) {//o'chunks 1 defense
+  /*for (int i = 0; i < 7; i++) {//o'chunks 1 defense
     if (spm::npcdrv::npcTribes[270].parts[i].id == 1) {
      spm::npcdrv::npcTribes[270].parts[i].defenses[0] = fireDef;
      spm::npcdrv::npcTribes[270].parts[i].defenses[5] = chunkDef;
     }
-  }
+  }*/
   for (int i = 0; i < 2; i++) {//bowser 1 defense
     if (spm::npcdrv::npcTribes[315].parts[i].id == 1) {
      spm::npcdrv::npcTribes[315].parts[i].defenses[0] = def;
@@ -110,10 +110,6 @@ static void setBossDef() {
       spm::npcdrv::npcTribes[271].parts[i].defenses[5] = def;
      }
    }
-   /*for (int i = 0; i < 7; i++) {//o'cabbage defense
-    spm::npcdrv::npcTribes[272].parts[i].defenses[0] = fireDef;
-    spm::npcdrv::npcTribes[272].parts[i].defenses[1] = def;
-  }*/
    for (int i = 0; i < 3; i++) {//king croacus defense
      if (spm::npcdrv::npcTribes[319].parts[i].id == 2) {
       spm::npcdrv::npcTribes[319].parts[i].defenses[0] = fireDef;
@@ -201,6 +197,9 @@ void patchMarioDamage(){
                 damage = 1;
                 break;
                 case 272:
+                damage = 1;
+                break;
+                case 270:
                 damage = 1;
                 break;
                 case 305:
