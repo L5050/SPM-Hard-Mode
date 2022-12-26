@@ -11,6 +11,9 @@
 #include <spm/seqdef.h>
 #include <wii/OSError.h>
 #include <patch.h>
+#include <string>
+#include <cstdio>
+using namespace std;
 namespace mod {
 
 /*
@@ -19,6 +22,7 @@ namespace mod {
 */
 
 static spm::seqdef::SeqFunc *seq_titleMainReal;
+static spm::seqdef::SeqFunc *seq_gameMainReal;
 static void seq_titleMainOverride(spm::seqdrv::SeqWork *wp)
 {
     wii::RGBA green {0, 255, 0, 255};
@@ -34,10 +38,105 @@ static void seq_titleMainOverride(spm::seqdrv::SeqWork *wp)
     spm::fontmgr::FontDrawString(x, 200.0f, msg);
     seq_titleMainReal(wp);
 }
+int checkCharmStats()
+{
+  spm::mario_pouch::MarioPouchWork* pouch = spm::mario_pouch::pouchGetPtr();
+  int charms = pouch->killsBeforeNextCharm;
+  if (charms > 0) {
+    return charms;
+  } else {
+    return 0;
+  }
+}
+int checkCharmNum()
+{
+  spm::mario_pouch::MarioPouchWork* pouch = spm::mario_pouch::pouchGetPtr();
+  int charms = pouch->charmsRemaining;
+  if (charms > 0) {
+    return charms;
+  } else {
+    return 0;
+  }
+}
+void charmTextGenerator(spm::seqdrv::SeqWork *wp)
+{
+  wii::RGBA red {255, 0, 0, 255};
+  f32 scale = 0.6f;
+  const char * msg = "Enemies until next charm:";
+  spm::fontmgr::FontDrawStart();
+  spm::fontmgr::FontDrawEdge();
+  spm::fontmgr::FontDrawColor(&red);
+  spm::fontmgr::FontDrawScale(scale);
+  spm::fontmgr::FontDrawNoiseOff();
+  spm::fontmgr::FontDrawRainbowColorOff();
+  f32 x = -((spm::fontmgr::FontGetMessageWidth(msg) * scale) / 2);
+  spm::fontmgr::FontDrawString(x+265, 70.0f, msg);
+  seq_gameMainReal(wp);
+}
+void charmKillsTextGenerator(spm::seqdrv::SeqWork *wp)
+{
+  char buffer [50];
+  int charmStats = checkCharmStats();
+  wii::RGBA red {255, 0, 0, 255};
+  f32 scale = 0.6f;
+  sprintf(buffer, "%d", charmStats);
+  const char * msg = buffer;
+  spm::fontmgr::FontDrawStart();
+  spm::fontmgr::FontDrawEdge();
+  spm::fontmgr::FontDrawColor(&red);
+  spm::fontmgr::FontDrawScale(scale);
+  spm::fontmgr::FontDrawNoiseOff();
+  spm::fontmgr::FontDrawRainbowColor();
+  f32 x = -((spm::fontmgr::FontGetMessageWidth(msg) * scale) / 2);
+  spm::fontmgr::FontDrawString(x+350, 55.0f, msg);
+  seq_gameMainReal(wp);
+}
+void charmNumText(spm::seqdrv::SeqWork *wp)
+{
+  wii::RGBA red {255, 0, 0, 255};
+  f32 scale = 0.6f;
+  const char * msg = "Charms left:";
+  spm::fontmgr::FontDrawStart();
+  spm::fontmgr::FontDrawEdge();
+  spm::fontmgr::FontDrawColor(&red);
+  spm::fontmgr::FontDrawScale(scale);
+  spm::fontmgr::FontDrawNoiseOff();
+  spm::fontmgr::FontDrawRainbowColorOff();
+  f32 x = -((spm::fontmgr::FontGetMessageWidth(msg) * scale) / 2);
+  spm::fontmgr::FontDrawString(x+322, 100.0f, msg);
+  seq_gameMainReal(wp);
+}
+void charmNumLeftText(spm::seqdrv::SeqWork *wp)
+{
+  char buffer [50];
+  int charmStats = checkCharmNum();
+  wii::RGBA red {255, 0, 0, 255};
+  f32 scale = 0.6f;
+  sprintf(buffer, "%d", charmStats);
+  const char * msg = buffer;
+  spm::fontmgr::FontDrawStart();
+  spm::fontmgr::FontDrawEdge();
+  spm::fontmgr::FontDrawColor(&red);
+  spm::fontmgr::FontDrawScale(scale);
+  spm::fontmgr::FontDrawNoiseOff();
+  spm::fontmgr::FontDrawRainbowColor();
+  f32 x = -((spm::fontmgr::FontGetMessageWidth(msg) * scale) / 2);
+  spm::fontmgr::FontDrawString(x+350, 85.0f, msg);
+  seq_gameMainReal(wp);
+}
+void merleeTextGenerator(spm::seqdrv::SeqWork *wp)
+{
+  charmTextGenerator(wp);
+  charmKillsTextGenerator(wp);
+  charmNumText(wp);
+  charmNumLeftText(wp);
+}
 static void titleScreenCustomTextPatch()
 {
     seq_titleMainReal = spm::seqdef::seq_data[spm::seqdrv::SEQ_TITLE].main;
+    seq_gameMainReal = spm::seqdef::seq_data[spm::seqdrv::SEQ_GAME].main;
     spm::seqdef::seq_data[spm::seqdrv::SEQ_TITLE].main = &seq_titleMainOverride;
+    spm::seqdef::seq_data[spm::seqdrv::SEQ_GAME].main = &merleeTextGenerator;
 }
 static void setBossHP() {
   spm::npcdrv::npcTribes[270].maxHp = 15; //O'Chunks 1
@@ -159,19 +258,7 @@ static void setBossDef() {
     Function patching
 */
 void (*marioTakeDamage)(wii::Vec3 * position, u32 flags, s32 damage);
-void (*seq_gameMain)(spm::seqdrv::SeqWork *param_1);
 int (*marioCalcDamageToEnemy)(s32 damageType, s32 tribeId);
-
-void patchGameMain() {
-  seq_gameMain = patch::hookFunction(spm::seq_game::seq_gameMain,
-    [](spm::seqdrv::SeqWork *param_1)
-            {
-
-                seq_gameMain(param_1);
-            }
-        );
-
-}
 
 void patchMarioDamage(){
   marioTakeDamage = patch::hookFunction(spm::mario::marioTakeDamage,

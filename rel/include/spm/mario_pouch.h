@@ -59,6 +59,7 @@ static_assert(sizeof(MarioPouchWork) == 0x6a0);
 
 extern "C" {
 
+extern MarioPouchWork marioPouchWork;
 MarioPouchWork * pouchGetPtr();
 int pouchGetHp();
 void pouchAddHp(int increase);
