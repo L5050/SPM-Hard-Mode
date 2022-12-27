@@ -1,5 +1,6 @@
 #include "mod.h"
 #include "patch.h"
+#include "scripting.cpp"
 
 #include <spm/wpadmgr.h>
 #include <spm/fontmgr.h>
@@ -9,6 +10,8 @@
 #include <spm/mario.h>
 #include <spm/mario_pouch.h>
 #include <spm/seqdef.h>
+#include <spm/item_data.h>
+#include <spm/item_event_data.h>
 #include <wii/OSError.h>
 #include <patch.h>
 #include <string>
@@ -260,6 +263,24 @@ static void setBossDef() {
 void (*marioTakeDamage)(wii::Vec3 * position, u32 flags, s32 damage);
 int (*marioCalcDamageToEnemy)(s32 damageType, s32 tribeId);
 
+s32 itemCharm(spm::evtmgr::EvtEntry * evt, bool firstRun) {
+  spm::mario_pouch::MarioPouchWork* pouch = spm::mario_pouch::pouchGetPtr();
+  if (pouch->killsBeforeNextCharm > 5) {
+    pouch->killsBeforeNextCharm = pouch->killsBeforeNextCharm - 5;
+    pouch->charmsRemaining = pouch->charmsRemaining + 1;
+  } else if (pouch->killsBeforeNextCharm < 6) {
+    pouch->killsBeforeNextCharm = 5;
+    pouch->charmsRemaining = pouch->charmsRemaining + 1;
+  }
+  return firstRun;
+}
+
+void patchItems() {
+  for (int i = 0; i < 33; i++) {
+if (spm::item_event_data::itemEventDataTable[i].itemId == 75) {
+  spm::item_event_data::itemEventDataTable[i].useEvtScript = charmAdd;
+}}
+}
 void patchMarioDamage(){
   marioTakeDamage = patch::hookFunction(spm::mario::marioTakeDamage,
     [](wii::Vec3 * position, u32 flags, s32 damage)
@@ -319,6 +340,7 @@ void main() {
   setBossXp();
   setBossDef();
   patchMarioDamage();
+  patchItems();
 }
 
 }
