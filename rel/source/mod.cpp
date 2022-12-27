@@ -262,6 +262,17 @@ static void setBossDef() {
 */
 void (*marioTakeDamage)(wii::Vec3 * position, u32 flags, s32 damage);
 int (*marioCalcDamageToEnemy)(s32 damageType, s32 tribeId);
+void (*seq_gameMain)(spm::seqdrv::SeqWork *param_1);
+
+void patchGameMain() {
+  seq_gameMain = patch::hookFunction(spm::seq_game::seq_gameMain,
+    [](spm::seqdrv::SeqWork *param_1)
+            {
+                seq_gameMain(param_1);
+            }
+        );
+
+}
 
 s32 itemCharm(spm::evtmgr::EvtEntry * evt, bool firstRun) {
   spm::mario_pouch::MarioPouchWork* pouch = spm::mario_pouch::pouchGetPtr();
@@ -279,6 +290,9 @@ void patchItems() {
   for (int i = 0; i < 33; i++) {
 if (spm::item_event_data::itemEventDataTable[i].itemId == 75) {
   spm::item_event_data::itemEventDataTable[i].useEvtScript = charmAdd;
+}
+if (spm::item_event_data::itemEventDataTable[i].itemId == 66) {
+  //spm::item_event_data::itemEventDataTable[i].useEvtScript = charmAdd;
 }}
 }
 void patchMarioDamage(){
@@ -341,6 +355,7 @@ void main() {
   setBossDef();
   patchMarioDamage();
   patchItems();
+  //patchGameMain();
 }
 
 }
