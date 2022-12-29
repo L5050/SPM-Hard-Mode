@@ -17,7 +17,7 @@ static_assert(sizeof(ItemEventData) == 0xc);
 
 extern "C" {
 
-extern s32 mightyTonicPointer;
+extern char mightyTonicPointer;
 
 extern ItemEventData itemEventDataTable[ITEM_EVENT_DATA_COUNT];
 EVT_DECLARE(eventUseAnimation)
@@ -28,11 +28,12 @@ EVT_DECLARE_USER_FUNC(drawBox, 1)
 EVT_DECLARE_USER_FUNC(drawRedSparkles, 0)
 EVT_DECLARE_USER_FUNC(removeBox, 1)
 EVT_DECLARE_USER_FUNC(verticalShakeActionCommand, 2)
-EVT_DECLARE_USER_FUNC(evt_unknownScript_4, 2)
-EVT_DECLARE_USER_FUNC(evt_unknownScript_2, 1)
-EVT_DECLARE_USER_FUNC(evt_unknownScript_3, 3)
+EVT_DECLARE_USER_FUNC(evt_unknownFunc_3, 2)
+EVT_DECLARE_USER_FUNC(evt_unknownFunc_1, 1)
+EVT_DECLARE_USER_FUNC(evt_unknownFunc_2, 3)
+EVT_DECLARE_USER_FUNC(playSndEffect, 4)
 EVT_DECLARE_USER_FUNC(evt_mario_flag8_onoff, 2)
-EVT_DECLARE_USER_FUNC(redHaze, 2)
+EVT_DECLARE_USER_FUNC(addStatusEffect, 2)
 EVT_DECLARE_USER_FUNC(postActionMessage, 1)
 EVT_DECLARE_USER_FUNC(closeVerticleActionCommand, 1)
 }

@@ -17,7 +17,7 @@
 8002574c:drawBox
 800284d8:drawRedSparkles
 80025b20:removeBox
-80025BF4:redHaze
+80025BF4:addStatusEffect
 80026A70:postActionMessage
 805AF5C8:mightyTonicPointer
 
