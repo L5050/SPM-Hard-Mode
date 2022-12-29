@@ -20,11 +20,27 @@
 using namespace std;
 namespace mod {
 
-
 EVT_DECLARE_USER_FUNC(itemCharm, 0)
-
 EVT_BEGIN(charmAdd)
+SET(LW(0), 1)
+RUN_CHILD_EVT(spm::item_event_data::eventUseAnimation)
+RUN_CHILD_EVT(spm::item_event_data::eventFreezeGame)
+USER_FUNC(spm::item_event_data::verticalShakeActionCommand, spm::item_event_data::mightyTonicPointer, 15)
+USER_FUNC(spm::item_event_data::evt_unknownScript_6, spm::item_event_data::mightyTonicPointer, LW(10))
+USER_FUNC(spm::item_event_data::closeVerticleActionCommand, spm::item_event_data::mightyTonicPointer)
+RUN_CHILD_EVT(spm::item_event_data::evt_unknownScript_1)
 USER_FUNC(itemCharm)
+USER_FUNC(spm::item_event_data::drawBox, -1)
+USER_FUNC(spm::item_event_data::evt_unknownScript_2, -1)
+USER_FUNC(spm::item_event_data::evt_unknownScript_3, LW(0), LW(1), LW(2))
+USER_FUNC(spm::item_event_data::drawRedSparkles)
+WAIT_MSEC(1500)
+USER_FUNC(spm::item_event_data::removeBox, -1)
+USER_FUNC(spm::item_event_data::redHaze, 64, LW(10))
+USER_FUNC(spm::item_event_data::evt_mario_flag8_onoff, 1, 131072)
+USER_FUNC(spm::item_event_data::postActionMessage, 75)
+RUN_CHILD_EVT(spm::item_event_data::eventUnfreezeGame)
+USER_FUNC(spm::item_event_data::evt_mario_flag8_onoff, 0, 131072)
 RETURN()
 EVT_END()
 

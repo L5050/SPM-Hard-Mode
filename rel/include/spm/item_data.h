@@ -13,7 +13,7 @@ enum ItemType
     // more
 };
 
-struct ItemData 
+struct ItemData
 {
     const char * itemName;
     s16 iconId;

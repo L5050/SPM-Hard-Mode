@@ -291,8 +291,8 @@ void patchItems() {
 if (spm::item_event_data::itemEventDataTable[i].itemId == 75) {
   spm::item_event_data::itemEventDataTable[i].useEvtScript = charmAdd;
 }
-if (spm::item_event_data::itemEventDataTable[i].itemId == 66) {
-  //spm::item_event_data::itemEventDataTable[i].useEvtScript = charmAdd;
+if (spm::item_event_data::itemEventDataTable[i].itemId == 68) {
+  spm::item_event_data::itemEventDataTable[i].useEvtScript = charmAdd;
 }}
 }
 void patchMarioDamage(){

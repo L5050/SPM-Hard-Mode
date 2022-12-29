@@ -5,6 +5,21 @@
 800030cc:lastRel
 // more
 
+803fbef8:eventUseAnimation
+803FC8C0:eventUnfreezeGame
+803fe0b4:eventFreezeGame
+803fc738:evt_unknownScript_1
+80025AC4:evt_unknownScript_2
+800EFA4C:evt_unknownScript_3
+800DF9A8:verticalShakeActionCommand
+800DFAAC:closeVerticleActionCommand
+8002574c:drawBox
+800284d8:drawRedSparkles
+80025b20:removeBox
+80025BF4:redHaze
+80026A70:postActionMessage
+805AF5C8:mightyTonicPointer
+
 /* Dol */
 
 // Runtime.PPCEABI.H.a
