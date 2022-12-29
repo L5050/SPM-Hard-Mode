@@ -9,9 +9,9 @@
 803FC8C0:eventUnfreezeGame
 803fe0b4:eventFreezeGame
 803fc738:evt_unknownScript_1
-80025AC4:evt_unknownScript_2
-800EFA4C:evt_unknownScript_3
-800DFA00:evt_unknownScript_4
+80025AC4:evt_unknownFunc_1
+800EFA4C:evt_unknownFunc_2
+800DFA00:evt_unknownFunc_3
 800DF9A8:verticalShakeActionCommand
 800DFAAC:closeVerticleActionCommand
 8002574c:drawBox
@@ -20,7 +20,7 @@
 80025BF4:addStatusEffect
 80026A70:postActionMessage
 805AF5C8:mightyTonicPointer
-
+800D29CC:playSndEffect
 /* Dol */
 
 // Runtime.PPCEABI.H.a
