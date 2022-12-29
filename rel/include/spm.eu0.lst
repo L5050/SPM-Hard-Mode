@@ -11,6 +11,7 @@
 803fc738:evt_unknownScript_1
 80025AC4:evt_unknownScript_2
 800EFA4C:evt_unknownScript_3
+800DFA00:evt_unknownScript_4
 800DF9A8:verticalShakeActionCommand
 800DFAAC:closeVerticleActionCommand
 8002574c:drawBox
