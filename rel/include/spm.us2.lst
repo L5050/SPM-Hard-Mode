@@ -16,8 +16,8 @@
 800259d0:removeBox
 80025aa4:addStatusEffect
 80026920:postActionMessage
-800dfafc:verticalShakeActionCommand
-800dfc00:closeVerticleActionCommand
+800dfafc:actionCommand
+800dfc00:closeActionCommand
 8056dfc8:mightyTonicPointer
 800ef5d8:evt_mario_flag8_onoff
 800d2b68:playSndEffect

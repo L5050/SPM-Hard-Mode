@@ -7,13 +7,13 @@
 
 803fbef8:eventUseAnimation
 803FC8C0:eventUnfreezeGame
-803fe0b4:eventFreezeGame
+803fc868:eventFreezeGame
 803fc738:evt_unknownScript_1
 80025AC4:evt_unknownFunc_1
 800EFA4C:evt_unknownFunc_2
 800DFA00:evt_unknownFunc_3
-800DF9A8:verticalShakeActionCommand
-800DFAAC:closeVerticleActionCommand
+800DF9A8:actionCommand
+800DFAAC:closeActionCommand
 8002574c:drawBox
 800284d8:drawRedSparkles
 80025b20:removeBox
