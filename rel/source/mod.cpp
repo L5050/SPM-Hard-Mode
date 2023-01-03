@@ -274,9 +274,9 @@ void (*pouchAddXp)(int increase);
 spm::evtmgr::EvtEntry * (*evtEntry)(const spm::evtmgr::EvtScriptCode * script, u8 priority, u8 flags);
 spm::evtmgr::EvtEntry * eTest(const spm::evtmgr::EvtScriptCode * script, u8 priority, u8 flags)
         {
-            if (*spm::item_event_data::getItemUseEvt(104) == *script){
+            if (spm::item_event_data::getItemUseEvt(104) == script){
               spm::mario_pouch::MarioPouchWork* pouch = spm::mario_pouch::pouchGetPtr();
-              pouch->killsBeforeNextCharm = 2;
+              pouch->killsBeforeNextCharm = pouch->killsBeforeNextCharm / 2;
             }
             return evtEntry(script, priority, flags);
         }
