@@ -272,7 +272,7 @@ int (*marioCalcDamageToEnemy)(s32 damageType, s32 tribeId);
 void (*seq_gameMain)(spm::seqdrv::SeqWork *param_1);
 void (*pouchAddXp)(int increase);
 spm::evtmgr::EvtEntry * (*evtEntry)(const spm::evtmgr::EvtScriptCode * script, u8 priority, u8 flags);
-spm::evtmgr::EvtEntry * eTest(const spm::evtmgr::EvtScriptCode * script, u8 priority, u8 flags)
+spm::evtmgr::EvtEntry * newEntry(const spm::evtmgr::EvtScriptCode * script, u8 priority, u8 flags)
         {
             if (spm::item_event_data::getItemUseEvt(104) == script){
               spm::mario_pouch::MarioPouchWork* pouch = spm::mario_pouch::pouchGetPtr();
@@ -280,17 +280,18 @@ spm::evtmgr::EvtEntry * eTest(const spm::evtmgr::EvtScriptCode * script, u8 prio
             }
             return evtEntry(script, priority, flags);
         }
-void patchGameMain() {
-  seq_gameMain = patch::hookFunction(spm::seq_game::seq_gameMain,
-    [](spm::seqdrv::SeqWork *param_1)
-            {
-                seq_gameMain(param_1);
-            }
-        );
-}
 
 void patchScripts() {
-  evtEntry = patch::hookFunction(spm::evtmgr::evtEntry, eTest);
+  evtEntry = patch::hookFunction(spm::evtmgr::evtEntry, newEntry);
+}
+
+void patchGameMain() {
+seq_gameMain = patch::hookFunction(spm::seq_game::seq_gameMain,
+[](spm::seqdrv::SeqWork *param_1)
+    {
+        seq_gameMain(param_1);
+    }
+);
 }
 
 void patchAddXp() {
