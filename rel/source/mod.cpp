@@ -63,6 +63,8 @@ int checkCharmNum()
 }
 void charmTextGenerator(spm::seqdrv::SeqWork *wp)
 {
+  int charmStats = checkCharmNum();
+  if (charmStats > 0){
   wii::RGBA red {255, 0, 0, 255};
   f32 scale = 0.6f;
   const char * msg = "Enemies until next charm:";
@@ -73,11 +75,13 @@ void charmTextGenerator(spm::seqdrv::SeqWork *wp)
   spm::fontmgr::FontDrawNoiseOff();
   spm::fontmgr::FontDrawRainbowColorOff();
   f32 x = -((spm::fontmgr::FontGetMessageWidth(msg) * scale) / 2);
-  spm::fontmgr::FontDrawString(x+265, 70.0f, msg);
+  spm::fontmgr::FontDrawString(x+265, 70.0f, msg);}
   seq_gameMainReal(wp);
 }
 void charmKillsTextGenerator(spm::seqdrv::SeqWork *wp)
 {
+  int charmNum = checkCharmNum();
+  if (charmNum > 0){
   char buffer [50];
   int charmStats = checkCharmStats();
   wii::RGBA red {255, 0, 0, 255};
@@ -91,11 +95,13 @@ void charmKillsTextGenerator(spm::seqdrv::SeqWork *wp)
   spm::fontmgr::FontDrawNoiseOff();
   spm::fontmgr::FontDrawRainbowColor();
   f32 x = -((spm::fontmgr::FontGetMessageWidth(msg) * scale) / 2);
-  spm::fontmgr::FontDrawString(x+350, 55.0f, msg);
+  spm::fontmgr::FontDrawString(x+350, 55.0f, msg);}
   seq_gameMainReal(wp);
 }
 void charmNumText(spm::seqdrv::SeqWork *wp)
 {
+  int charmStats = checkCharmNum();
+  if (charmStats > 0){
   wii::RGBA red {255, 0, 0, 255};
   f32 scale = 0.6f;
   const char * msg = "Charms left:";
@@ -106,13 +112,14 @@ void charmNumText(spm::seqdrv::SeqWork *wp)
   spm::fontmgr::FontDrawNoiseOff();
   spm::fontmgr::FontDrawRainbowColorOff();
   f32 x = -((spm::fontmgr::FontGetMessageWidth(msg) * scale) / 2);
-  spm::fontmgr::FontDrawString(x+322, 100.0f, msg);
+  spm::fontmgr::FontDrawString(x+322, 100.0f, msg);}
   seq_gameMainReal(wp);
 }
 void charmNumLeftText(spm::seqdrv::SeqWork *wp)
 {
-  char buffer [50];
   int charmStats = checkCharmNum();
+  if (charmStats > 0){
+  char buffer [50];
   wii::RGBA red {255, 0, 0, 255};
   f32 scale = 0.6f;
   sprintf(buffer, "%d", charmStats);
@@ -124,7 +131,7 @@ void charmNumLeftText(spm::seqdrv::SeqWork *wp)
   spm::fontmgr::FontDrawNoiseOff();
   spm::fontmgr::FontDrawRainbowColor();
   f32 x = -((spm::fontmgr::FontGetMessageWidth(msg) * scale) / 2);
-  spm::fontmgr::FontDrawString(x+350, 85.0f, msg);
+  spm::fontmgr::FontDrawString(x+350, 85.0f, msg);}
   seq_gameMainReal(wp);
 }
 void merleeTextGenerator(spm::seqdrv::SeqWork *wp)
@@ -149,8 +156,8 @@ static void setBossHP() {
   spm::npcdrv::npcTribes[295].maxHp = 16; //Mr. L
   spm::npcdrv::npcTribes[271].maxHp = 20; //O'Chunks 2
   spm::npcdrv::npcTribes[272].maxHp = 15; //O'Cabbage
-  spm::npcdrv::npcTribes[319].maxHp = 20; //King Croacus
-  spm::npcdrv::npcTribes[282].maxHp = 10; //Mimi
+  //spm::npcdrv::npcTribes[319].maxHp = 20; //King Croacus
+  spm::npcdrv::npcTribes[282].maxHp = 15; //Mimi
   spm::npcdrv::npcTribes[300].maxHp = 16; //Brobot L-Type
   spm::npcdrv::npcTribes[316].maxHp = 12; //Bowser 2
   //spm::npcdrv::npcTribes[327].maxHp = 30; //Bonechill
@@ -163,12 +170,12 @@ static void setBossHP() {
   spm::npcdrv::npcTribes[333].maxHp = 12; //Dark Bowser
 }
 static void setBossXp() {
-  for (int i = 0; i < 535; i++) {
+  /*for (int i = 0; i < 535; i++) {
     if (spm::npcdrv::npcTribes[i].killXp >= 3) {
      int newXp = spm::npcdrv::npcTribes[i].killXp / 3;
      spm::npcdrv::npcTribes[i].killXp = newXp;
     }
-  }
+  }*/
 }
 /*
   Gives all bosses the megabite defense stat
@@ -263,6 +270,8 @@ static void setBossDef() {
 void (*marioTakeDamage)(wii::Vec3 * position, u32 flags, s32 damage);
 int (*marioCalcDamageToEnemy)(s32 damageType, s32 tribeId);
 void (*seq_gameMain)(spm::seqdrv::SeqWork *param_1);
+void (*pouchAddXp)(int increase);
+spm::evtmgr::EvtEntry * (*evtEntry)(const spm::evtmgr::EvtScriptCode * script, u8 priority, u8 flags);
 
 void patchGameMain() {
   seq_gameMain = patch::hookFunction(spm::seq_game::seq_gameMain,
@@ -271,7 +280,29 @@ void patchGameMain() {
                 seq_gameMain(param_1);
             }
         );
+}
 
+void patchScripts() {
+  evtEntry = patch::hookFunction(spm::evtmgr::evtEntry,
+    [](const spm::evtmgr::EvtScriptCode * script, u8 priority, u8 flags)
+            {
+                if (spm::item_event_data::getItemUseEvt(104) == script){
+                  spm::mario_pouch::MarioPouchWork* pouch = spm::mario_pouch::pouchGetPtr();
+                  pouch->killsBeforeNextCharm = pouch->killsBeforeNextCharm / 2;
+                }
+                evtEntry(script, priority, flags);
+            }
+        );
+}
+
+void patchAddXp() {
+  pouchAddXp = patch::hookFunction(spm::mario_pouch::pouchAddXp,
+    [](int increase)
+            {
+              increase = increase / 2;
+                pouchAddXp(increase);
+            }
+        );
 }
 
 s32 itemCharm(spm::evtmgr::EvtEntry * evt, bool firstRun) {
@@ -336,10 +367,12 @@ void patchMarioDamage(){
                 break;
                 default:
                 damage = marioCalcDamageToEnemy(damageType, tribeId);
+              if (spm::mario_pouch::pouchGetCardCount(spm::npcdrv::npcTribes[tribeId].catchCardItemId) > 0) {
+                int cards = spm::mario_pouch::pouchGetCardCount(spm::npcdrv::npcTribes[tribeId].catchCardItemId);
+                cards = cards + 1;
+                damage = damage / cards;
+              }
                               }
-                /*if (damageType == 8) {
-                  damage = 0;
-                }*/
                 return damage;
             }
         );
@@ -355,6 +388,8 @@ void main() {
   setBossDef();
   patchMarioDamage();
   patchItems();
+  patchAddXp();
+  patchScripts();
   //patchGameMain();
 }
 

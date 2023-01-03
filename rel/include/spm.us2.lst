@@ -3,6 +3,9 @@
 800030c8:firstRel
 800030cc:lastRel
 
+8014F12C:pouchGetCardCount
+80025014:getItemUseEvt
+
 // Automatically generated from spm.eu0.lst
 803BDDD8:eventUseAnimation
 803be748:eventFreezeGame

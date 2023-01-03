@@ -3,6 +3,9 @@
 800030c8:firstRel
 800030cc:lastRel
 
+8014ECD4:pouchGetCardCount
+80025074:getItemUseEvt
+
 // Automatically generated from spm.eu0.lst
 80004000:memcpy
 80004104:memset

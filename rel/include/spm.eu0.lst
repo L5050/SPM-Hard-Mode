@@ -4,7 +4,7 @@
 800030c8:firstRel
 800030cc:lastRel
 // more
-
+80025164:getItemUseEvt
 803fbef8:eventUseAnimation
 803FC8C0:eventUnfreezeGame
 803fc868:eventFreezeGame
@@ -282,6 +282,7 @@
 8014d468:pouchAddHp
 8014d4f8:pouchGetXp
 8014d508:pouchAddXp
+8014f7c8:pouchGetCardCount
 8014d5f8:pouchAddItem
 8014dbf4:pouchCheckHaveItem
 8014df4c:pouchRemoveItem

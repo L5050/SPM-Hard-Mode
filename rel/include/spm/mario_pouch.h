@@ -58,14 +58,13 @@ struct MarioPouchWork
 static_assert(sizeof(MarioPouchWork) == 0x6a0);
 
 extern "C" {
-
 extern MarioPouchWork marioPouchWork;
 MarioPouchWork * pouchGetPtr();
 int pouchGetHp();
 void pouchAddHp(int increase);
 int pouchGetXp();
 void pouchAddXp(int increase);
-
+s32 pouchGetCardCount(s32 itemId);
 bool pouchAddItem(int itemId);
 bool pouchCheckHaveItem(s16 itemId);
 void pouchRemoveItem(int itemId);

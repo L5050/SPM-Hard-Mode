@@ -18,8 +18,8 @@ static_assert(sizeof(ItemEventData) == 0xc);
 extern "C" {
 
 extern char mightyTonicPointer;
-
 extern ItemEventData itemEventDataTable[ITEM_EVENT_DATA_COUNT];
+spm::evtmgr::EvtScriptCode * getItemUseEvt(s32 itemId);
 EVT_DECLARE(eventUseAnimation)
 EVT_DECLARE(eventFreezeGame)
 EVT_DECLARE(eventUnfreezeGame)
