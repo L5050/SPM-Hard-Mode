@@ -5,7 +5,6 @@
 
 8014F12C:pouchGetCardCount
 80025014:getItemUseEvt
-
 // Automatically generated from spm.eu0.lst
 803BDDD8:eventUseAnimation
 803be748:eventFreezeGame

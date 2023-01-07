@@ -8,6 +8,7 @@
 #include <spm/seq_game.h>
 #include <spm/npcdrv.h>
 #include <spm/mario.h>
+#include <spm/spmario.h>
 #include <spm/mario_pouch.h>
 #include <spm/seqdef.h>
 #include <spm/item_data.h>
@@ -18,12 +19,12 @@
 #include <cstdio>
 using namespace std;
 namespace mod {
-
+spm::spmario::SpmarioGlobals * globals = spm::spmario::gp;
 /*
     Title Screen Custom Text
     Prints "SPM Hard Mode" at the top of the title screen
 */
-
+char cBuffer [50];
 static spm::seqdef::SeqFunc *seq_titleMainReal;
 static spm::seqdef::SeqFunc *seq_gameMainReal;
 static void seq_titleMainOverride(spm::seqdrv::SeqWork *wp)
@@ -53,6 +54,9 @@ int checkCharmStats()
 }
 int checkCharmNum()
 {
+  if (spm::mario::marioKeyOffChk() == 1) {
+    return 0;
+  }
   spm::mario_pouch::MarioPouchWork* pouch = spm::mario_pouch::pouchGetPtr();
   int charms = pouch->charmsRemaining;
   if (charms > 0) {
@@ -60,6 +64,76 @@ int checkCharmNum()
   } else {
     return 0;
   }
+}
+int checkBossHealth() {
+  if (spm::mario::marioKeyOffChk() == 1) {
+    return 0;
+  }
+  spm::npcdrv::NPCWork * NPCWork = spm::npcdrv::npcGetWorkPtr();
+  int health = 0;
+  s32 plotValue = globals->gsw0;
+  //wii::OSError::OSReport("%x\n", plotValue);
+    if (plotValue == 0x21){
+    for (int i = 0; i < 535; i++) {
+      if (NPCWork->entries[i].tribeId == 270) {
+        health = NPCWork->entries[i].hp;
+      }
+    }}
+    if (plotValue == 0x67){
+    for (int i = 0; i < 535; i++) {
+      if (NPCWork->entries[i].tribeId == 315) {
+        health = NPCWork->entries[i].hp;
+      }
+    }}
+    if (plotValue == 0x19a){
+    for (int i = 0; i < 535; i++) {
+      if (NPCWork->entries[i].tribeId == 305) {
+        health = NPCWork->entries[i].hp;
+      }
+    }}
+    if (plotValue == 0x19f){
+    for (int i = 0; i < 535; i++) {
+      if (NPCWork->entries[i].tribeId == 309) {
+        health = NPCWork->entries[i].hp;
+        wii::OSError::OSReport("%x\n", NPCWork->entries[i].hp);
+      }
+    }}
+  return health;
+}
+static void bossHealth(spm::seqdrv::SeqWork *wp)
+{
+    if (checkBossHealth() > 0){
+    wii::RGBA green {0, 255, 0, 255};
+    f32 scale = 0.8f;
+    const char * msg = "Boss Health:";
+    spm::fontmgr::FontDrawStart();
+    spm::fontmgr::FontDrawEdge();
+    spm::fontmgr::FontDrawColor(&green);
+    spm::fontmgr::FontDrawScale(scale);
+    spm::fontmgr::FontDrawNoiseOff();
+    spm::fontmgr::FontDrawRainbowColorOff();
+    f32 x = -((spm::fontmgr::FontGetMessageWidth(msg) * scale) / 2);
+    spm::fontmgr::FontDrawString(x-300, 70.0f, msg);}
+    seq_gameMainReal(wp);
+}
+static void bossActualHealth(spm::seqdrv::SeqWork *wp)
+{
+    if (checkBossHealth() > 0){
+    wii::RGBA green {0, 255, 0, 255};
+    f32 scale = 0.8f;
+    char buffer [50];
+    int health = checkBossHealth();
+    sprintf(buffer, "%d", health);
+    const char * msg = buffer;
+    spm::fontmgr::FontDrawStart();
+    spm::fontmgr::FontDrawEdge();
+    spm::fontmgr::FontDrawColor(&green);
+    spm::fontmgr::FontDrawScale(scale);
+    spm::fontmgr::FontDrawNoiseOff();
+    spm::fontmgr::FontDrawRainbowColor();
+    f32 x = -((spm::fontmgr::FontGetMessageWidth(msg) * scale) / 2);
+    spm::fontmgr::FontDrawString(x-320, 55.0f, msg);}
+    seq_gameMainReal(wp);
 }
 void charmTextGenerator(spm::seqdrv::SeqWork *wp)
 {
@@ -134,19 +208,21 @@ void charmNumLeftText(spm::seqdrv::SeqWork *wp)
   spm::fontmgr::FontDrawString(x+350, 85.0f, msg);}
   seq_gameMainReal(wp);
 }
-void merleeTextGenerator(spm::seqdrv::SeqWork *wp)
+void customUI(spm::seqdrv::SeqWork *wp)
 {
   charmTextGenerator(wp);
   charmKillsTextGenerator(wp);
   charmNumText(wp);
   charmNumLeftText(wp);
+  bossHealth(wp);
+  bossActualHealth(wp);
 }
 static void titleScreenCustomTextPatch()
 {
     seq_titleMainReal = spm::seqdef::seq_data[spm::seqdrv::SEQ_TITLE].main;
     seq_gameMainReal = spm::seqdef::seq_data[spm::seqdrv::SEQ_GAME].main;
     spm::seqdef::seq_data[spm::seqdrv::SEQ_TITLE].main = &seq_titleMainOverride;
-    spm::seqdef::seq_data[spm::seqdrv::SEQ_GAME].main = &merleeTextGenerator;
+    spm::seqdef::seq_data[spm::seqdrv::SEQ_GAME].main = &customUI;
 }
 static void setBossHP() {
   spm::npcdrv::npcTribes[270].maxHp = 15; //O'Chunks 1
@@ -271,18 +347,40 @@ void (*marioTakeDamage)(wii::Vec3 * position, u32 flags, s32 damage);
 int (*marioCalcDamageToEnemy)(s32 damageType, s32 tribeId);
 void (*seq_gameMain)(spm::seqdrv::SeqWork *param_1);
 void (*pouchAddXp)(int increase);
-spm::evtmgr::EvtEntry * (*evtEntry)(const spm::evtmgr::EvtScriptCode * script, u8 priority, u8 flags);
-spm::evtmgr::EvtEntry * newEntry(const spm::evtmgr::EvtScriptCode * script, u8 priority, u8 flags)
+spm::evtmgr::EvtEntry * (*evtEntryType)(const spm::evtmgr::EvtScriptCode * script, u8 priority, u8 flags, s32 type);
+spm::evtmgr::EvtEntry * newEntry(const spm::evtmgr::EvtScriptCode * script, u8 priority, u8 flags, s32 type)
         {
+          spm::mario_pouch::MarioPouchWork * pouch = spm::mario_pouch::pouchGetPtr();
+          //turtley leaf
             if (spm::item_event_data::getItemUseEvt(104) == script){
-              spm::mario_pouch::MarioPouchWork* pouch = spm::mario_pouch::pouchGetPtr();
               pouch->killsBeforeNextCharm = pouch->killsBeforeNextCharm / 2;
             }
-            return evtEntry(script, priority, flags);
+            //bone in cut and dayzee syrup
+            if (spm::item_event_data::getItemUseEvt(113) == script || spm::item_event_data::getItemUseEvt(124) == script){
+              pouch->charmsRemaining += 5;
+              pouch->killsBeforeNextCharm += 1;
+            }
+            //hot sauce and spit roast
+            if (spm::item_event_data::getItemUseEvt(109) == script || spm::item_event_data::getItemUseEvt(162) == script){
+              pouch->charmsRemaining += 5;
+              pouch->killsBeforeNextCharm += 1;
+            }
+            //spicy dinner and spicy pasta dish
+            if (spm::item_event_data::getItemUseEvt(183) == script || spm::item_event_data::getItemUseEvt(155) == script){
+              pouch->charmsRemaining += 5;
+              pouch->killsBeforeNextCharm += 1;
+            }
+            //dangerous delight
+            if (spm::item_event_data::getItemUseEvt(173) == script){
+              pouch->killsBeforeNextCharm += 2;
+              pouch->killsBeforeNextCharm = pouch->killsBeforeNextCharm / 2;
+              pouch->charmsRemaining += 6;
+            }
+            return evtEntryType(script, priority, flags, type);
         }
 
 void patchScripts() {
-  evtEntry = patch::hookFunction(spm::evtmgr::evtEntry, newEntry);
+  evtEntryType = patch::hookFunction(spm::evtmgr::evtEntryType, newEntry);
 }
 
 void patchGameMain() {
@@ -319,9 +417,6 @@ s32 itemCharm(spm::evtmgr::EvtEntry * evt, bool firstRun) {
 void patchItems() {
   for (int i = 0; i < 33; i++) {
 if (spm::item_event_data::itemEventDataTable[i].itemId == 75) {
-  spm::item_event_data::itemEventDataTable[i].useEvtScript = charmAdd;
-}
-if (spm::item_event_data::itemEventDataTable[i].itemId == 68) {
   spm::item_event_data::itemEventDataTable[i].useEvtScript = charmAdd;
 }}
 }
@@ -389,7 +484,6 @@ void main() {
   patchItems();
   patchAddXp();
   patchScripts();
-  //patchGameMain();
 }
 
 }

@@ -5,7 +5,6 @@
 
 8014ECD4:pouchGetCardCount
 800250EC:getItemUseEvt
-
 // Automatically generated from spm.eu0.lst
 80004000:memcpy
 80004104:memset
