@@ -431,6 +431,7 @@ void patchMarioDamage(){
     [](s32 damageType, s32 tribeId)
             {
               int damage = 0;
+              //return marioCalcDamageToEnemy(damageType, tribeId);
               switch(tribeId) {
                 case 295:
                 damage = 1;
@@ -459,14 +460,13 @@ void patchMarioDamage(){
                 case 333:
                 damage = 5;
                 break;
-                default:
-                damage = marioCalcDamageToEnemy(damageType, tribeId);
-              if (spm::mario_pouch::pouchGetCardCount(spm::npcdrv::npcTribes[tribeId].catchCardItemId) > 0) {
-                int cards = spm::mario_pouch::pouchGetCardCount(spm::npcdrv::npcTribes[tribeId].catchCardItemId);
-                cards = cards + 1;
-                damage = damage / cards;
               }
-                              }
+            if (spm::mario_pouch::pouchGetCardCount(spm::npcdrv::npcTribes[tribeId].catchCardItemId) > 0) {
+                wii::OSError::OSReport("%d\n", damage);
+              int cards = spm::mario_pouch::pouchGetCardCount(spm::npcdrv::npcTribes[tribeId].catchCardItemId);
+              cards = cards + 1;
+              return marioCalcDamageToEnemy(damageType, tribeId) / cards;}
+              return marioCalcDamageToEnemy(damageType, tribeId);
                 return damage;
             }
         );
