@@ -85,6 +85,27 @@ int checkBossHealth() {
         health = NPCWork->entries[i].hp;
       }
     }}
+    if (plotValue == 0x72){
+      globals->gsw0 = 0x73;
+    }
+    if (plotValue == 0x73){
+    for (int i = 0; i < 535; i++) {
+      if (NPCWork->entries[i].tribeId == 286) {
+        health = NPCWork->entries[i].hp;
+      }
+    }}
+    if (plotValue == 0x7c){
+    for (int i = 0; i < 535; i++) {
+      if (NPCWork->entries[i].tribeId == 318) {
+        health = NPCWork->entries[i].hp;
+      }
+    }}
+    if (plotValue == 0xaa){
+    for (int i = 0; i < 535; i++) {
+      if (NPCWork->entries[i].tribeId == 295) {
+        health = NPCWork->entries[i].hp;
+      }
+    }}
     if (plotValue == 0x19a){
     for (int i = 0; i < 535; i++) {
       if (NPCWork->entries[i].tribeId == 305) {
@@ -132,7 +153,7 @@ static void bossActualHealth(spm::seqdrv::SeqWork *wp)
     spm::fontmgr::FontDrawNoiseOff();
     spm::fontmgr::FontDrawRainbowColor();
     f32 x = -((spm::fontmgr::FontGetMessageWidth(msg) * scale) / 2);
-    spm::fontmgr::FontDrawString(x-320, 55.0f, msg);}
+    spm::fontmgr::FontDrawString(x-320, 50.0f, msg);}
     seq_gameMainReal(wp);
 }
 void charmTextGenerator(spm::seqdrv::SeqWork *wp)
@@ -228,7 +249,7 @@ static void setBossHP() {
   spm::npcdrv::npcTribes[270].maxHp = 15; //O'Chunks 1
   spm::npcdrv::npcTribes[315].maxHp = 6; //Bowser 1
   spm::npcdrv::npcTribes[286].maxHp = 12; //Dimentio 1
-  spm::npcdrv::npcTribes[318].maxHp = 100; //Francis
+  spm::npcdrv::npcTribes[318].maxHp = 50; //Francis
   spm::npcdrv::npcTribes[295].maxHp = 16; //Mr. L
   spm::npcdrv::npcTribes[271].maxHp = 20; //O'Chunks 2
   spm::npcdrv::npcTribes[272].maxHp = 15; //O'Cabbage
@@ -278,7 +299,6 @@ static void setBossDef() {
   for (int i = 0; i < 3; i++) {//Dimentio 1 defense
     if (spm::npcdrv::npcTribes[286].parts[i].id == 1) {
      spm::npcdrv::npcTribes[286].parts[i].defenses[0] = fireDef;
-     spm::npcdrv::npcTribes[286].parts[i].defenses[5] = def;
     }
   }
    for (int i = 0; i < 7; i++) {//Brobot defense
@@ -356,7 +376,7 @@ spm::evtmgr::EvtEntry * newEntry(const spm::evtmgr::EvtScriptCode * script, u8 p
               pouch->killsBeforeNextCharm = pouch->killsBeforeNextCharm / 2;
             }
             //bone in cut and dayzee syrup
-            if (spm::item_event_data::getItemUseEvt(113) == script || spm::item_event_data::getItemUseEvt(124) == script){
+            /*if (spm::item_event_data::getItemUseEvt(113) == script || spm::item_event_data::getItemUseEvt(124) == script){
               pouch->charmsRemaining += 5;
               pouch->killsBeforeNextCharm += 1;
             }
@@ -375,7 +395,7 @@ spm::evtmgr::EvtEntry * newEntry(const spm::evtmgr::EvtScriptCode * script, u8 p
               pouch->killsBeforeNextCharm += 2;
               pouch->killsBeforeNextCharm = pouch->killsBeforeNextCharm / 2;
               pouch->charmsRemaining += 6;
-            }
+            }*/
             return evtEntryType(script, priority, flags, type);
         }
 
@@ -431,7 +451,6 @@ void patchMarioDamage(){
     [](s32 damageType, s32 tribeId)
             {
               int damage = 0;
-              //return marioCalcDamageToEnemy(damageType, tribeId);
               switch(tribeId) {
                 case 295:
                 damage = 1;
@@ -443,6 +462,9 @@ void patchMarioDamage(){
                 damage = 1;
                 break;
                 case 270:
+                damage = 100;
+                break;
+                case 286:
                 damage = 100;
                 break;
                 case 305:
@@ -461,13 +483,12 @@ void patchMarioDamage(){
                 damage = 5;
                 break;
               }
-            if (spm::mario_pouch::pouchGetCardCount(spm::npcdrv::npcTribes[tribeId].catchCardItemId) > 0) {
-                wii::OSError::OSReport("%d\n", damage);
+              if (damage > 0) return damage;
+              if (spm::mario_pouch::pouchGetCurPixl() == 0xdd) return marioCalcDamageToEnemy(damageType, tribeId) - 1;
+              wii::OSError::OSReport("%x\n", damageType);
               int cards = spm::mario_pouch::pouchGetCardCount(spm::npcdrv::npcTribes[tribeId].catchCardItemId);
               cards = cards + 1;
-              return marioCalcDamageToEnemy(damageType, tribeId) / cards;}
-              return marioCalcDamageToEnemy(damageType, tribeId);
-                return damage;
+              return marioCalcDamageToEnemy(damageType, tribeId) / cards;
             }
         );
 }
