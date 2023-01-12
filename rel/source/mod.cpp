@@ -484,11 +484,14 @@ void patchMarioDamage(){
                 break;
               }
               if (damage > 0) return damage;
-              if (spm::mario_pouch::pouchGetCurPixl() == 0xdd) return marioCalcDamageToEnemy(damageType, tribeId) - 1;
-              wii::OSError::OSReport("%x\n", damageType);
+              if (tribeId > -1){
+              if (spm::npcdrv::npcTribes[tribeId].catchCardItemId != 0){
               int cards = spm::mario_pouch::pouchGetCardCount(spm::npcdrv::npcTribes[tribeId].catchCardItemId);
               cards = cards + 1;
               return marioCalcDamageToEnemy(damageType, tribeId) / cards;
+            }
+          }
+          return marioCalcDamageToEnemy(damageType, tribeId);
             }
         );
 }
