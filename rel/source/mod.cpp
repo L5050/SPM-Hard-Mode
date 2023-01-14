@@ -249,7 +249,7 @@ static void setBossHP() {
   spm::npcdrv::npcTribes[270].maxHp = 15; //O'Chunks 1
   spm::npcdrv::npcTribes[315].maxHp = 6; //Bowser 1
   spm::npcdrv::npcTribes[286].maxHp = 12; //Dimentio 1
-  spm::npcdrv::npcTribes[318].maxHp = 50; //Francis
+  spm::npcdrv::npcTribes[318].maxHp = 25; //Francis
   spm::npcdrv::npcTribes[295].maxHp = 16; //Mr. L
   spm::npcdrv::npcTribes[271].maxHp = 20; //O'Chunks 2
   spm::npcdrv::npcTribes[272].maxHp = 15; //O'Cabbage
@@ -470,6 +470,9 @@ void patchMarioDamage(){
                 case 305:
                 damage = 1;
                 break;
+                case 318:
+                damage = 1;
+                break;
                 case 330:
                 damage = 1;
                 break;
@@ -482,6 +485,14 @@ void patchMarioDamage(){
                 case 333:
                 damage = 5;
                 break;
+              }
+              if (damageType == 0xf) {
+                if (damage == 0) {
+                  damage = marioCalcDamageToEnemy(0, tribeId) + 1;
+                }
+                if (damage > 0) {
+                  damage = damage + 1;
+                }
               }
               if (damage > 0) return damage;
               if (tribeId > -1){
