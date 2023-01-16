@@ -1,0 +1,34 @@
+#pragma once
+
+#include <types.h>
+#include <wii/types.h>
+
+namespace spm::mario_status {
+
+enum MarioStatusType
+{
+STATUS_POISION = 0x1,
+STATUS_SLOW =	0x2,
+STATUS_NO_SKILLS = 0x4,
+STATUS_NO_JUMP = 0x8,
+STATUS_FLIPPED_CONTROLS	= 0x10,
+STATUS_HALF_DAMAGE = 0x20,
+STATUS_DOUBLE_ATTACK = 0x40,
+STATUS_ELECTRIFIED = 0x80,
+STATUS_HP_REGEN	= 0x100,
+STATUS_BARRIER = 0x200,
+STATUS_FAST_FLOWER = 0x400,
+STATUS_SLOW_FLOWER = 0x800,
+STATUS_COIN_FLOWER = 0x1000,
+STATUS_PAL_PILLS = 0x4000,
+STATUS_GHOST_SHROOM	= 0x8000,
+STATUS_DANGEROUS_DELIGHT = 0x10000
+};
+
+extern "C" {
+
+void marioStatusApplyStatuses(int flags, int lv);
+
+}
+
+}

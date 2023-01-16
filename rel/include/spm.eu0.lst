@@ -4,6 +4,7 @@
 800030c8:firstRel
 800030cc:lastRel
 // more
+80126c30:marioIsAnimFinished
 80025164:getItemUseEvt
 803fbef8:eventUseAnimation
 803FC8C0:eventUnfreezeGame
@@ -21,6 +22,7 @@
 80026A70:postActionMessage
 805AF5C8:mightyTonicPointer
 800D29CC:playSndEffect
+80154f3c:marioStatusApplyStatuses
 /* Dol */
 
 // Runtime.PPCEABI.H.a

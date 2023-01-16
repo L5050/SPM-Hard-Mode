@@ -42,6 +42,7 @@ static_assert(sizeof(MarioWork) == 0x156c);
 
 extern "C" {
 
+bool marioIsAnimFinished();
 MarioWork * marioGetPtr();
 bool marioCtrlOffChk();
 bool marioKeyOffChk();

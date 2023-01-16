@@ -3,6 +3,8 @@
 800030c8:firstRel
 800030cc:lastRel
 
+80126604:marioIsAnimFinished
+801548A0:marioStatusApplyStatuses
 8014F12C:pouchGetCardCount
 80025014:getItemUseEvt
 // Automatically generated from spm.eu0.lst

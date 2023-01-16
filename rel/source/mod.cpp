@@ -8,6 +8,7 @@
 #include <spm/seq_game.h>
 #include <spm/npcdrv.h>
 #include <spm/mario.h>
+#include <spm/mario_status.h>
 #include <spm/spmario.h>
 #include <spm/mario_pouch.h>
 #include <spm/seqdef.h>
@@ -17,8 +18,10 @@
 #include <patch.h>
 #include <string>
 #include <cstdio>
+#include <limits>
 using namespace std;
 namespace mod {
+spm::mario::MarioWork * marioWork = spm::mario::marioGetPtr();
 spm::spmario::SpmarioGlobals * globals = spm::spmario::gp;
 /*
     Title Screen Custom Text
@@ -88,6 +91,9 @@ int checkBossHealth() {
     if (plotValue == 0x72){
       globals->gsw0 = 0x73;
     }
+    if (plotValue == 0xb8){
+      globals->gsw0 = 0xb9;
+    }
     if (plotValue == 0x73){
     for (int i = 0; i < 535; i++) {
       if (NPCWork->entries[i].tribeId == 286) {
@@ -106,10 +112,70 @@ int checkBossHealth() {
         health = NPCWork->entries[i].hp;
       }
     }}
+    if (plotValue == 0xab){
+    for (int i = 0; i < 535; i++) {
+      if (NPCWork->entries[i].tribeId == 296) {
+        health = NPCWork->entries[i].hp;
+      }
+    }}
+    if (plotValue == 0xbe){
+    for (int i = 0; i < 535; i++) {
+      if (NPCWork->entries[i].tribeId == 271) {
+        health = NPCWork->entries[i].hp;
+      }
+    }}
+    if (plotValue == 0xd5){
+    for (int i = 0; i < 535; i++) {
+      if (NPCWork->entries[i].tribeId == 272) {
+        health = NPCWork->entries[i].hp;
+      }
+    }}
+    if (plotValue == 0xda){
+    for (int i = 0; i < 535; i++) {
+      if (NPCWork->entries[i].tribeId == 319) {
+        health = NPCWork->entries[i].hp;
+      }
+    }}
+    if (plotValue == 0x112){
+    for (int i = 0; i < 535; i++) {
+      if (NPCWork->entries[i].tribeId == 282) {
+        health = NPCWork->entries[i].hp;
+      }
+    }}
+    if (plotValue == 0x11d){
+    for (int i = 0; i < 535; i++) {
+      if (NPCWork->entries[i].tribeId == 300) {
+        health = NPCWork->entries[i].hp;
+      }
+    }}
+    if (plotValue == 0x160){
+    for (int i = 0; i < 535; i++) {
+      if (NPCWork->entries[i].tribeId == 327) {
+        health = NPCWork->entries[i].hp;
+      }
+    }}
+    if (plotValue == 0x16c){
+    for (int i = 0; i < 535; i++) {
+      if (NPCWork->entries[i].tribeId == 273) {
+        health = NPCWork->entries[i].hp;
+      }
+    }}
+    if (plotValue == 0x191){
+    for (int i = 0; i < 535; i++) {
+      if (NPCWork->entries[i].tribeId == 292) {
+        health = NPCWork->entries[i].hp;
+      }
+    }}
     if (plotValue == 0x19a){
     for (int i = 0; i < 535; i++) {
       if (NPCWork->entries[i].tribeId == 305) {
         health = NPCWork->entries[i].hp;
+      }
+    }}
+    if (plotValue == 0x19c){
+    for (int i = 0; i < 535; i++) {
+      if (NPCWork->entries[i].tribeId == 309) {
+        health = 99999;
       }
     }}
     if (plotValue == 0x19f){
@@ -145,6 +211,7 @@ static void bossActualHealth(spm::seqdrv::SeqWork *wp)
     char buffer [50];
     int health = checkBossHealth();
     sprintf(buffer, "%d", health);
+    if (health < 99999) {
     const char * msg = buffer;
     spm::fontmgr::FontDrawStart();
     spm::fontmgr::FontDrawEdge();
@@ -153,7 +220,19 @@ static void bossActualHealth(spm::seqdrv::SeqWork *wp)
     spm::fontmgr::FontDrawNoiseOff();
     spm::fontmgr::FontDrawRainbowColor();
     f32 x = -((spm::fontmgr::FontGetMessageWidth(msg) * scale) / 2);
-    spm::fontmgr::FontDrawString(x-320, 50.0f, msg);}
+    spm::fontmgr::FontDrawString(x-320, 50.0f, msg);
+  } else if (health == 99999) {
+    const char * msg = "Infinite";
+    spm::fontmgr::FontDrawStart();
+    spm::fontmgr::FontDrawEdge();
+    spm::fontmgr::FontDrawColor(&green);
+    spm::fontmgr::FontDrawScale(scale);
+    spm::fontmgr::FontDrawNoiseOff();
+    spm::fontmgr::FontDrawRainbowColor();
+    f32 x = -((spm::fontmgr::FontGetMessageWidth(msg) * scale) / 2);
+    spm::fontmgr::FontDrawString(x-320, 50.0f, msg);
+  }
+  }
     seq_gameMainReal(wp);
 }
 void charmTextGenerator(spm::seqdrv::SeqWork *wp)
@@ -444,7 +523,14 @@ void patchMarioDamage(){
   marioTakeDamage = patch::hookFunction(spm::mario::marioTakeDamage,
     [](wii::Vec3 * position, u32 flags, s32 damage)
             {
-                marioTakeDamage(position, flags, damage * 2);
+              damage = 0;
+              flags = 0x4;
+              spm::mario::marioKeyOff();
+              marioTakeDamage(position, flags, damage);
+              for (int i = 0; i < 33; i++) {
+            if (spm::item_event_data::itemEventDataTable[i].itemId == 68) {
+              spm::evtmgr::evtEntry(spm::item_event_data::itemEventDataTable[i].useEvtScript, 0, 0);
+            }}
             }
         );
   marioCalcDamageToEnemy = patch::hookFunction(spm::mario::marioCalcDamageToEnemy,
