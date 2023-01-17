@@ -19,14 +19,6 @@
 #include <cstdio>
 using namespace std;
 namespace mod {
-  const spm::evtmgr::EvtScriptCode * findItemScript (int id) {
-    for (int i = 0; i < 33; i++) {
-  if (spm::item_event_data::itemEventDataTable[i].itemId == id) {
-    const spm::evtmgr::EvtScriptCode * code = spm::item_event_data::itemEventDataTable[i].useEvtScript;
-    return code;
-  }}
-  return spm::item_event_data::itemEventDataTable[4].useEvtScript;
-  }
 
 EVT_DECLARE_USER_FUNC(itemCharm, 0)
 EVT_DECLARE_USER_FUNC(unPauseGame, 0)
@@ -55,7 +47,7 @@ RETURN()
 EVT_END()
 
 EVT_BEGIN(shootingStar)
-RUN_CHILD_EVT(findItemScript(68))
+RUN_CHILD_EVT(spm::item_event_data::itemEventDataTable[3].useEvtScript)
 USER_FUNC(unPauseGame)
 RETURN()
 EVT_END()
