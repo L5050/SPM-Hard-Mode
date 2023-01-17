@@ -2,6 +2,7 @@
 #include "patch.h"
 #include "scripting.cpp"
 
+#include <spm/pausewin.h>
 #include <spm/wpadmgr.h>
 #include <spm/fontmgr.h>
 #include <spm/seqdrv.h>
@@ -513,6 +514,12 @@ s32 itemCharm(spm::evtmgr::EvtEntry * evt, bool firstRun) {
   return firstRun;
 }
 
+s32 unPauseGame(spm::evtmgr::EvtEntry * evt, bool firstRun) {
+  spm::pausewin::pausewinUnpauseGame();
+  spm::spmario::spmarioSystemLevel(0);
+  return firstRun;
+}
+
 void patchItems() {
   for (int i = 0; i < 33; i++) {
 if (spm::item_event_data::itemEventDataTable[i].itemId == 75) {
@@ -525,11 +532,13 @@ void patchMarioDamage(){
             {
               damage = 0;
               flags = 0x4;
-              spm::mario::marioKeyOff();
+              //spm::mario::marioKeyOff();
               marioTakeDamage(position, flags, damage);
+              spm::pausewin::pausewinPauseGame();
+              spm::spmario::spmarioSystemLevel(1);
               for (int i = 0; i < 33; i++) {
             if (spm::item_event_data::itemEventDataTable[i].itemId == 68) {
-              spm::evtmgr::evtEntry(spm::item_event_data::itemEventDataTable[i].useEvtScript, 0, 0);
+              spm::evtmgr::evtEntryType(shootingStar, 0, 0, 0);
             }}
             }
         );

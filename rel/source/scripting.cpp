@@ -19,8 +19,17 @@
 #include <cstdio>
 using namespace std;
 namespace mod {
+  const spm::evtmgr::EvtScriptCode * findItemScript (int id) {
+    for (int i = 0; i < 33; i++) {
+  if (spm::item_event_data::itemEventDataTable[i].itemId == id) {
+    const spm::evtmgr::EvtScriptCode * code = spm::item_event_data::itemEventDataTable[i].useEvtScript;
+    return code;
+  }}
+  return spm::item_event_data::itemEventDataTable[4].useEvtScript;
+  }
 
 EVT_DECLARE_USER_FUNC(itemCharm, 0)
+EVT_DECLARE_USER_FUNC(unPauseGame, 0)
 EVT_BEGIN(charmAdd)
 SET(LW(0), 1)
 RUN_CHILD_EVT(spm::item_event_data::eventUseAnimation)
@@ -42,6 +51,12 @@ USER_FUNC(spm::item_event_data::evt_mario_flag8_onoff, 1, 131072)
 USER_FUNC(spm::item_event_data::postActionMessage, 75)
 RUN_CHILD_EVT(spm::item_event_data::eventUnfreezeGame)
 USER_FUNC(spm::item_event_data::evt_mario_flag8_onoff, 0, 131072)
+RETURN()
+EVT_END()
+
+EVT_BEGIN(shootingStar)
+RUN_CHILD_EVT(findItemScript(68))
+USER_FUNC(unPauseGame)
 RETURN()
 EVT_END()
 }
