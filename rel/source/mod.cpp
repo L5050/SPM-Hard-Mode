@@ -6,6 +6,7 @@
 #include <spm/wpadmgr.h>
 #include <spm/fontmgr.h>
 #include <spm/seqdrv.h>
+#include <spm/evtmgr_cmd.h>
 #include <spm/seq_game.h>
 #include <spm/npcdrv.h>
 #include <spm/mario.h>
@@ -24,6 +25,7 @@ using namespace std;
 namespace mod {
 spm::mario::MarioWork * marioWork = spm::mario::marioGetPtr();
 spm::spmario::SpmarioGlobals * globals = spm::spmario::gp;
+spm::evtmgr::EvtEntry * eventEntry;
 /*
     Title Screen Custom Text
     Prints "SPM Hard Mode" at the top of the title screen
@@ -76,7 +78,7 @@ int checkBossHealth() {
   spm::npcdrv::NPCWork * NPCWork = spm::npcdrv::npcGetWorkPtr();
   int health = 0;
   s32 plotValue = globals->gsw0;
-  //wii::OSError::OSReport("%x\n", plotValue);
+  //wii::OSError::OSReport("%x\n", spm::evtmgr_cmd::evtGetValue(eventEntry, LW(10)));
     if (plotValue == 0x21){
     for (int i = 0; i < 535; i++) {
       if (NPCWork->entries[i].tribeId == 270) {
@@ -183,7 +185,6 @@ int checkBossHealth() {
     for (int i = 0; i < 535; i++) {
       if (NPCWork->entries[i].tribeId == 309) {
         health = NPCWork->entries[i].hp;
-        wii::OSError::OSReport("%x\n", NPCWork->entries[i].hp);
       }
     }}
   return health;
@@ -444,6 +445,13 @@ static void setBossDef() {
     Function patching
 */
 void (*marioTakeDamage)(wii::Vec3 * position, u32 flags, s32 damage);
+
+s32 scriptTakeDamage(spm::evtmgr::EvtEntry * evt, bool firstRun) {
+  spm::mario_pouch::MarioPouchWork * pouch = spm::mario_pouch::pouchGetPtr();
+  pouch->hp = pouch->hp - 6;
+  return firstRun;
+}
+
 int (*marioCalcDamageToEnemy)(s32 damageType, s32 tribeId);
 void (*seq_gameMain)(spm::seqdrv::SeqWork *param_1);
 void (*pouchAddXp)(int increase);
@@ -530,16 +538,21 @@ void patchMarioDamage(){
   marioTakeDamage = patch::hookFunction(spm::mario::marioTakeDamage,
     [](wii::Vec3 * position, u32 flags, s32 damage)
             {
+              s32 plotValue = 1;//globals->gsw0;
+              int health = checkBossHealth();
+              if (plotValue == 1 && health == 0){
               damage = 0;
               flags = 0x4;
-              //spm::mario::marioKeyOff();
               marioTakeDamage(position, flags, damage);
               spm::pausewin::pausewinPauseGame();
               spm::spmario::spmarioSystemLevel(1);
               for (int i = 0; i < 33; i++) {
             if (spm::item_event_data::itemEventDataTable[i].itemId == 68) {
-              spm::evtmgr::evtEntryType(shootingStar, 0, 0, 0);
-            }}
+            eventEntry = spm::evtmgr::evtEntryType(shootingStar, 0, 0, 0);
+            }}}
+            else {
+              marioTakeDamage(position, flags, damage * 2);
+            }
             }
         );
   marioCalcDamageToEnemy = patch::hookFunction(spm::mario::marioCalcDamageToEnemy,
@@ -617,4 +630,3 @@ void main() {
 }
 
 }
- 
