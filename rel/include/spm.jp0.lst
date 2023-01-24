@@ -8,6 +8,7 @@
 80025074:getItemUseEvt
 
 // Automatically generated from spm.eu0.lst
+800FF22C:evt_npc_walk_to
 80004000:memcpy
 80004104:memset
 800293C4:mapDataPtr

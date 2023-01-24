@@ -16,6 +16,7 @@ EVT_DECLARE_USER_FUNC(evt_npc_entry, 3)
 EVT_DECLARE_USER_FUNC(func_80103054, 1)
 EVT_DECLARE_USER_FUNC(evt_npc_set_anim, 3)
 EVT_DECLARE_USER_FUNC(func_80104694, 2)
+//EVT_DECLARE_USER_FUNC(evt_npc_walk_to)
 
 // evt_npc_flag8_onoff(const char * instanceName, bool on, u32 mask)
 EVT_DECLARE_USER_FUNC(evt_npc_flag8_onoff, 3)

@@ -30,6 +30,7 @@ spm::evtmgr::EvtEntry * eventEntry;
     Title Screen Custom Text
     Prints "SPM Hard Mode" at the top of the title screen
 */
+
 char cBuffer [50];
 static spm::seqdef::SeqFunc *seq_titleMainReal;
 static spm::seqdef::SeqFunc *seq_gameMainReal;

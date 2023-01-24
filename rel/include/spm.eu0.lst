@@ -4,6 +4,7 @@
 800030c8:firstRel
 800030cc:lastRel
 // more
+800FFBD8:evt_npc_walk_to
 80126c30:marioIsAnimFinished
 80025164:getItemUseEvt
 803fbef8:eventUseAnimation

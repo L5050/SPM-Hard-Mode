@@ -3,6 +3,7 @@
 #include "patch.h"
 
 #include <spm/evtmgr.h>
+#include <spm/evt_msg.h>
 #include <spm/wpadmgr.h>
 #include <spm/fontmgr.h>
 #include <spm/seqdrv.h>
@@ -47,8 +48,23 @@ USER_FUNC(spm::item_event_data::evt_mario_flag8_onoff, 0, 131072)
 RETURN()
 EVT_END()
 
+EVT_BEGIN(fireBurst)
+USER_FUNC(spm::item_event_data::actionCommand, PTR("ac"), 0)
+USER_FUNC(spm::item_event_data::evt_unknownFunc_3, PTR("ac"), LW(10))
+USER_FUNC(spm::item_event_data::closeActionCommand, PTR("ac"))
+IF_EQUAL(LW(10), 7)
+RUN_CHILD_EVT(spm::item_event_data::itemEventDataTable[0].useEvtScript)
+USER_FUNC(unPauseGame)
+RETURN()
+ELSE()
+USER_FUNC(unPauseGame)
+USER_FUNC(scriptTakeDamage)
+RETURN()
+EVT_END()
+
 EVT_BEGIN(shootingStar)
-USER_FUNC(spm::item_event_data::actionCommand, PTR("ac"), 15)
+USER_FUNC(spm::evt_msg::evt_msg_print, 0x0, const char e ['h', 'e', 'l', 'l', 'o'], 1, const char f ['t', 'i', 'p', 'p', 'i'])
+USER_FUNC(spm::item_event_data::actionCommand, PTR("ac"), 1)
 USER_FUNC(spm::item_event_data::evt_unknownFunc_3, PTR("ac"), LW(10))
 USER_FUNC(spm::item_event_data::closeActionCommand, PTR("ac"))
 IF_EQUAL(LW(10), 7)
