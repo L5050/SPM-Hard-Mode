@@ -63,7 +63,7 @@ RETURN()
 EVT_END()
 
 EVT_BEGIN(shootingStar)
-USER_FUNC(spm::evt_msg::evt_msg_print, 0x0, const char e ['h', 'e', 'l', 'l', 'o'], 1, const char f ['t', 'i', 'p', 'p', 'i'])
+USER_FUNC(spm::evt_msg::evt_msg_print, 0x0, PTR("hello"), 1, PTR("tippi"))
 USER_FUNC(spm::item_event_data::actionCommand, PTR("ac"), 1)
 USER_FUNC(spm::item_event_data::evt_unknownFunc_3, PTR("ac"), LW(10))
 USER_FUNC(spm::item_event_data::closeActionCommand, PTR("ac"))
