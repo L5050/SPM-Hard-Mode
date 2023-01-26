@@ -26,6 +26,7 @@ namespace mod {
 spm::mario::MarioWork * marioWork = spm::mario::marioGetPtr();
 spm::spmario::SpmarioGlobals * globals = spm::spmario::gp;
 spm::evtmgr::EvtEntry * eventEntry;
+int bossSequence = 0;
 /*
     Title Screen Custom Text
     Prints "SPM Hard Mode" at the top of the title screen
@@ -179,6 +180,7 @@ int checkBossHealth() {
     if (plotValue == 0x19c){
     for (int i = 0; i < 535; i++) {
       if (NPCWork->entries[i].tribeId == 309) {
+        bossSequence = 4;
         health = 99999;
       }
     }}
@@ -539,9 +541,12 @@ void patchMarioDamage(){
   marioTakeDamage = patch::hookFunction(spm::mario::marioTakeDamage,
     [](wii::Vec3 * position, u32 flags, s32 damage)
             {
-              s32 plotValue = 1;//globals->gsw0;
+              //adds the rpg elements to boss fights
               int health = checkBossHealth();
-              if (plotValue == 1 && health == 0){
+              s32 plotValue = globals->gsw0;
+              if (plotValue == 0x19f){
+                if (health <= 150 && bossSequence == 3){
+              bossSequence -= 1;
               damage = 0;
               flags = 0x4;
               marioTakeDamage(position, flags, damage);
@@ -550,7 +555,30 @@ void patchMarioDamage(){
               for (int i = 0; i < 33; i++) {
             if (spm::item_event_data::itemEventDataTable[i].itemId == 68) {
             eventEntry = spm::evtmgr::evtEntryType(shootingStar, 0, 0, 0);
-            }}}
+          }}}
+          if (health <= 100 && bossSequence == 2){
+        bossSequence -= 1;
+        damage = 0;
+        flags = 0x4;
+        marioTakeDamage(position, flags, damage);
+        spm::pausewin::pausewinPauseGame();
+        spm::spmario::spmarioSystemLevel(1);
+        for (int i = 0; i < 33; i++) {
+      if (spm::item_event_data::itemEventDataTable[i].itemId == 68) {
+      eventEntry = spm::evtmgr::evtEntryType(fireBurst, 0, 0, 0);
+    }}}
+    if (health <= 50 && bossSequence == 1){
+    bossSequence -= 1;
+    damage = 0;
+    flags = 0x4;
+    marioTakeDamage(position, flags, damage);
+    spm::pausewin::pausewinPauseGame();
+    spm::spmario::spmarioSystemLevel(1);
+    for (int i = 0; i < 33; i++) {
+    if (spm::item_event_data::itemEventDataTable[i].itemId == 68) {
+    eventEntry = spm::evtmgr::evtEntryType(shootingStar, 0, 0, 0);
+    }}}
+        }
             else {
               marioTakeDamage(position, flags, damage * 2);
             }
