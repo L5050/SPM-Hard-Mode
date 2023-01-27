@@ -26,7 +26,7 @@ namespace mod {
 spm::mario::MarioWork * marioWork = spm::mario::marioGetPtr();
 spm::spmario::SpmarioGlobals * globals = spm::spmario::gp;
 spm::evtmgr::EvtEntry * eventEntry;
-int bossSequence = 0;
+int bossSequence = 1;
 /*
     Title Screen Custom Text
     Prints "SPM Hard Mode" at the top of the title screen
@@ -87,6 +87,9 @@ int checkBossHealth() {
         health = NPCWork->entries[i].hp;
       }
     }}
+    if (plotValue == 0x66){
+            bossSequence = 1;
+              }
     if (plotValue == 0x67){
     for (int i = 0; i < 535; i++) {
       if (NPCWork->entries[i].tribeId == 315) {
@@ -129,6 +132,9 @@ int checkBossHealth() {
         health = NPCWork->entries[i].hp;
       }
     }}
+    if (plotValue == 0xd4){
+        bossSequence = 1;
+    }
     if (plotValue == 0xd5){
     for (int i = 0; i < 535; i++) {
       if (NPCWork->entries[i].tribeId == 272) {
@@ -331,12 +337,12 @@ static void titleScreenCustomTextPatch()
 }
 static void setBossHP() {
   spm::npcdrv::npcTribes[270].maxHp = 15; //O'Chunks 1
-  spm::npcdrv::npcTribes[315].maxHp = 6; //Bowser 1
+  spm::npcdrv::npcTribes[315].maxHp = 10; //Bowser 1
   spm::npcdrv::npcTribes[286].maxHp = 12; //Dimentio 1
   spm::npcdrv::npcTribes[318].maxHp = 25; //Francis
   spm::npcdrv::npcTribes[295].maxHp = 16; //Mr. L
   spm::npcdrv::npcTribes[271].maxHp = 20; //O'Chunks 2
-  spm::npcdrv::npcTribes[272].maxHp = 15; //O'Cabbage
+  spm::npcdrv::npcTribes[272].maxHp = 20; //O'Cabbage
   //spm::npcdrv::npcTribes[319].maxHp = 20; //King Croacus
   spm::npcdrv::npcTribes[282].maxHp = 15; //Mimi
   spm::npcdrv::npcTribes[300].maxHp = 16; //Brobot L-Type
@@ -370,12 +376,12 @@ static void setBossDef() {
   fireDef.type = 0xA;
   fireDef.defense = 0x64;
   fireDef.flags = 0x0;
-  /*for (int i = 0; i < 7; i++) {//o'chunks 1 defense
+  /*for (int i = 0; i < 7; i++) {//O'chunks 1 defense
     if (spm::npcdrv::npcTribes[270].parts[i].id == 1) {
      spm::npcdrv::npcTribes[270].parts[i].defenses[0] = chunkDef;
     }
   }*/
-  for (int i = 0; i < 2; i++) {//bowser 1 defense
+  for (int i = 0; i < 2; i++) {//Bowser 1 defense
     if (spm::npcdrv::npcTribes[315].parts[i].id == 1) {
      spm::npcdrv::npcTribes[315].parts[i].defenses[0] = def;
     }
@@ -388,33 +394,27 @@ static void setBossDef() {
    for (int i = 0; i < 7; i++) {//Brobot defense
       spm::npcdrv::npcTribes[296].parts[i].defenses[0] = def;
    }
-   for (int i = 0; i < 7; i++) {//o'chunks 2 defense
+   for (int i = 0; i < 7; i++) {//O'chunks 2 defense
      if (spm::npcdrv::npcTribes[271].parts[i].id == 1) {
       spm::npcdrv::npcTribes[271].parts[i].defenses[0] = fireDef;
       spm::npcdrv::npcTribes[271].parts[i].defenses[5] = def;
-     }
-   }
-   for (int i = 0; i < 3; i++) {//king croacus defense
-     if (spm::npcdrv::npcTribes[319].parts[i].id == 2) {
-      spm::npcdrv::npcTribes[319].parts[i].defenses[0] = fireDef;
-      spm::npcdrv::npcTribes[319].parts[i].defenses[5] = def;
      }
    }
    spm::npcdrv::npcTribes[282].parts[0].defenses[0] = def;//mimi defense
    for (int i = 0; i < 15; i++) {//Brobot L-Type defense
       spm::npcdrv::npcTribes[300].parts[i].defenses[0] = def;
    }
-   for (int i = 0; i < 2; i++) {//bowser 2 defense
+   for (int i = 0; i < 2; i++) {//Bowser 2 defense
      if (spm::npcdrv::npcTribes[316].parts[i].id == 1) {
       spm::npcdrv::npcTribes[316].parts[i].defenses[0] = def;
      }
    }
-   for (int i = 0; i < 9; i++) {//underchomp defense
+   for (int i = 0; i < 9; i++) {//Underchomp defense
      if (spm::npcdrv::npcTribes[316].parts[i].id == 1) {
       spm::npcdrv::npcTribes[316].parts[i].defenses[0] = def;
      }
    }
-   for (int i = 0; i < 21; i++) {//bonechill defense
+   for (int i = 0; i < 21; i++) {//Bonechill defense
      if (spm::npcdrv::npcTribes[327].parts[i].id == 2) {
       spm::npcdrv::npcTribes[327].parts[i].defenses[2] = def;
      }
@@ -544,6 +544,46 @@ void patchMarioDamage(){
               //adds the rpg elements to boss fights
               int health = checkBossHealth();
               s32 plotValue = globals->gsw0;
+              //Bowser
+              if (plotValue == 0x67){
+                if (health <= 3 && bossSequence == 1){
+              bossSequence -= 1;
+              damage = 0;
+              flags = 0x4;
+              marioTakeDamage(position, flags, damage);
+              spm::pausewin::pausewinPauseGame();
+              spm::spmario::spmarioSystemLevel(1);
+              for (int i = 0; i < 33; i++) {
+            if (spm::item_event_data::itemEventDataTable[i].itemId == 68) {
+            eventEntry = spm::evtmgr::evtEntryType(iceStorm, 0, 0, 0);
+          }}}}
+        //O'Cabbage
+          if (plotValue == 0xd5){
+            if (health <= 10 && bossSequence == 1){
+          bossSequence -= 1;
+          damage = 0;
+          flags = 0x4;
+          marioTakeDamage(position, flags, damage);
+          spm::pausewin::pausewinPauseGame();
+          spm::spmario::spmarioSystemLevel(1);
+          for (int i = 0; i < 33; i++) {
+        if (spm::item_event_data::itemEventDataTable[i].itemId == 68) {
+        eventEntry = spm::evtmgr::evtEntryType(fireBurst, 0, 0, 0);
+      }}}}
+      //King Croacus
+      if (plotValue == 0xd5){
+        if (health <= 6 && bossSequence == 1){
+      bossSequence -= 1;
+      damage = 0;
+      flags = 0x4;
+      marioTakeDamage(position, flags, damage);
+      spm::pausewin::pausewinPauseGame();
+      spm::spmario::spmarioSystemLevel(1);
+      for (int i = 0; i < 33; i++) {
+    if (spm::item_event_data::itemEventDataTable[i].itemId == 68) {
+    eventEntry = spm::evtmgr::evtEntryType(fireBurst, 0, 0, 0);
+  }}}}
+              //Super Dimentio
               if (plotValue == 0x19f){
                 if (health <= 150 && bossSequence == 3){
               bossSequence -= 1;
@@ -609,6 +649,9 @@ void patchMarioDamage(){
                 break;
                 case 318:
                 damage = 1;
+                break;
+                case 319:
+                damage = 2;
                 break;
                 case 330:
                 damage = 1;
