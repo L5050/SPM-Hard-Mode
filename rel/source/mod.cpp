@@ -186,7 +186,7 @@ int checkBossHealth() {
     if (plotValue == 0x19c){
     for (int i = 0; i < 535; i++) {
       if (NPCWork->entries[i].tribeId == 309) {
-        bossSequence = 4;
+        bossSequence = 3;
         health = 99999;
       }
     }}
@@ -376,6 +376,14 @@ static void setBossDef() {
   fireDef.type = 0xA;
   fireDef.defense = 0x64;
   fireDef.flags = 0x0;
+  spm::npcdrv::NPCDefense holeDef1;
+  holeDef1.type = 0;
+  holeDef1.defense = 99;
+  holeDef1.flags = 0x4;
+  spm::npcdrv::NPCDefense holeDef2;
+  holeDef2.type = 41;
+  holeDef2.defense = 0;
+  holeDef2.flags = 0x4;
   /*for (int i = 0; i < 7; i++) {//O'chunks 1 defense
     if (spm::npcdrv::npcTribes[270].parts[i].id == 1) {
      spm::npcdrv::npcTribes[270].parts[i].defenses[0] = chunkDef;
@@ -429,19 +437,8 @@ static void setBossDef() {
       spm::npcdrv::npcTribes[292].parts[i].defenses[0] = def;
       spm::npcdrv::npcTribes[293].parts[i].defenses[0] = def;
    }
-   for (int i = 0; i < 2; i++) {//Dark Mario defense
-     if (spm::npcdrv::npcTribes[330].parts[i].id == 1) {
-      spm::npcdrv::npcTribes[330].parts[i].defenses[0] = def;
-     }
-   }
-   //Dark Peach and Luigi defense
-   spm::npcdrv::npcTribes[331].parts[0].defenses[0] = def;
-   spm::npcdrv::npcTribes[332].parts[0].defenses[0] = def;
-   for (int i = 0; i < 2; i++) {//Dark bowser defense
-     if (spm::npcdrv::npcTribes[333].parts[i].id == 1) {
-      spm::npcdrv::npcTribes[333].parts[i].defenses[0] = def;
-     }
-   }
+      spm::npcdrv::npcTribes[306].parts[0].defenses[0] = holeDef1;
+      spm::npcdrv::npcTribes[306].parts[0].defenses[1] = holeDef2;
 
    }
 /*
@@ -541,12 +538,13 @@ void patchMarioDamage(){
   marioTakeDamage = patch::hookFunction(spm::mario::marioTakeDamage,
     [](wii::Vec3 * position, u32 flags, s32 damage)
             {
+              marioTakeDamage(position, flags, damage * 2);
               //adds the rpg elements to boss fights
               int health = checkBossHealth();
               s32 plotValue = globals->gsw0;
-              //Bowser
               if (plotValue == 0x67){
                 if (health <= 3 && bossSequence == 1){
+                  //Bowser
               bossSequence -= 1;
               damage = 0;
               flags = 0x4;
@@ -556,10 +554,9 @@ void patchMarioDamage(){
               for (int i = 0; i < 33; i++) {
             if (spm::item_event_data::itemEventDataTable[i].itemId == 68) {
             eventEntry = spm::evtmgr::evtEntryType(iceStorm, 0, 0, 0);
-          }}}}
-        //O'Cabbage
-          if (plotValue == 0xd5){
+          }}}} else if (plotValue == 0xd5){
             if (health <= 10 && bossSequence == 1){
+              //O'Cabbage
           bossSequence -= 1;
           damage = 0;
           flags = 0x4;
@@ -569,10 +566,9 @@ void patchMarioDamage(){
           for (int i = 0; i < 33; i++) {
         if (spm::item_event_data::itemEventDataTable[i].itemId == 68) {
         eventEntry = spm::evtmgr::evtEntryType(fireBurst, 0, 0, 0);
-      }}}}
-      //King Croacus
-      if (plotValue == 0xd5){
+      }}}} else if (plotValue == 0xd5){
         if (health <= 6 && bossSequence == 1){
+          //King Croacus
       bossSequence -= 1;
       damage = 0;
       flags = 0x4;
@@ -582,10 +578,9 @@ void patchMarioDamage(){
       for (int i = 0; i < 33; i++) {
     if (spm::item_event_data::itemEventDataTable[i].itemId == 68) {
     eventEntry = spm::evtmgr::evtEntryType(fireBurst, 0, 0, 0);
-  }}}}
-              //Super Dimentio
-              if (plotValue == 0x19f){
+  }}}} else if (plotValue == 0x19f){
                 if (health <= 150 && bossSequence == 3){
+                  //Super Dimentio
               bossSequence -= 1;
               damage = 0;
               flags = 0x4;
@@ -646,6 +641,9 @@ void patchMarioDamage(){
                 break;
                 case 305:
                 damage = 1;
+                break;
+                case 306:
+                return 0;
                 break;
                 case 318:
                 damage = 1;
