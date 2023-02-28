@@ -538,6 +538,7 @@ void patchMarioDamage(){
   marioTakeDamage = patch::hookFunction(spm::mario::marioTakeDamage,
     [](wii::Vec3 * position, u32 flags, s32 damage)
             {
+              if (marioWork->character == 2 && damage >= 1) {damage = damage - 1;}
               //adds the rpg elements to boss fights
               int health = checkBossHealth();
               s32 plotValue = globals->gsw0;
@@ -627,6 +628,7 @@ void patchMarioDamage(){
   marioCalcDamageToEnemy = patch::hookFunction(spm::mario::marioCalcDamageToEnemy,
     [](s32 damageType, s32 tribeId)
             {
+              wii::OSError::OSReport("%x\n", damageType);
               int damage = 0;
               switch(tribeId) {
                 case 295:
@@ -649,6 +651,16 @@ void patchMarioDamage(){
                 break;
                 case 306:
                 return 0;
+                break;
+                case 309:
+                if (damageType == 1) {
+                  for (int i = 0; i < 535; i++) {
+                    if (NPCWork->entries[i].tribeId == 309) {
+                      NPCWork->entries[i].hp = NPCWork->entries[i].hp - 1;
+                    }
+                  }
+                  damage = 1;
+                } else {return 1;}
                 break;
                 case 318:
                 damage = 1;

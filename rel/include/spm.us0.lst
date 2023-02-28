@@ -3,6 +3,22 @@
 800030c8:firstRel
 800030cc:lastRel
 
+803BC8D8:eventUseAnimation
+803BD248:eventFreezeGame
+803BD118:evt_unknownScript_1
+8002565C:drawBox
+800259D4:evt_unknownFunc_1
+800EF8A4:evt_unknownFunc_2
+800D2BF4:playSndEffect
+800283BC:drawRedSparkles
+80025A30:removeBox
+80025B04:addStatusEffect
+80026980:postActionMessage
+803BD2A0:eventUnfreezeGame
+800DFB78:actionCommand
+800DFBD0:evt_unknownFunc_3
+800DFC7C:closeActionCommand
+
 800FF22C:evt_npc_walk_to
 80154448:marioStatusApplyStatuses
 8014ECD4:pouchGetCardCount
