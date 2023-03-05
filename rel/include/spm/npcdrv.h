@@ -6,16 +6,37 @@ namespace spm::npcdrv {
 
 #define NPC_TRIBE_COUNT 535
 #define NPCTEMPLATE_MAX 435
-
-struct NPCEnemyTemplate
+typedef s32 EvtScriptCode;
+typedef bool (EnemyCanSpawnFunction)();
+typedef struct
 {
-    u8 unknown_0x0[0x8 - 0x0];
-    u32 unknown_0x8;
-    u8 unknown_0xc[0x14 - 0xc];
-    s32 tribeId;
-    u8 unknown_0x18[0x68 - 0x18];
-};
-
+/* 0x00 */ u8 unknown_0x0;
+/* 0x01 */ u8 unknown_0x1;
+/* 0x02 */ u8 unknown_0x2;
+/* 0x03 */ u8 unknown_0x3;
+/* 0x04 */ s32 instanceId; // left blank to be copied from SetupEnemy
+/* 0x08 */ u32 unknown_0x8;
+/* 0x0C */ EnemyCanSpawnFunction * canSpawnFunction;
+/* 0x10 */ u8 unknown_0x10[0x14 - 0x10];
+/* 0x14 */ s32 tribeId;
+/* 0x18 */ const char * instanceName; // overrides instanceName of NPC spawned if not null
+/* 0x1C */ const char * japaneseName; // unused debug information?
+/* 0x20 */ wii::Vec3 pos; // left blank to be copied from SetupEnemy
+/* 0x2C */ u32 flags; // ORd with NPCEntry's flags after spawning
+/* 0x30 */ EvtScriptCode * onSpawnScript;
+/* 0x34 */ EvtScriptCode * unkScript1;
+/* 0x38 */ EvtScriptCode * unkScript2;
+/* 0x3C */ EvtScriptCode * unkScript3;
+/* 0x40 */ EvtScriptCode * unkScript4;
+/* 0x44 */ EvtScriptCode * unkScript5;
+/* 0x48 */ EvtScriptCode * unkScript6;
+/* 0x4C */ EvtScriptCode * unkScript7;
+/* 0x50 */ EvtScriptCode * unkScript8;
+/* 0x54 */ EvtScriptCode * unkScript9;
+/* 0x58 */ void * unknown_0x58;
+/* 0x5C */ u8 unknown_0x5c[0x68 - 0x5c]; // all left blank to be copied from SetupEnemy
+} NPCEnemyTemplate;
+static_assert(sizeof(NPCEnemyTemplate) == 0x68);
 struct NPCTribeAnimDef
 {
     s32 id;
@@ -143,7 +164,7 @@ extern "C" {
 
 extern NPCEnemyTemplate npcEnemyTemplates[NPCTEMPLATE_MAX];
 extern NPCTribe npcTribes[NPC_TRIBE_COUNT];
-
+NPCEntry * npcEntryFromTemplate(NPCEnemyTemplate * enemyTemplate);
 void npcDispMain();
 NPCEntry * npcNameToPtr(const char * name);
 const char * npcSearchAnimDefs(NPCTribeAnimDef * defs, s32 id);

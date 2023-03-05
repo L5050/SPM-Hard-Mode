@@ -8,6 +8,7 @@
 8014F12C:pouchGetCardCount
 80025014:getItemUseEvt
 // Automatically generated from spm.eu0.lst
+801be198:npcEntryFromTemplate
 800FF65C:evt_npc_walk_to
 803BDDD8:eventUseAnimation
 803be748:eventFreezeGame

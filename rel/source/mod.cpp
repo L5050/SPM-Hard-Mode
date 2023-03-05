@@ -31,7 +31,6 @@ int bossSequence = 1;
     Title Screen Custom Text
     Prints "SPM Hard Mode" at the top of the title screen
 */
-
 char cBuffer [50];
 static spm::seqdef::SeqFunc *seq_titleMainReal;
 static spm::seqdef::SeqFunc *seq_gameMainReal;
@@ -628,7 +627,16 @@ void patchMarioDamage(){
   marioCalcDamageToEnemy = patch::hookFunction(spm::mario::marioCalcDamageToEnemy,
     [](s32 damageType, s32 tribeId)
             {
+              spm::npcdrv::NPCWork * NPCWork = spm::npcdrv::npcGetWorkPtr();
               wii::OSError::OSReport("%x\n", damageType);
+              if (damageType == 1) {
+                spm::npcdrv::NPCEnemyTemplate * voidTemplate = &spm::npcdrv::npcEnemyTemplates[197];
+                voidTemplate->pos = marioWork->position;
+                spm::npcdrv::npcEntryFromTemplate(voidTemplate);
+              }
+              if (damageType == 12) {
+                //barry damage type
+              }
               int damage = 0;
               switch(tribeId) {
                 case 295:
