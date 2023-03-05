@@ -633,7 +633,7 @@ void patchMarioDamage(){
                 spm::npcdrv::NPCEnemyTemplate * voidTemplate = &spm::npcdrv::npcEnemyTemplates[197];
                 voidTemplate->pos = marioWork->position;
                 spm::npcdrv::npcEntryFromTemplate(voidTemplate);
-              }
+              } 
               if (damageType == 12) {
                 //barry damage type
               }

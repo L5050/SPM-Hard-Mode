@@ -24,6 +24,7 @@
 805AF5C8:mightyTonicPointer
 800D29CC:playSndEffect
 80154f3c:marioStatusApplyStatuses
+801be198:npcEntryFromTemplate
 /* Dol */
 
 // Runtime.PPCEABI.H.a
