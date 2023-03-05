@@ -27,6 +27,7 @@ spm::mario::MarioWork * marioWork = spm::mario::marioGetPtr();
 spm::spmario::SpmarioGlobals * globals = spm::spmario::gp;
 spm::evtmgr::EvtEntry * eventEntry;
 int bossSequence = 1;
+int holee = 0;
 /*
     Title Screen Custom Text
     Prints "SPM Hard Mode" at the top of the title screen
@@ -180,6 +181,14 @@ int checkBossHealth() {
     for (int i = 0; i < 535; i++) {
       if (NPCWork->entries[i].tribeId == 305) {
         health = NPCWork->entries[i].hp;
+      }
+    }
+    for (int i = 0; i < 535; i++) {
+      if (NPCWork->entries[i].tribeId == 307 && holee == 0) {
+        holee = 1;
+        for (int j = 0; j < 16; j++) {
+        wii::OSError::OSReport("%x\n", NPCWork->entries[i].unitWork[j]);
+      }
       }
     }}
     if (plotValue == 0x19c){
@@ -628,12 +637,19 @@ void patchMarioDamage(){
     [](s32 damageType, s32 tribeId)
             {
               spm::npcdrv::NPCWork * NPCWork = spm::npcdrv::npcGetWorkPtr();
-              wii::OSError::OSReport("%x\n", damageType);
+              //wii::OSError::OSReport("%x\n", damageType);
               if (damageType == 1) {
-                spm::npcdrv::NPCEnemyTemplate * voidTemplate = &spm::npcdrv::npcEnemyTemplates[197];
-                voidTemplate->pos = marioWork->position;
-                spm::npcdrv::npcEntryFromTemplate(voidTemplate);
-              } 
+                spm::npcdrv::MiscSetupDataV6 miscSetupData;
+                s32 zero = 0;
+                s32 one = 1;
+                s32 test1 = 0x80a7cfc0;
+                s32 test2 = 0x33c00000;
+                miscSetupData = {zero, zero, 0};
+                miscSetupData.unitWork[2] = test1;
+                miscSetupData.unitWork[3] = test2;
+                wii::Vec3 pos = marioWork->position;
+                spm::npcdrv::npcEntryFromSetupEnemy(0, &pos, 198, &miscSetupData);
+              }
               if (damageType == 12) {
                 //barry damage type
               }

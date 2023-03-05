@@ -37,6 +37,15 @@ typedef struct
 /* 0x5C */ u8 unknown_0x5c[0x68 - 0x5c]; // all left blank to be copied from SetupEnemy
 } NPCEnemyTemplate;
 static_assert(sizeof(NPCEnemyTemplate) == 0x68);
+
+typedef struct {
+/* 0x00 */ s32 instanceId; // ignored if 0
+/* 0x04 */ // unknown 0x4-f
+/* 0x10 */ s32 unitWork[16];
+/* 0x50 */ // unknown 0x50-5b
+/* 0x5C */ float gravityRotation; // degrees anti-clockwise about the z-axis
+} MiscSetupDataV6;
+
 struct NPCTribeAnimDef
 {
     s32 id;
@@ -164,7 +173,7 @@ extern "C" {
 
 extern NPCEnemyTemplate npcEnemyTemplates[NPCTEMPLATE_MAX];
 extern NPCTribe npcTribes[NPC_TRIBE_COUNT];
-NPCEntry * npcEntryFromTemplate(NPCEnemyTemplate * enemyTemplate);
+NPCEntry * npcEntryFromSetupEnemy(s32 setupFileIndex, wii::Vec3 * pos, s32 nTemplateNo, MiscSetupDataV6 * miscSetupData);
 void npcDispMain();
 NPCEntry * npcNameToPtr(const char * name);
 const char * npcSearchAnimDefs(NPCTribeAnimDef * defs, s32 id);
