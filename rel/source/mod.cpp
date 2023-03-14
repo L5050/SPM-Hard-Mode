@@ -641,14 +641,19 @@ void patchMarioDamage(){
               if (damageType == 1) {
                 spm::npcdrv::MiscSetupDataV6 miscSetupData;
                 s32 zero = 0;
-                s32 one = 1;
+                u8 one = 0;
                 s32 test1 = 0x80a7cfc0;
                 s32 test2 = 0x33c00000;
-                miscSetupData = {zero, zero, 0};
+                miscSetupData.instanceId = zero;
+                miscSetupData.gravityRotation = 0;
+                for (int i = 0; i < 16; i++) {
+                  miscSetupData.unitWork[i] = zero;
+                }
                 miscSetupData.unitWork[2] = test1;
                 miscSetupData.unitWork[3] = test2;
                 wii::Vec3 pos = marioWork->position;
-                spm::npcdrv::npcEntryFromSetupEnemy(0, &pos, 198, &miscSetupData);
+                spm::npcdrv::NPCEntry * voidEntry = spm::npcdrv::npcEntryFromSetupEnemy(0, &pos, 198, &miscSetupData);
+                voidEntry->parts = spm::npcdrv::npcTribes[307].parts;
               }
               if (damageType == 12) {
                 //barry damage type

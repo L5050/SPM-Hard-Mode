@@ -40,12 +40,12 @@ static_assert(sizeof(NPCEnemyTemplate) == 0x68);
 
 typedef struct {
 /* 0x00 */ s32 instanceId; // ignored if 0
-/* 0x04 */ // unknown 0x4-f
+/* 0x04 */ u8 unknown_0x4[0x10 - 0x4];
 /* 0x10 */ s32 unitWork[16];
-/* 0x50 */ // unknown 0x50-5b
-/* 0x5C */ float gravityRotation; // degrees anti-clockwise about the z-axis
+/* 0x50 */ u8 unknown_0x50[0x5c - 0x50];
+/* 0x5C */ float gravityRotation;
 } MiscSetupDataV6;
-
+static_assert(sizeof(MiscSetupDataV6) == 0x60);
 struct NPCTribeAnimDef
 {
     s32 id;
