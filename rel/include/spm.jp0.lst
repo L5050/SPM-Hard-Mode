@@ -18,7 +18,7 @@
 800DFB78:actionCommand
 800DFBD0:evt_unknownFunc_3
 800DFC7C:closeActionCommand
-
+801BD0C0:npcEntryFromTemplate
 80154448:marioStatusApplyStatuses
 8014ECD4:pouchGetCardCount
 80025074:getItemUseEvt

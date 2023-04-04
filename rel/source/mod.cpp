@@ -189,6 +189,7 @@ int checkBossHealth() {
         for (int j = 0; j < 16; j++) {
         wii::OSError::OSReport("%x\n", NPCWork->entries[i].unitWork[j]);
       }
+      wii::OSError::OSReport("%x\n", NPCWork->entries[i]);
       }
     }}
     if (plotValue == 0x19c){
@@ -353,7 +354,7 @@ static void setBossHP() {
   spm::npcdrv::npcTribes[272].maxHp = 20; //O'Cabbage
   //spm::npcdrv::npcTribes[319].maxHp = 20; //King Croacus
   spm::npcdrv::npcTribes[282].maxHp = 15; //Mimi
-  spm::npcdrv::npcTribes[300].maxHp = 16; //Brobot L-Type
+  spm::npcdrv::npcTribes[300].maxHp = 36; //Brobot L-Type
   spm::npcdrv::npcTribes[316].maxHp = 12; //Bowser 2
   //spm::npcdrv::npcTribes[327].maxHp = 30; //Bonechill
   spm::npcdrv::npcTribes[273].maxHp = 100; //O'Chunks 3
@@ -441,10 +442,10 @@ static void setBossDef() {
       spm::npcdrv::npcTribes[327].parts[i].defenses[2] = def;
      }
    }
-   for (int i = 0; i < 3; i++) {//Dimentio 2 defense
+   /*for (int i = 0; i < 3; i++) {//Dimentio 2 defense
       spm::npcdrv::npcTribes[292].parts[i].defenses[0] = def;
       spm::npcdrv::npcTribes[293].parts[i].defenses[0] = def;
-   }
+   }*/
       spm::npcdrv::npcTribes[306].parts[0].defenses[0] = holeDef1;
       spm::npcdrv::npcTribes[306].parts[0].defenses[1] = holeDef2;
 
@@ -546,7 +547,12 @@ void patchMarioDamage(){
   marioTakeDamage = patch::hookFunction(spm::mario::marioTakeDamage,
     [](wii::Vec3 * position, u32 flags, s32 damage)
             {
-              if (marioWork->character == 2 && damage >= 1) {damage = damage - 1;}
+              if (marioWork->character == 2) {
+                damage = damage - 1;
+                if (damage <= 0) {
+                  damage = 1;
+                }
+              }
               //adds the rpg elements to boss fights
               int health = checkBossHealth();
               s32 plotValue = globals->gsw0;
@@ -636,9 +642,9 @@ void patchMarioDamage(){
   marioCalcDamageToEnemy = patch::hookFunction(spm::mario::marioCalcDamageToEnemy,
     [](s32 damageType, s32 tribeId)
             {
-              spm::npcdrv::NPCWork * NPCWork = spm::npcdrv::npcGetWorkPtr();
+              //spm::npcdrv::NPCWork * NPCWork = spm::npcdrv::npcGetWorkPtr();
               //wii::OSError::OSReport("%x\n", damageType);
-              if (damageType == 1) {
+              /*if (damageType == 1) {
                 spm::npcdrv::MiscSetupDataV6 miscSetupData;
                 s32 zero = 0;
                 u8 one = 0;
@@ -654,7 +660,7 @@ void patchMarioDamage(){
                 wii::Vec3 pos = marioWork->position;
                 spm::npcdrv::NPCEntry * voidEntry = spm::npcdrv::npcEntryFromSetupEnemy(0, &pos, 198, &miscSetupData);
                 voidEntry->parts = spm::npcdrv::npcTribes[307].parts;
-              }
+              }*/
               if (damageType == 12) {
                 //barry damage type
               }
@@ -664,7 +670,7 @@ void patchMarioDamage(){
                 damage = 1;
                 break;
                 case 273:
-                damage = 1;
+                damage = 2;
                 break;
                 case 272:
                 damage = 1;
@@ -682,14 +688,14 @@ void patchMarioDamage(){
                 return 0;
                 break;
                 case 309:
-                if (damageType == 1) {
+                /*if (damageType == 1) {
                   for (int i = 0; i < 535; i++) {
                     if (NPCWork->entries[i].tribeId == 309) {
                       NPCWork->entries[i].hp = NPCWork->entries[i].hp - 1;
                     }
                   }
                   damage = 1;
-                } else {return 1;}
+                } else {return 1;}*/
                 break;
                 case 318:
                 damage = 1;
@@ -712,7 +718,7 @@ void patchMarioDamage(){
               }
               if (damageType == 0xf) {
                 if (damage == 0) {
-                  damage = marioCalcDamageToEnemy(0, tribeId) + 1;
+                  damage = marioCalcDamageToEnemy(0, tribeId) + 2;
                 }
                 if (damage > 0) {
                   damage = damage + 1;

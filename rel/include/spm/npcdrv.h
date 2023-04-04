@@ -173,6 +173,7 @@ extern "C" {
 
 extern NPCEnemyTemplate npcEnemyTemplates[NPCTEMPLATE_MAX];
 extern NPCTribe npcTribes[NPC_TRIBE_COUNT];
+NPCEntry * npcEntryFromTemplate(NPCEnemyTemplate * enemyTemplate);
 NPCEntry * npcEntryFromSetupEnemy(s32 setupFileIndex, wii::Vec3 * pos, s32 nTemplateNo, MiscSetupDataV6 * miscSetupData);
 void npcDispMain();
 NPCEntry * npcNameToPtr(const char * name);
