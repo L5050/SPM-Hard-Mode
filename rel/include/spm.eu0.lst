@@ -8,6 +8,7 @@
 8012A470:doubleAttack
 8045B9E0:superDimentioHeadDefenses
 8045B9F8:superDimentioBodyDefenses
+8012A43C:doubleFireAttack
 800FFBD8:evt_npc_walk_to
 80126c30:marioIsAnimFinished
 80025164:getItemUseEvt

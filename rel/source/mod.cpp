@@ -740,9 +740,10 @@ void patchMarioDamage(){
 
 void patchVariables() {
     writeWord(&spm::iValues::bowserAttackDamage, 0x0, 0x57FF003E);
-      writeWord(&spm::iValues::doubleAttack, 0x57FF003C);
-        writeWord(&spm::iValues::superDimentioHeadDefenses, 0x00000002);
-          writeWord(&spm::iValues::superDimentioBodyDefenses, 0x00000002);
+      writeWord(&spm::iValues::doubleAttack, 0x0, 0x57FF003C);
+       writeWord(&spm::iValues::doubleFireAttack, 0x0, 0x57FF003C);
+        writeWord(&spm::iValues::superDimentioHeadDefenses, 0x0, 0x00000002);
+          writeWord(&spm::iValues::superDimentioBodyDefenses, 0x0, 0x00000002);
 }
 
 /*
