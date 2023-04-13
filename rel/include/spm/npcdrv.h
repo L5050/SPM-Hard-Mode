@@ -131,32 +131,83 @@ static_assert(sizeof(NPCPart) == 0x398);
 
 struct NPCEntry
 {
-    s32 id;
-    s32 setupFileIndex;
-    u32 flags_8;
-    u32 flags_c;
-    u32 flags_10;
-    u8 unknown_0x14[0x24 - 0x14];
-    char name[32];
-    NPCAnim m_Anim;
-    u8 unknown_0x288[0x2a0 - 0x288];
-    wii::Vec3 position;
-    u8 unknown_0x2ac[0x3ac - 0x2ac];
-    float unknown_0x3ac;
-    u8 unknown_0x3b0[0x46c - 0x3b0];
-    u32 flag46C;
-    u8 unknown_0x470[0x49c - 0x470];
-    s32 tribeId;
-    u8 unknown_0x4a0[0x4ec - 0x4a0];
-    u32 maxHp;
-    u32 hp;
-    u8 unknown_0x4f4[0x510 - 0x4f4];
-    s32 unitWork[16];
-    u8 unknown_0x550[0x574 - 0x550];
-    s32 dropItemId;
-    u8 unknown_0x578[0x714 - 0x578];
-    NPCPart * parts;
-    u8 unknown_0x718[0x748 - 0x718];
+/* 0x000 */ s32 id;
+/* 0x004 */ s32 setupFileIndex; // 1-based index, 0 if not spawned from a setup file
+    /*
+        0x1 is active
+        Others unknown
+    */
+/* 0x008 */ u32 flag8;
+/* 0x00C */ u32 flagC;
+/* 0x010 */ u32 flag10;
+/* 0x014 */ u8 unknown_0x14[0x24 - 0x14];
+/* 0x024 */ char name[32]; // name of this instance, npc_XXXXXXXX for template-spawned ones
+                           // where XXXXXXXX is id in hex
+/* 0x044 */ NPCAnim m_Anim; // unknown size
+/* ????? */ u8 unknown_unk[0x2a0 - 0x44 - sizeof(NPCAnim)];
+/* 0x2A0 */ wii::Vec3 position;
+/* 0x2AC */ u8 unknown_0x2ac[0x348 - 0x2ac];
+/* 0x348 */ EvtScriptCode * templateUnkScript1; // unkScript1 from spawning SetupEnemyTemplate
+                                                // (unknown for non-templated NPCs)
+/* 0x34C */ u8 unknown_0x34c[0x360 - 0x34c];
+/* 0x360 */ EvtScriptCode * templateUnkScript2; // unkScript2 from spawning SetupEnemyTemplate4
+                                                // (unknown for non-templated NPCs)
+/* 0x364 */ EvtScriptCode * templateUnkScript3; // unkScript3 from spawning SetupEnemyTemplate4
+                                                // (unknown for non-templated NPCs)
+/* 0x368 */ EvtScriptCode * templateUnkScript4; // unkScript4 from spawning SetupEnemyTemplate4
+                                                // (unknown for non-templated NPCs)
+/* 0x36C */ EvtScriptCode * templateUnkScript5; // unkScript5 from spawning SetupEnemyTemplate4
+                                                // (unknown for non-templated NPCs)
+/* 0x370 */ EvtScriptCode * templateUnkScript9; // unkScript9 from spawning SetupEnemyTemplate4
+                                                // (unknown for non-templated NPCs)
+/* 0x374 */ EvtScriptCode * templateUnkScript6; // unkScript6 from spawning SetupEnemyTemplate4
+                                                // (unknown for non-templated NPCs)
+/* 0x378 */ EvtScriptCode * templateUnkScript7; // unkScript7 from spawning SetupEnemyTemplate4
+                                                // (unknown for non-templated NPCs)
+/* 0x37C */ EvtScriptCode * templateUnkScript8; // unkScript8 from spawning SetupEnemyTemplate4
+                                                // (unknown for non-templated NPCs)
+/* 0x380 */ u8 unknown_0x380[0x390 - 0x380];
+/* 0x390 */ s32 onSpawnEvtId; // id of the EvtEntry running a templated npc's onSpawn scripts
+                              // (unknown for non-templated NPCs)
+/* 0x394 */ u8 unknown_0x394[0x39c - 0x394];
+/* 0x39C */ f32 tribeField0xE; // field 0xe of spawning NPCTribe cast to float
+/* 0x3A0 */ f32 tribeField0x10; // field 0x10 of spawning NPCTribe cast to float
+/* 0x3A4 */ f32 tribeField0x12; // field 0x12 of spawning NPCTribe cast to float
+/* 0x3A8 */ u8 unknown_0x3a8[0x3ac - 0x3a8];
+/* 0x3AC */ f32 unknown_0x3ac;
+/* 0x3B0 */ u8 unknown_0x3b0[0x46c - 0x3b0];
+    /*
+        0x80000000 is frozen
+        0x40000 is on different pane to Mario
+        0x20000 is hidden & frozen
+    */
+/* 0x46C */ u32 flag46C;
+/* 0x470 */ u8 unknown_0x470[0x478 - 0x470];
+/* 0x478 */ u32 tribeField0x54; // field 0x54 of spawning NPCTribe
+/* 0x47C */ u8 unknown_0x47c[0x49c - 0x47c];
+/* 0x49C */ s32 tribeId; // id of the NPCTribe this NPC was spawned with
+/* 0x4A0 */ s32 tribeId2; // seemingly just a copy of tribeId
+/* 0x4A4 */ u8 unknown_0x4a4[0x4ec - 0x4a4];
+/* 0x4EC */ u32 maxHp; // copied from spawning NPCTribe, 1 for NPCs not spawned by tribe
+/* 0x4F0 */ u32 hp; // copied from spawning NPCTribe, 1 for NPCs not spawned by tribe
+/* 0x4F4 */ u8 unknown_0x4f4[0x508 - 0x4f4];
+/* 0x508 */ int axisMovementUnit;
+/* 0x50c */ u8 unknown_0x50c[0x510 - 0x50c];
+/* 0x510 */ s32 unitWork[16];
+/* 0x550 */ u8 unknown_0x550[0x574 - 0x550];
+/* 0x574 */ s32 dropItemId; // id of the item this npc would drop if killed (determined on spawn)
+/* 0x578 */ u8 unknown_0x578[0x57c - 0x578];
+/* 0x57C */ u32 templateField0x5C; // field 0x5c of spawning SetupEnemyTemplate
+                                   // (unknown for non-templated NPCs)
+/* 0x580 */ u32 templateField0x60; // field 0x60 of spawning SetupEnemyTemplate
+                                   // (unknown for non-templated NPCs)
+/* 0x584 */ u32 templateField0x64; // field 0x64 of spawning SetupEnemyTemplate
+                                   // (unknown for non-templated NPCs)
+/* 0x588 */ u8 unknown_0x588[0x714 - 0x588];
+/* 0x714 */ NPCPart * parts; // made from tribe's NPCPartDef list, linked list
+/* 0x718 */ EvtScriptCode * templateField0x58; // field 0x58 from spawning SetupEnemyTemplate
+                                               // g(unknown for non-templated NPCs)
+/* 0x71C */ u8 unknown_0x71c[0x748 - 0x71c];
 };
 static_assert(sizeof(NPCEntry) == 0x748);
 

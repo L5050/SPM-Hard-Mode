@@ -4,6 +4,10 @@
 800030c8:firstRel
 800030cc:lastRel
 // more
+8012A514:bowserAttackDamage
+8012A470:doubleAttack
+8045B9E0:superDimentioHeadDefenses
+8045B9F8:superDimentioBodyDefenses
 800FFBD8:evt_npc_walk_to
 80126c30:marioIsAnimFinished
 80025164:getItemUseEvt

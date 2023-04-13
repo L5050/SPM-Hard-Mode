@@ -14,6 +14,7 @@
 #include <spm/spmario.h>
 #include <spm/mario_pouch.h>
 #include <spm/seqdef.h>
+#include <spm/iValues.h>
 #include <spm/item_data.h>
 #include <spm/item_event_data.h>
 #include <wii/OSError.h>
@@ -643,7 +644,7 @@ void patchMarioDamage(){
     [](s32 damageType, s32 tribeId)
             {
               //spm::npcdrv::NPCWork * NPCWork = spm::npcdrv::npcGetWorkPtr();
-              //wii::OSError::OSReport("%x\n", damageType);
+              wii::OSError::OSReport("%x\n", damageType);
               /*if (damageType == 1) {
                 spm::npcdrv::MiscSetupDataV6 miscSetupData;
                 s32 zero = 0;
@@ -736,11 +737,20 @@ void patchMarioDamage(){
             }
         );
 }
+
+void patchVariables() {
+    writeWord(&spm::iValues::bowserAttackDamage, 0x0, 0x57FF003E);
+      writeWord(&spm::iValues::doubleAttack, 0x57FF003C);
+        writeWord(&spm::iValues::superDimentioHeadDefenses, 0x00000002);
+          writeWord(&spm::iValues::superDimentioBodyDefenses, 0x00000002);
+}
+
 /*
     General mod functions
 */
 void main() {
   wii::OSError::OSReport("SPM Rel Loader: the mod has ran!\n");
+  wii::OSError::OSReport("%x\n", &spm::iValues::bowserAttackDamage);
   titleScreenCustomTextPatch();
   setBossHP();
   setBossXp();
@@ -749,6 +759,7 @@ void main() {
   patchItems();
   patchAddXp();
   patchScripts();
+  patchVariables();
 }
 
 }

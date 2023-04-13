@@ -3,6 +3,10 @@
 800030c8:firstRel
 800030cc:lastRel
 
+80129EE8:bowserAttackDamage
+80129E44:doubleAttack
+8041D258:superDimentioHeadDefenses
+8041D270:superDimentioBodyDefenses
 80126604:marioIsAnimFinished
 801548A0:marioStatusApplyStatuses
 8014F12C:pouchGetCardCount
