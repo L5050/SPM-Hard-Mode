@@ -3,6 +3,11 @@
 800030c8:firstRel
 800030cc:lastRel
 
+800D9DAC:evtSetSpeed
+80129AB8:bowserAttackDamage
+80129A14:doubleAttack
+803F0E88:superDimentioHeadDefenses
+803F0EA0:superDimentioBodyDefenses
 80391B58:eventUseAnimation
 803924C8:eventFreezeGame
 80392398:evt_unknownScript_1

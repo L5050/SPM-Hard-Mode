@@ -12,7 +12,7 @@ struct EvtEntry;
 typedef s32 (user_func)(struct EvtEntry * entry, bool firstRun);
 typedef s32 EvtScriptCode;
 
-#define EVT_FLAG_IN_USE (1 << 0) 
+#define EVT_FLAG_IN_USE (1 << 0)
 #define EVT_FLAG_PAUSED (1 << 1)
 
 struct EvtEntry
@@ -73,7 +73,7 @@ EvtEntry * evtEntryType(const EvtScriptCode * script, u8 priority, u8 flags, s32
 EvtEntry * evtChildEntry(EvtEntry * entry, const EvtScriptCode * script, u8 flags);
 EvtEntry * evtBrotherEntry(EvtEntry * entry, const EvtScriptCode * script, u8 flags);
 bool evtCheckId(s32 id);
-
+void evtSetSpeed(EvtEntry *entry, float multiplier);
 // more
 
 }
