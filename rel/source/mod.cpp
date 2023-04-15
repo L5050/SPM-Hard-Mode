@@ -541,7 +541,7 @@ void mimiFunc(spm::evtmgr::EvtEntry * entry) {
 
 void patchScripts() {
   evtEntryType = patch::hookFunction(spm::evtmgr::evtEntryType, newEntry);
-  spm::evtmgr::EvtScriptCode * mimi = &spm::iValues::mimiUnk2;
+  spm::evtmgr::EvtScriptCode * mimi = spm::iValues::mimiUnk2;
   hookEvent(mimi, mimiFunc);
 }
 
