@@ -18,6 +18,7 @@
 #include <spm/item_data.h>
 #include <spm/item_event_data.h>
 #include <wii/OSError.h>
+#include <map>
 #include <patch.h>
 #include <string>
 #include <cstdio>
@@ -37,41 +38,56 @@ int holee = 0;
 char cBuffer [50];
 static spm::seqdef::SeqFunc *seq_titleMainReal;
 static spm::seqdef::SeqFunc *seq_gameMainReal;
+struct HookData {
+    void (*function)(spm::evtmgr::EvtEntry *);
+    spm::evtmgr::EvtEntry *(*evtEntryFunc)(const spm::evtmgr::EvtScriptCode *, u8, u8);
+    spm::evtmgr::EvtEntry *(*evtChildEntryFunc)(spm::evtmgr::EvtEntry *, const spm::evtmgr::EvtScriptCode *, u8);
+    spm::evtmgr::EvtEntry *(*evtEntryTypeFunc)(const spm::evtmgr::EvtScriptCode *, u8, u8, s32);
+};
+
+std::map<const spm::evtmgr::EvtScriptCode *, HookData> hookData;
+
+spm::evtmgr::EvtEntry * evtEntryHook(const spm::evtmgr::EvtScriptCode * script, u8 priority, u8 flags) {
+    auto it = hookData.find(script);
+    if (it != hookData.end()) {
+        spm::evtmgr::EvtEntry * entry = it->second.evtEntryFunc(script, priority, flags);
+        it->second.function(entry);
+        return entry;
+    }
+    return spm::evtmgr::evtEntry(script, priority, flags);
+}
+
+spm::evtmgr::EvtEntry * evtChildEntryHook(spm::evtmgr::EvtEntry * entry, const spm::evtmgr::EvtScriptCode * script, u8 flags) {
+    auto it = hookData.find(script);
+    if (it != hookData.end()) {
+        spm::evtmgr::EvtEntry * childEntry = it->second.evtChildEntryFunc(entry, script, flags);
+        it->second.function(childEntry);
+        return childEntry;
+    }
+    return spm::evtmgr::evtChildEntry(entry, script, flags);
+}
+
+spm::evtmgr::EvtEntry * evtEntryTypeHook(const spm::evtmgr::EvtScriptCode * script, u8 priority, u8 flags, s32 type) {
+    auto it = hookData.find(script);
+    if (it != hookData.end()) {
+        spm::evtmgr::EvtEntry * entry = it->second.evtEntryTypeFunc(script, priority, flags, type);
+        it->second.function(entry);
+        return entry;
+    }
+    return spm::evtmgr::evtEntryType(script, priority, flags, type);
+}
+
 void hookEvent(spm::evtmgr::EvtScriptCode * hookedScript, void (*function)(spm::evtmgr::EvtEntry*)) {
-  spm::evtmgr::EvtEntry * (*evtEntry)(const spm::evtmgr::EvtScriptCode * script, u8 priority, u8 flags);
-  spm::evtmgr::EvtEntry * (*evtChildEntry)(spm::evtmgr::EvtEntry * entry, const spm::evtmgr::EvtScriptCode * script, u8 flags);
-  spm::evtmgr::EvtEntry * (*evtEntryType)(const spm::evtmgr::EvtScriptCode * script, u8 priority, u8 flags, s32 type);
+    HookData data = {function,
+                     spm::evtmgr::evtEntry,
+                     spm::evtmgr::evtChildEntry,
+                     spm::evtmgr::evtEntryType};
 
-  evtEntry = patch::hookFunction(spm::evtmgr::evtEntry,
-  [hookedScript, function, evtEntry](const spm::evtmgr::EvtScriptCode * script, u8 priority, u8 flags)
-      {
-          spm::evtmgr::EvtEntry * entry = evtEntry(script, priority, flags);
-          if (hookedScript == script) {
-            function(entry);
-          }
-      }
-  );
+    hookData[hookedScript] = data;
 
-  evtChildEntry = patch::hookFunction(spm::evtmgr::evtChildEntry,
-  [hookedScript, function, evtChildEntry](spm::evtmgr::EvtEntry * entry, const spm::evtmgr::EvtScriptCode * script, u8 flags)
-      {
-          spm::evtmgr::EvtEntry * entry1 = evtChildEntry(entry, script, flags);
-          if (hookedScript == script) {
-            function(entry1);
-          }
-      }
-  );
-
-  evtEntryType = patch::hookFunction(spm::evtmgr::evtEntryType,
-  [hookedScript, function, evtEntryType](const spm::evtmgr::EvtScriptCode * script, u8 priority, u8 flags, s32 type)
-      {
-          spm::evtmgr::EvtEntry * entry = evtEntryType(script, priority, flags, type);
-          if (hookedScript == script) {
-            function(entry);
-          }
-      }
-  );
-
+    patch::hookFunction(spm::evtmgr::evtEntry, evtEntryHook);
+    patch::hookFunction(spm::evtmgr::evtChildEntry, evtChildEntryHook);
+    patch::hookFunction(spm::evtmgr::evtEntryType, evtEntryTypeHook);
 }
 static void seq_titleMainOverride(spm::seqdrv::SeqWork *wp)
 {
@@ -541,8 +557,9 @@ void mimiFunc(spm::evtmgr::EvtEntry * entry) {
 
 void patchScripts() {
   evtEntryType = patch::hookFunction(spm::evtmgr::evtEntryType, newEntry);
-  spm::evtmgr::EvtScriptCode * mimi = spm::iValues::mimiUnk2;
-  hookEvent(mimi, mimiFunc);
+  spm::evtmgr::EvtScriptCode * mimi = &spm::iValues::mimiUnk2;
+  wii::OSError::OSReport("%x\n", mimi);
+//hookEvent(mimi, mimiFunc);
 }
 
 void patchGameMain() {
