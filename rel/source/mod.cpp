@@ -36,6 +36,54 @@ int holee = 0;
 char cBuffer [50];
 static spm::seqdef::SeqFunc *seq_titleMainReal;
 static spm::seqdef::SeqFunc *seq_gameMainReal;
+template<typename Func>
+void hookEvent(spm::evtmgr::EvtScriptCode * hookedScript, Func function) {
+  spm::evtmgr::EvtEntry * (*evtEntry)(const spm::evtmgr::EvtScriptCode * script, u8 priority, u8 flags);
+  spm::evtmgr::EvtEntry * (*evtChildEntry)(const spm::evtmgr::EvtScriptCode * script, u8 priority, u8 flags, s32 type);
+  spm::evtmgr::EvtEntry * (*evtEntryType)(const spm::evtmgr::EvtScriptCode * script, u8 priority, u8 flags, s32 type);
+  spm::evtmgr::EvtEntry * (*evtBrotherEntry)(const spm::evtmgr::EvtEntry * entry, const spm::evtmgr::EvtScriptCode * script, u8 flags);
+
+  evtEntry = patch::hookFunction(spm::evtmgr::evtEntry,
+  [hookedScript, function, evtEntry](const spm::evtmgr::EvtScriptCode * script, u8 priority, u8 flags)
+      {
+          spm::evtmgr::EvtEntry * entry = evtEntry(script, priority, flags);
+          if (hookedScript == script) {
+            function(entry);
+          }
+      }
+  );
+
+  evtChildEntry = patch::hookFunction(spm::evtmgr::evtChildEntry,
+  [hookedScript, function, evtChildEntry](const spm::evtmgr::EvtScriptCode * script, u8 priority, u8 flags, s32 type)
+      {
+          spm::evtmgr::EvtEntry * entry = evtChildEntry(script, priority, flags, type);
+          if (hookedScript == script) {
+            function(entry);
+          }
+      }
+  );
+
+  evtEntryType = patch::hookFunction(spm::evtmgr::evtEntryType,
+  [hookedScript, function, evtEntryType](const spm::evtmgr::EvtScriptCode * script, u8 priority, u8 flags, s32 type)
+      {
+          spm::evtmgr::EvtEntry * entry = evtEntryType(script, priority, flags, type);
+          if (hookedScript == script) {
+            function(entry);
+          }
+      }
+  );
+
+  evtBrotherEntry = patch::hookFunction(spm::evtmgr::evtBrotherEntry,
+  [hookedScript, function, evtBrotherEntry](const spm::evtmgr::EvtEntry * entry, const spm::evtmgr::EvtScriptCode * script, u8 flags)
+      {
+          spm::evtmgr::EvtEntry * entry1 = evtBrotherEntry(entry, script, flags);
+          if (hookedScript == script) {
+            function(entry1);
+          }
+      }
+  );
+
+}
 static void seq_titleMainOverride(spm::seqdrv::SeqWork *wp)
 {
     wii::RGBA green {0, 255, 0, 255};
