@@ -37,41 +37,51 @@ int holee = 0;
 char cBuffer [50];
 static spm::seqdef::SeqFunc *seq_titleMainReal;
 static spm::seqdef::SeqFunc *seq_gameMainReal;
-void hookEvent(spm::evtmgr::EvtScriptCode * hookedScript, void (*function)(spm::evtmgr::EvtEntry*)) {
+
+void mimiFunc(spm::evtmgr::EvtEntry * entry) {
+  float floppydisk = 2;
+  evtSetSpeed(entry, floppydisk);
+}
+
+spm::evtmgr::EvtScriptCode *hookedScripts[] = { &spm::iValues::mimiUnk2 };
+void (*functions[])(spm::evtmgr::EvtEntry*) = { mimiFunc };
+auto hookLambda = [](const spm::evtmgr::EvtScriptCode *script, spm::evtmgr::EvtEntry* entry) {
+  size_t arr_size = sizeof(hookedScripts)/sizeof(hookedScripts[0]);
+    for (size_t i = 0; i < arr_size; ++i) {
+        if (hookedScripts[i] == script) {
+            functions[i](entry);
+        }
+    }
+};
+
   spm::evtmgr::EvtEntry * (*evtEntry)(const spm::evtmgr::EvtScriptCode * script, u8 priority, u8 flags);
   spm::evtmgr::EvtEntry * (*evtChildEntry)(spm::evtmgr::EvtEntry * entry, const spm::evtmgr::EvtScriptCode * script, u8 flags);
   spm::evtmgr::EvtEntry * (*evtEntryType)(const spm::evtmgr::EvtScriptCode * script, u8 priority, u8 flags, s32 type);
 
-  evtEntry = patch::hookFunction(spm::evtmgr::evtEntry,
-  [hookedScript, function, evtEntry](const spm::evtmgr::EvtScriptCode * script, u8 priority, u8 flags)
-      {
-          spm::evtmgr::EvtEntry * entry = evtEntry(script, priority, flags);
-          if (hookedScript == script) {
-            function(entry);
-          }
-      }
-  );
+  spm::evtmgr::EvtEntry * newEvtEntry(const spm::evtmgr::EvtScriptCode * script, u8 priority, u8 flags) {
+      spm::evtmgr::EvtEntry * entry = evtEntry(script, priority, flags);
+      hookLambda(script, entry);
+      return entry;
+  }
 
-  evtChildEntry = patch::hookFunction(spm::evtmgr::evtChildEntry,
-  [hookedScript, function, evtChildEntry](spm::evtmgr::EvtEntry * entry, const spm::evtmgr::EvtScriptCode * script, u8 flags)
-      {
-          spm::evtmgr::EvtEntry * entry1 = evtChildEntry(entry, script, flags);
-          if (hookedScript == script) {
-            function(entry1);
-          }
-      }
-  );
+spm::evtmgr::EvtEntry * newEvtChildEntry(spm::evtmgr::EvtEntry * entry, const spm::evtmgr::EvtScriptCode * script, u8 flags){
+    spm::evtmgr::EvtEntry * entry1 = evtChildEntry(entry, script, flags);
+    hookLambda(script, entry1);
+    return entry;
+}
 
-  evtEntryType = patch::hookFunction(spm::evtmgr::evtEntryType,
-  [hookedScript, function, evtEntryType](const spm::evtmgr::EvtScriptCode * script, u8 priority, u8 flags, s32 type)
-      {
-          spm::evtmgr::EvtEntry * entry = evtEntryType(script, priority, flags, type);
-          if (hookedScript == script) {
-            function(entry);
-          }
-      }
-  );
+spm::evtmgr::EvtEntry * newEvtEntryType(const spm::evtmgr::EvtScriptCode * script, u8 priority, u8 flags, s32 type) {
+    spm::evtmgr::EvtEntry * entry = evtEntryType(script, priority, flags, type);
+    hookLambda(script, entry);
+    return entry;
+}
 
+void hookEvent() {
+    patch::hookFunction(spm::evtmgr::evtEntry, newEvtEntry);
+
+    patch::hookFunction(spm::evtmgr::evtChildEntry, newEvtChildEntry);
+
+    patch::hookFunction(spm::evtmgr::evtEntryType, newEvtEntryType);
 }
 static void seq_titleMainOverride(spm::seqdrv::SeqWork *wp)
 {
@@ -502,8 +512,7 @@ s32 scriptTakeDamage(spm::evtmgr::EvtEntry * evt, bool firstRun) {
 int (*marioCalcDamageToEnemy)(s32 damageType, s32 tribeId);
 void (*seq_gameMain)(spm::seqdrv::SeqWork *param_1);
 void (*pouchAddXp)(int increase);
-spm::evtmgr::EvtEntry * (*evtEntryType)(const spm::evtmgr::EvtScriptCode * script, u8 priority, u8 flags, s32 type);
-spm::evtmgr::EvtEntry * newEntry(const spm::evtmgr::EvtScriptCode * script, u8 priority, u8 flags, s32 type)
+/*spm::evtmgr::EvtEntry * newEntry(const spm::evtmgr::EvtScriptCode * script, u8 priority, u8 flags, s32 type)
         {
           spm::mario_pouch::MarioPouchWork * pouch = spm::mario_pouch::pouchGetPtr();
           //turtley leaf
@@ -511,7 +520,7 @@ spm::evtmgr::EvtEntry * newEntry(const spm::evtmgr::EvtScriptCode * script, u8 p
               pouch->killsBeforeNextCharm = pouch->killsBeforeNextCharm / 2;
             }
             //bone in cut and dayzee syrup
-            /*if (spm::item_event_data::getItemUseEvt(113) == script || spm::item_event_data::getItemUseEvt(124) == script){
+            if (spm::item_event_data::getItemUseEvt(113) == script || spm::item_event_data::getItemUseEvt(124) == script){
               pouch->charmsRemaining += 5;
               pouch->killsBeforeNextCharm += 1;
             }
@@ -530,20 +539,15 @@ spm::evtmgr::EvtEntry * newEntry(const spm::evtmgr::EvtScriptCode * script, u8 p
               pouch->killsBeforeNextCharm += 2;
               pouch->killsBeforeNextCharm = pouch->killsBeforeNextCharm / 2;
               pouch->charmsRemaining += 6;
-            }*/
+            }*
             return evtEntryType(script, priority, flags, type);
-        }
-
-void mimiFunc(spm::evtmgr::EvtEntry * entry) {
-  float floppydisk = 2;
-  evtSetSpeed(entry, floppydisk);
-}
+        }*/
 
 void patchScripts() {
-  evtEntryType = patch::hookFunction(spm::evtmgr::evtEntryType, newEntry);
-  spm::evtmgr::EvtScriptCode * mimi = spm::item_event_data::getItemUseEvt(104);
-  wii::OSError::OSReport("%x\n", mimi);
-  hookEvent(mimi, mimiFunc);
+//  spm::evtmgr::EvtScriptCode * mimi = spm::item_event_data::getItemUseEvt(104);
+//  wii::OSError::OSReport("%x\n", mimi);
+//  hookEvent(mimi, mimiFunc);
+
 }
 
 void patchGameMain() {
@@ -805,6 +809,7 @@ void main() {
   patchItems();
   patchAddXp();
   patchScripts();
+  hookEvent();
   patchVariables();
 }
 
