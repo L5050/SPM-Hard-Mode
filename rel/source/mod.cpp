@@ -43,7 +43,7 @@ void mimiFunc(spm::evtmgr::EvtEntry * entry) {
   evtSetSpeed(entry, floppydisk);
 }
 
-spm::evtmgr::EvtScriptCode *hookedScripts[] = { &spm::iValues::mimiUnk2 };
+spm::evtmgr::EvtScriptCode *hookedScripts[] = { spm::iValues::mimiUnk2 };
 void (*functions[])(spm::evtmgr::EvtEntry*) = { mimiFunc };
 auto hookLambda = [](const spm::evtmgr::EvtScriptCode *script, spm::evtmgr::EvtEntry* entry) {
   size_t arr_size = sizeof(hookedScripts)/sizeof(hookedScripts[0]);
@@ -67,7 +67,7 @@ auto hookLambda = [](const spm::evtmgr::EvtScriptCode *script, spm::evtmgr::EvtE
 spm::evtmgr::EvtEntry * newEvtChildEntry(spm::evtmgr::EvtEntry * entry, const spm::evtmgr::EvtScriptCode * script, u8 flags){
     spm::evtmgr::EvtEntry * entry1 = evtChildEntry(entry, script, flags);
     hookLambda(script, entry1);
-    return entry;
+    return entry1;
 }
 
 spm::evtmgr::EvtEntry * newEvtEntryType(const spm::evtmgr::EvtScriptCode * script, u8 priority, u8 flags, s32 type) {
@@ -77,11 +77,11 @@ spm::evtmgr::EvtEntry * newEvtEntryType(const spm::evtmgr::EvtScriptCode * scrip
 }
 
 void hookEvent() {
-    patch::hookFunction(spm::evtmgr::evtEntry, newEvtEntry);
+    evtEntry = patch::hookFunction(spm::evtmgr::evtEntry, newEvtEntry);
 
-    patch::hookFunction(spm::evtmgr::evtChildEntry, newEvtChildEntry);
+    evtChildEntry = patch::hookFunction(spm::evtmgr::evtChildEntry, newEvtChildEntry);
 
-    patch::hookFunction(spm::evtmgr::evtEntryType, newEvtEntryType);
+    evtEntryType = patch::hookFunction(spm::evtmgr::evtEntryType, newEvtEntryType);
 }
 static void seq_titleMainOverride(spm::seqdrv::SeqWork *wp)
 {

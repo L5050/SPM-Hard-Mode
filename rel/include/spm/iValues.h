@@ -9,6 +9,6 @@ void doubleAttack();
 void doubleFireAttack();
 void superDimentioHeadDefenses();
 void superDimentioBodyDefenses();
-extern spm::evtmgr::EvtScriptCode mimiUnk2;
+extern spm::evtmgr::EvtScriptCode * mimiUnk2;
 }
 }
