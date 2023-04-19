@@ -3,6 +3,8 @@
 800030c8:firstRel
 800030cc:lastRel
 8046BD08:mimiUnk2
+803FBBFC:mimiUnk3
+803FCC38:mimiUnk4
 800D9D30:evtSetSpeed
 80129EE8:bowserAttackDamage
 80129E44:doubleAttack

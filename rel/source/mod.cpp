@@ -39,11 +39,14 @@ static spm::seqdef::SeqFunc *seq_titleMainReal;
 static spm::seqdef::SeqFunc *seq_gameMainReal;
 
 void mimiFunc(spm::evtmgr::EvtEntry * entry) {
-  float floppydisk = 2;
+  wii::OSError::OSReport("eeeeeee!\n");
+  //entry->timeToRun = 0x5da;
+  wii::OSError::OSReport("%x\n", entry->timeToRun);
+  f32 floppydisk = 2;
   evtSetSpeed(entry, floppydisk);
 }
 
-spm::evtmgr::EvtScriptCode *hookedScripts[] = { spm::iValues::mimiUnk2 };
+spm::evtmgr::EvtScriptCode *hookedScripts[] = { spm::item_event_data::getItemUseEvt(104) };
 void (*functions[])(spm::evtmgr::EvtEntry*) = { mimiFunc };
 auto hookLambda = [](const spm::evtmgr::EvtScriptCode *script, spm::evtmgr::EvtEntry* entry) {
   size_t arr_size = sizeof(hookedScripts)/sizeof(hookedScripts[0]);
@@ -800,7 +803,6 @@ void patchVariables() {
 */
 void main() {
   wii::OSError::OSReport("SPM Rel Loader: the mod has ran!\n");
-  wii::OSError::OSReport("%x\n", &spm::iValues::bowserAttackDamage);
   titleScreenCustomTextPatch();
   setBossHP();
   setBossXp();
