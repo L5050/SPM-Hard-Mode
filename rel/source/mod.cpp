@@ -3,6 +3,7 @@
 #include "scripting.cpp"
 
 #include <spm/pausewin.h>
+#include <spm/animdrv.h>
 #include <spm/wpadmgr.h>
 #include <spm/fontmgr.h>
 #include <spm/seqdrv.h>
@@ -222,6 +223,14 @@ int checkBossHealth() {
         health = NPCWork->entries[i].hp;
       }
     }}
+    if (plotValue == 0x17D){
+    for (int i = 0; i < 535; i++) {
+      if (NPCWork->entries[i].tribeId == 284) {
+        wii::OSError::OSReport("%d\n", NPCWork->entries[i].m_Anim.m_nPoseId);
+        double rate = 2;
+        spm::animdrv::animPoseSetLocalTimeRate(NPCWork->entries[i].m_Anim.m_nPoseId, rate);
+      }
+    }}
     if (plotValue == 0x191){
     for (int i = 0; i < 535; i++) {
       if (NPCWork->entries[i].tribeId == 292) {
@@ -231,6 +240,7 @@ int checkBossHealth() {
     if (plotValue == 0x19a){
     for (int i = 0; i < 535; i++) {
       if (NPCWork->entries[i].tribeId == 305) {
+        wii::OSError::OSReport("%d\n", NPCWork->entries[i].m_Anim.m_nPoseId);
         health = NPCWork->entries[i].hp;
       }
     }
@@ -696,7 +706,7 @@ void patchMarioDamage(){
     [](s32 damageType, s32 tribeId)
             {
               //spm::npcdrv::NPCWork * NPCWork = spm::npcdrv::npcGetWorkPtr();
-              wii::OSError::OSReport("%x\n", damageType);
+              //wii::OSError::OSReport("%x\n", damageType);
               /*if (damageType == 1) {
                 spm::npcdrv::MiscSetupDataV6 miscSetupData;
                 s32 zero = 0;

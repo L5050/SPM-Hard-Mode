@@ -4,6 +4,8 @@
 800030c8:firstRel
 800030cc:lastRel
 // more
+
+800430C8:animPoseSetLocalTimeRate
 800D9BDC:evtSetSpeed
 8012A514:bowserAttackDamage
 8012A470:doubleAttack
