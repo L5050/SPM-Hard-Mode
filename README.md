@@ -20,4 +20,5 @@ Rel mod and for my Super Paper Mario Hard Mode mod. Full releases available for 
 - [X] Reduce all bosses health while increasing their defense so that you only deal one damage per hit
 - [X] Make an INSTALLING.md file with instructions on how to install the mod
 - [X] Improve charm system
+- [ ] Rubies and Magic update
 - [ ] Port the mod to all versions of the game
