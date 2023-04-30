@@ -223,14 +223,15 @@ int checkBossHealth() {
         health = NPCWork->entries[i].hp;
       }
     }}
-    if (plotValue == 0x17D){
+    /*if (plotValue == 0x17D){
     for (int i = 0; i < 535; i++) {
-      if (NPCWork->entries[i].tribeId == 284) {
-        wii::OSError::OSReport("%d\n", NPCWork->entries[i].m_Anim.m_nPoseId);
+      if (NPCWork->entries[i].tribeId == 284 && holee == 0) {
+        //wii::OSError::OSReport("%d\n", NPCWork->entries[i].m_Anim.m_nPoseId);
+        holee = 1;
         double rate = 2;
         spm::animdrv::animPoseSetLocalTimeRate(NPCWork->entries[i].m_Anim.m_nPoseId, rate);
       }
-    }}
+    }}*/
     if (plotValue == 0x191){
     for (int i = 0; i < 535; i++) {
       if (NPCWork->entries[i].tribeId == 292) {
@@ -821,7 +822,7 @@ void main() {
   patchItems();
   patchAddXp();
   patchScripts();
-  hookEvent();
+  //hookEvent();
   patchVariables();
 }
 
