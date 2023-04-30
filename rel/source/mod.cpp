@@ -587,10 +587,10 @@ s32 itemCharm(spm::evtmgr::EvtEntry * evt, bool firstRun) {
   spm::mario_pouch::MarioPouchWork* pouch = spm::mario_pouch::pouchGetPtr();
   if (pouch->killsBeforeNextCharm > 5) {
     pouch->killsBeforeNextCharm = pouch->killsBeforeNextCharm - 5;
-    pouch->charmsRemaining = pouch->charmsRemaining + 1;
+    pouch->charmsRemaining = pouch->charmsRemaining + 5;
   } else if (pouch->killsBeforeNextCharm < 6) {
     pouch->killsBeforeNextCharm = 5;
-    pouch->charmsRemaining = pouch->charmsRemaining + 1;
+    pouch->charmsRemaining = pouch->charmsRemaining + 5;
   }
   return firstRun;
 }
