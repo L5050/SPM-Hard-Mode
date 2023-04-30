@@ -7,6 +7,7 @@
 800D9DAC:evtSetSpeed
 80129AB8:bowserAttackDamage
 80129A14:doubleAttack
+801299E0:doubleFireAttack
 8041BC28:superDimentioHeadDefenses
 8041BC40:superDimentioBodyDefenses
 803BC8D8:eventUseAnimation
