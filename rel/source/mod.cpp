@@ -743,7 +743,7 @@ void patchMarioDamage(){
                 damage = 100;
                 break;
                 case 286:
-                damage = 100;
+                damage = 1;
                 break;
                 case 305:
                 damage = 1;
