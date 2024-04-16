@@ -35,58 +35,9 @@ int holee = 0;
     Title Screen Custom Text
     Prints "SPM Hard Mode" at the top of the title screen
 */
-char cBuffer [50];
 static spm::seqdef::SeqFunc *seq_titleMainReal;
 static spm::seqdef::SeqFunc *seq_gameMainReal;
 
-void mimiFunc(spm::evtmgr::EvtEntry * entry) {
-  wii::OSError::OSReport("eeeeeee!\n");
-  //entry->timeToRun = 0x5da;
-  wii::OSError::OSReport("%x\n", entry->timeToRun);
-  f32 floppydisk = 2;
-  evtSetSpeed(entry, floppydisk);
-}
-
-spm::evtmgr::EvtScriptCode *hookedScripts[] = { spm::item_event_data::getItemUseEvt(104) };
-void (*functions[])(spm::evtmgr::EvtEntry*) = { mimiFunc };
-auto hookLambda = [](const spm::evtmgr::EvtScriptCode *script, spm::evtmgr::EvtEntry* entry) {
-  size_t arr_size = sizeof(hookedScripts)/sizeof(hookedScripts[0]);
-    for (size_t i = 0; i < arr_size; ++i) {
-        if (hookedScripts[i] == script) {
-            functions[i](entry);
-        }
-    }
-};
-
-  spm::evtmgr::EvtEntry * (*evtEntry)(const spm::evtmgr::EvtScriptCode * script, u8 priority, u8 flags);
-  spm::evtmgr::EvtEntry * (*evtChildEntry)(spm::evtmgr::EvtEntry * entry, const spm::evtmgr::EvtScriptCode * script, u8 flags);
-  spm::evtmgr::EvtEntry * (*evtEntryType)(const spm::evtmgr::EvtScriptCode * script, u8 priority, u8 flags, s32 type);
-
-  spm::evtmgr::EvtEntry * newEvtEntry(const spm::evtmgr::EvtScriptCode * script, u8 priority, u8 flags) {
-      spm::evtmgr::EvtEntry * entry = evtEntry(script, priority, flags);
-      hookLambda(script, entry);
-      return entry;
-  }
-
-spm::evtmgr::EvtEntry * newEvtChildEntry(spm::evtmgr::EvtEntry * entry, const spm::evtmgr::EvtScriptCode * script, u8 flags){
-    spm::evtmgr::EvtEntry * entry1 = evtChildEntry(entry, script, flags);
-    hookLambda(script, entry1);
-    return entry1;
-}
-
-spm::evtmgr::EvtEntry * newEvtEntryType(const spm::evtmgr::EvtScriptCode * script, u8 priority, u8 flags, s32 type) {
-    spm::evtmgr::EvtEntry * entry = evtEntryType(script, priority, flags, type);
-    hookLambda(script, entry);
-    return entry;
-}
-
-void hookEvent() {
-    evtEntry = patch::hookFunction(spm::evtmgr::evtEntry, newEvtEntry);
-
-    evtChildEntry = patch::hookFunction(spm::evtmgr::evtChildEntry, newEvtChildEntry);
-
-    evtEntryType = patch::hookFunction(spm::evtmgr::evtEntryType, newEvtEntryType);
-}
 static void seq_titleMainOverride(spm::seqdrv::SeqWork *wp)
 {
     wii::RGBA green {0, 255, 0, 255};
@@ -822,7 +773,6 @@ void main() {
   patchItems();
   patchAddXp();
   patchScripts();
-  //hookEvent();
   patchVariables();
 }
 

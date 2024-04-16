@@ -3,7 +3,9 @@
 #---------------------------------------------------------------------------------
 .SUFFIXES:
 #---------------------------------------------------------------------------------
-export TTYDTOOLS = ./ttyd-tools
+
+export TTYDTOOLS = ../ttyd-tools
+
 ifeq ($(strip $(DEVKITPPC)),)
 $(error "Please set DEVKITPPC in your environment. export DEVKITPPC=<path to>devkitPPC")
 endif
@@ -12,11 +14,9 @@ ifeq ($(strip $(TTYDTOOLS)),)
 $(error "Please set TTYDTOOLS in your environment. export TTYDTOOLS=<path to>ttyd-tools")
 endif
 
-export TTYDTOOLS = C:\Users\docaa\Documents\SPM-Hard-Mode\rel\ttyd-tools\
-
 include $(DEVKITPPC)/wii_rules
 
-export ELF2REL	:=	C:\Users\docaa\Documents\SPM-Hard-Mode\rel\ttyd-tools\bin\elf2rel
+export ELF2REL	:=	$(TTYDTOOLS)/bin/elf2rel
 
 ifeq ($(VERSION),)
 all: us0 us1 us2 jp0 jp1 eu0 eu1 kr0
@@ -60,7 +60,8 @@ TARGET		:=	$(notdir $(CURDIR)).$(VERSION)
 BUILD		:=	build.$(VERSION)
 SOURCES		:=	source $(wildcard source/*)
 DATA		:=	data
-INCLUDES	:=	include
+SPM_HEADERS :=  spm-headers
+INCLUDES	:=	include $(SPM_HEADERS)/mod $(SPM_HEADERS)/include
 
 #---------------------------------------------------------------------------------
 # options for code generation
@@ -68,10 +69,11 @@ INCLUDES	:=	include
 
 MACHDEP		= -mno-sdata -mgcn -DGEKKO -mcpu=750 -meabi -mhard-float
 
-CFLAGS		= -nostdlib -ffreestanding -ffunction-sections -fdata-sections -g -O3 -Wall $(MACHDEP) $(INCLUDE)
+EXTRAFLAGS  ?=
+CFLAGS		= -nostdlib -ffreestanding -ffunction-sections -fdata-sections -g -O3 -Wall -Wextra -Wshadow $(MACHDEP) $(INCLUDE) $(EXTRAFLAGS)
 CXXFLAGS	= -fno-exceptions -fno-rtti -std=gnu++17 $(CFLAGS)
 
-LDFLAGS		= -r -e _prolog -u _prolog -u _epilog -u _unresolved -Wl,--gc-sections -nostdlib -g $(MACHDEP) -Wl,-Map,$(notdir $@).map
+LDFLAGS		= -r -e _prolog -u _prolog -u _epilog -u _unresolved -Wl,--gc-sections,--force-group-allocation -nostdlib -g $(MACHDEP) -Wl,-Map,$(notdir $@).map
 
 # Platform options
 ifeq ($(VERSION),us0)
@@ -158,7 +160,8 @@ export HFILES := $(addsuffix .h,$(subst .,_,$(BINFILES)))
 
 # For REL linking
 export LDFILES		:= $(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.ld)))
-export MAPFILE		:= $(CURDIR)/include/spm.$(LST).lst
+# TODO: use SPM_HEADERS
+export MAPFILE		:= $(CURDIR)/spm-headers/linker/spm.$(LST).lst
 
 #---------------------------------------------------------------------------------
 # build a list of include paths
