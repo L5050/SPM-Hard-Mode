@@ -3,6 +3,8 @@
 800030c8:firstRel
 800030cc:lastRel
 
+8041D258:superDimentioHeadDefenses
+8041D270:superDimentioBodyDefenses
 // Automatically generated from spm.eu0.lst
 80004000:memcpy
 80004104:memset
@@ -634,7 +636,7 @@
 8056d570:SaveStart
 8056d574:SaveEnd
 
-// new to rel loader template
+// new to SPM-Hard-Mode
 8014CCF8:pouchSetAttack
 8014CD2C:pouchGetAttack
 8014CD3C:pouchAddAttack
@@ -644,3 +646,4 @@
 8014CEAC:pouchSetCoin
 8014CEE0:pouchGetCoin
 8014CEF0:pouchAddCoin
+8014F12C:pouchGetCardCount

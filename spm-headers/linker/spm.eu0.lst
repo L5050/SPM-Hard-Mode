@@ -6,7 +6,8 @@
 // more
 
 /* Dol */
-
+8045B9E0:superDimentioHeadDefenses
+8045B9F8:superDimentioBodyDefenses
 
 // Runtime.PPCEABI.H.a
 // __mem.c
@@ -369,6 +370,7 @@
 8010cd88:evt_pouch_get_level
 8010ce04:evt_pouch_get_next_level_xp
 8010cffc:evt_pouch_increment_enemies_defeated
+8014f7c8:pouchGetCardCount
 
 // evt_seq.c
 8010d028:evt_seq_set_seq

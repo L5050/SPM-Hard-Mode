@@ -11,15 +11,15 @@
 #include <spm/seq_game.h>
 #include <spm/npcdrv.h>
 #include <spm/mario.h>
-#include <spm/mario_status.h>
 #include <spm/spmario.h>
 #include <spm/mario_pouch.h>
 #include <spm/seqdef.h>
 #include <spm/iValues.h>
 #include <spm/item_data.h>
-#include <spm/item_event_data.h>
-#include <wii/OSError.h>
-#include <patch.h>
+//#include <spm/item_event_data.h>
+#include <wii/os/OSError.h>
+#include <wii/gx.h>
+#include <wii/mtx.h>
 #include <string>
 #include <cstdio>
 #include <limits>
@@ -40,7 +40,12 @@ static spm::seqdef::SeqFunc *seq_gameMainReal;
 
 static void seq_titleMainOverride(spm::seqdrv::SeqWork *wp)
 {
-    wii::RGBA green {0, 255, 0, 255};
+  wii::gx::GXColor green = {
+    0,
+    255,
+    0,
+    255
+  };
     f32 scale = 0.8f;
     const char * msg = "SPM Hard Mode";
     spm::fontmgr::FontDrawStart();
@@ -83,7 +88,7 @@ int checkBossHealth() {
   spm::npcdrv::NPCWork * NPCWork = spm::npcdrv::npcGetWorkPtr();
   int health = 0;
   s32 plotValue = globals->gsw0;
-  //wii::OSError::OSReport("%x\n", spm::evtmgr_cmd::evtGetValue(eventEntry, LW(10)));
+  //wii::os::OSReport("%x\n", spm::evtmgr_cmd::evtGetValue(eventEntry, LW(10)));
     if (plotValue == 0x21){
     for (int i = 0; i < 535; i++) {
       if (NPCWork->entries[i].tribeId == 270) {
@@ -177,7 +182,7 @@ int checkBossHealth() {
     /*if (plotValue == 0x17D){
     for (int i = 0; i < 535; i++) {
       if (NPCWork->entries[i].tribeId == 284 && holee == 0) {
-        //wii::OSError::OSReport("%d\n", NPCWork->entries[i].m_Anim.m_nPoseId);
+        //wii::os::OSReport("%d\n", NPCWork->entries[i].m_Anim.m_nPoseId);
         holee = 1;
         double rate = 2;
         spm::animdrv::animPoseSetLocalTimeRate(NPCWork->entries[i].m_Anim.m_nPoseId, rate);
@@ -192,7 +197,7 @@ int checkBossHealth() {
     if (plotValue == 0x19a){
     for (int i = 0; i < 535; i++) {
       if (NPCWork->entries[i].tribeId == 305) {
-        wii::OSError::OSReport("%d\n", NPCWork->entries[i].m_Anim.m_nPoseId);
+        wii::os::OSReport("%d\n", NPCWork->entries[i].m_Anim.m_nPoseId);
         health = NPCWork->entries[i].hp;
       }
     }
@@ -200,9 +205,9 @@ int checkBossHealth() {
       if (NPCWork->entries[i].tribeId == 307 && holee == 0) {
         holee = 1;
         for (int j = 0; j < 16; j++) {
-        wii::OSError::OSReport("%x\n", NPCWork->entries[i].unitWork[j]);
+        wii::os::OSReport("%x\n", NPCWork->entries[i].unitWork[j]);
       }
-      wii::OSError::OSReport("%x\n", NPCWork->entries[i]);
+      //wii::os::OSReport("%x\n", NPCWork->entries[i]); wtf is this anyways
       }
     }}
     if (plotValue == 0x19c){
@@ -223,7 +228,12 @@ int checkBossHealth() {
 static void bossHealth(spm::seqdrv::SeqWork *wp)
 {
     if (checkBossHealth() > 0){
-    wii::RGBA green {0, 255, 0, 255};
+      wii::gx::GXColor green = {
+        0,
+        255,
+        0,
+        255
+      };
     f32 scale = 0.8f;
     const char * msg = "Boss Health:";
     spm::fontmgr::FontDrawStart();
@@ -239,7 +249,12 @@ static void bossHealth(spm::seqdrv::SeqWork *wp)
 static void bossActualHealth(spm::seqdrv::SeqWork *wp)
 {
     if (checkBossHealth() > 0){
-    wii::RGBA green {0, 255, 0, 255};
+      wii::gx::GXColor green = {
+        0,
+        255,
+        0,
+        255
+      };
     f32 scale = 0.8f;
     char buffer [50];
     int health = checkBossHealth();
@@ -272,7 +287,12 @@ void charmTextGenerator(spm::seqdrv::SeqWork *wp)
 {
   int charmStats = checkCharmNum();
   if (charmStats > 0){
-  wii::RGBA red {255, 0, 0, 255};
+  wii::gx::GXColor red = {
+      255,
+      0,
+      0,
+      255
+  };
   f32 scale = 0.6f;
   const char * msg = "Enemies until next charm:";
   spm::fontmgr::FontDrawStart();
@@ -291,7 +311,12 @@ void charmKillsTextGenerator(spm::seqdrv::SeqWork *wp)
   if (charmNum > 0){
   char buffer [50];
   int charmStats = checkCharmStats();
-  wii::RGBA red {255, 0, 0, 255};
+  wii::gx::GXColor red = {
+      255,
+      0,
+      0,
+      255
+  };
   f32 scale = 0.6f;
   sprintf(buffer, "%d", charmStats);
   const char * msg = buffer;
@@ -309,7 +334,12 @@ void charmNumText(spm::seqdrv::SeqWork *wp)
 {
   int charmStats = checkCharmNum();
   if (charmStats > 0){
-  wii::RGBA red {255, 0, 0, 255};
+  wii::gx::GXColor red = {
+        255,
+        0,
+        0,
+        255
+  };
   f32 scale = 0.6f;
   const char * msg = "Charms left:";
   spm::fontmgr::FontDrawStart();
@@ -327,7 +357,12 @@ void charmNumLeftText(spm::seqdrv::SeqWork *wp)
   int charmStats = checkCharmNum();
   if (charmStats > 0){
   char buffer [50];
-  wii::RGBA red {255, 0, 0, 255};
+  wii::gx::GXColor red = {
+      255,
+      0,
+      0,
+      255
+  };
   f32 scale = 0.6f;
   sprintf(buffer, "%d", charmStats);
   const char * msg = buffer;
@@ -407,68 +442,68 @@ static void setBossDef() {
   holeDef2.defense = 0;
   holeDef2.flags = 0x4;
   /*for (int i = 0; i < 7; i++) {//O'chunks 1 defense
-    if (spm::npcdrv::npcTribes[270].parts[i].id == 1) {
-     spm::npcdrv::npcTribes[270].parts[i].defenses[0] = chunkDef;
+    if (spm::npcdrv::npcTribes[270].partsList[i].id == 1) {
+     spm::npcdrv::npcTribes[270].partsList[i].defenses[0] = chunkDef;
     }
   }*/
   for (int i = 0; i < 2; i++) {//Bowser 1 defense
-    if (spm::npcdrv::npcTribes[315].parts[i].id == 1) {
-     spm::npcdrv::npcTribes[315].parts[i].defenses[0] = def;
+    if (spm::npcdrv::npcTribes[315].partsList[i].id == 1) {
+     spm::npcdrv::npcTribes[315].partsList[i].defenses[0] = def;
     }
   }
   for (int i = 0; i < 3; i++) {//Dimentio 1 defense
-    if (spm::npcdrv::npcTribes[286].parts[i].id == 1) {
-     spm::npcdrv::npcTribes[286].parts[i].defenses[0] = fireDef;
+    if (spm::npcdrv::npcTribes[286].partsList[i].id == 1) {
+     spm::npcdrv::npcTribes[286].partsList[i].defenses[0] = fireDef;
     }
   }
    for (int i = 0; i < 7; i++) {//Brobot defense
-      spm::npcdrv::npcTribes[296].parts[i].defenses[0] = def;
+      spm::npcdrv::npcTribes[296].partsList[i].defenses[0] = def;
    }
    for (int i = 0; i < 7; i++) {//O'chunks 2 defense
-     if (spm::npcdrv::npcTribes[271].parts[i].id == 1) {
-      spm::npcdrv::npcTribes[271].parts[i].defenses[0] = fireDef;
-      spm::npcdrv::npcTribes[271].parts[i].defenses[5] = def;
+     if (spm::npcdrv::npcTribes[271].partsList[i].id == 1) {
+      spm::npcdrv::npcTribes[271].partsList[i].defenses[0] = fireDef;
+      spm::npcdrv::npcTribes[271].partsList[i].defenses[5] = def;
      }
    }
-   spm::npcdrv::npcTribes[282].parts[0].defenses[0] = def;//mimi defense
+   spm::npcdrv::npcTribes[282].partsList[0].defenses[0] = def;//mimi defense
    for (int i = 0; i < 15; i++) {//Brobot L-Type defense
-      spm::npcdrv::npcTribes[300].parts[i].defenses[0] = def;
+      spm::npcdrv::npcTribes[300].partsList[i].defenses[0] = def;
    }
    for (int i = 0; i < 2; i++) {//Bowser 2 defense
-     if (spm::npcdrv::npcTribes[316].parts[i].id == 1) {
-      spm::npcdrv::npcTribes[316].parts[i].defenses[0] = def;
+     if (spm::npcdrv::npcTribes[316].partsList[i].id == 1) {
+      spm::npcdrv::npcTribes[316].partsList[i].defenses[0] = def;
      }
    }
    for (int i = 0; i < 9; i++) {//Underchomp defense
-     if (spm::npcdrv::npcTribes[316].parts[i].id == 1) {
-      spm::npcdrv::npcTribes[316].parts[i].defenses[0] = def;
+     if (spm::npcdrv::npcTribes[316].partsList[i].id == 1) {
+      spm::npcdrv::npcTribes[316].partsList[i].defenses[0] = def;
      }
    }
    for (int i = 0; i < 21; i++) {//Bonechill defense
-     if (spm::npcdrv::npcTribes[327].parts[i].id == 2) {
-      spm::npcdrv::npcTribes[327].parts[i].defenses[2] = def;
+     if (spm::npcdrv::npcTribes[327].partsList[i].id == 2) {
+      spm::npcdrv::npcTribes[327].partsList[i].defenses[2] = def;
      }
-     if (spm::npcdrv::npcTribes[327].parts[i].id == 3) {
-      spm::npcdrv::npcTribes[327].parts[i].defenses[2] = def;
+     if (spm::npcdrv::npcTribes[327].partsList[i].id == 3) {
+      spm::npcdrv::npcTribes[327].partsList[i].defenses[2] = def;
      }
-     if (spm::npcdrv::npcTribes[327].parts[i].id == 4) {
-      spm::npcdrv::npcTribes[327].parts[i].defenses[2] = def;
+     if (spm::npcdrv::npcTribes[327].partsList[i].id == 4) {
+      spm::npcdrv::npcTribes[327].partsList[i].defenses[2] = def;
      }
    }
    /*for (int i = 0; i < 3; i++) {//Dimentio 2 defense
-      spm::npcdrv::npcTribes[292].parts[i].defenses[0] = def;
-      spm::npcdrv::npcTribes[293].parts[i].defenses[0] = def;
+      spm::npcdrv::npcTribes[292].partsList[i].defenses[0] = def;
+      spm::npcdrv::npcTribes[293].partsList[i].defenses[0] = def;
    }*/
-      spm::npcdrv::npcTribes[306].parts[0].defenses[0] = holeDef1;
-      spm::npcdrv::npcTribes[306].parts[0].defenses[1] = holeDef2;
+      spm::npcdrv::npcTribes[306].partsList[0].defenses[0] = holeDef1;
+      spm::npcdrv::npcTribes[306].partsList[0].defenses[1] = holeDef2;
 
    }
 /*
     Function patching
 */
-void (*marioTakeDamage)(wii::Vec3 * position, u32 flags, s32 damage);
+void (*marioTakeDamage)(wii::mtx::Vec3 * position, u32 flags, s32 damage);
 
-s32 scriptTakeDamage(spm::evtmgr::EvtEntry * evt, bool firstRun) {
+s32 scriptTakeDamage(spm::evtmgr::EvtEntry * evtEntry, bool firstRun) {
   spm::mario_pouch::MarioPouchWork * pouch = spm::mario_pouch::pouchGetPtr();
   pouch->hp = pouch->hp - 6;
   return firstRun;
@@ -508,13 +543,6 @@ void (*pouchAddXp)(int increase);
             return evtEntryType(script, priority, flags, type);
         }*/
 
-void patchScripts() {
-//  spm::evtmgr::EvtScriptCode * mimi = spm::item_event_data::getItemUseEvt(104);
-//  wii::OSError::OSReport("%x\n", mimi);
-//  hookEvent(mimi, mimiFunc);
-
-}
-
 void patchGameMain() {
 seq_gameMain = patch::hookFunction(spm::seq_game::seq_gameMain,
 [](spm::seqdrv::SeqWork *param_1)
@@ -534,7 +562,7 @@ void patchAddXp() {
         );
 }
 
-s32 itemCharm(spm::evtmgr::EvtEntry * evt, bool firstRun) {
+s32 itemCharm(spm::evtmgr::EvtEntry * evtEntry, bool firstRun) {
   spm::mario_pouch::MarioPouchWork* pouch = spm::mario_pouch::pouchGetPtr();
   if (pouch->killsBeforeNextCharm > 5) {
     pouch->killsBeforeNextCharm = pouch->killsBeforeNextCharm - 5;
@@ -546,7 +574,7 @@ s32 itemCharm(spm::evtmgr::EvtEntry * evt, bool firstRun) {
   return firstRun;
 }
 
-s32 unPauseGame(spm::evtmgr::EvtEntry * evt, bool firstRun) {
+s32 unPauseGame(spm::evtmgr::EvtEntry * evtEntry, bool firstRun) {
   spm::pausewin::pausewinUnpauseGame();
   spm::spmario::spmarioSystemLevel(0);
   return firstRun;
@@ -555,12 +583,12 @@ s32 unPauseGame(spm::evtmgr::EvtEntry * evt, bool firstRun) {
 void patchItems() {
   for (int i = 0; i < 33; i++) {
 if (spm::item_event_data::itemEventDataTable[i].itemId == 75) {
-  spm::item_event_data::itemEventDataTable[i].useEvtScript = charmAdd;
+  //spm::item_event_data::itemEventDataTable[i].useScript = charmAdd;
 }}
 }
 void patchMarioDamage(){
   marioTakeDamage = patch::hookFunction(spm::mario::marioTakeDamage,
-    [](wii::Vec3 * position, u32 flags, s32 damage)
+    [](wii::mtx::Vec3 * position, u32 flags, s32 damage)
             {
               if (marioWork->character == 2) {
                 damage = damage - 1;
@@ -658,7 +686,7 @@ void patchMarioDamage(){
     [](s32 damageType, s32 tribeId)
             {
               //spm::npcdrv::NPCWork * NPCWork = spm::npcdrv::npcGetWorkPtr();
-              //wii::OSError::OSReport("%x\n", damageType);
+              //wii::os::OSReport("%x\n", damageType);
               /*if (damageType == 1) {
                 spm::npcdrv::MiscSetupDataV6 miscSetupData;
                 s32 zero = 0;
@@ -672,9 +700,9 @@ void patchMarioDamage(){
                 }
                 miscSetupData.unitWork[2] = test1;
                 miscSetupData.unitWork[3] = test2;
-                wii::Vec3 pos = marioWork->position;
+                wii::mtx::Vec3 pos = marioWork->position;
                 spm::npcdrv::NPCEntry * voidEntry = spm::npcdrv::npcEntryFromSetupEnemy(0, &pos, 198, &miscSetupData);
-                voidEntry->parts = spm::npcdrv::npcTribes[307].parts;
+                voidEntry->partsList = spm::npcdrv::npcTribes[307].partsList;
               }*/
               if (damageType == 12) {
                 //barry damage type
@@ -753,9 +781,9 @@ void patchMarioDamage(){
 }
 
 void patchVariables() {
-    writeWord(&spm::iValues::bowserAttackDamage, 0x0, 0x57FF003E);
-      writeWord(&spm::iValues::doubleAttack, 0x0, 0x57FF003C);
-       writeWord(&spm::iValues::doubleFireAttack, 0x0, 0x57FF003C);
+    writeWord(&spm::mario::marioCalcDamageToEnemy, 0x16C, 0x57FF003E);
+      writeWord(&spm::mario::marioCalcDamageToEnemy, 0xC8, 0x57FF003C);
+       writeWord(&spm::mario::marioCalcDamageToEnemy, 0x94, 0x57FF003C);
         writeWord(&spm::iValues::superDimentioHeadDefenses, 0x0, 0x00000002);
           writeWord(&spm::iValues::superDimentioBodyDefenses, 0x0, 0x00000002);
 }
@@ -764,7 +792,7 @@ void patchVariables() {
     General mod functions
 */
 void main() {
-  wii::OSError::OSReport("SPM Rel Loader: the mod has ran!\n");
+  wii::os::OSReport("SPM Rel Loader: the mod has ran!\n");
   titleScreenCustomTextPatch();
   setBossHP();
   setBossXp();
@@ -772,7 +800,6 @@ void main() {
   patchMarioDamage();
   patchItems();
   patchAddXp();
-  patchScripts();
   patchVariables();
 }
 
