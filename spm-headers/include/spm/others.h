@@ -1,5 +1,5 @@
 
-namespace spm::iValues {
+namespace spm::others {
 
 extern "C"
 {

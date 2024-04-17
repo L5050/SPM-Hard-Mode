@@ -14,7 +14,7 @@
 #include <spm/spmario.h>
 #include <spm/mario_pouch.h>
 #include <spm/seqdef.h>
-#include <spm/iValues.h>
+#include <spm/others.h>
 #include <spm/item_data.h>
 //#include <spm/item_event_data.h>
 #include <wii/os/OSError.h>
@@ -784,8 +784,8 @@ void patchVariables() {
     writeWord(&spm::mario::marioCalcDamageToEnemy, 0x16C, 0x57FF003E);
       writeWord(&spm::mario::marioCalcDamageToEnemy, 0xC8, 0x57FF003C);
        writeWord(&spm::mario::marioCalcDamageToEnemy, 0x94, 0x57FF003C);
-        writeWord(&spm::iValues::superDimentioHeadDefenses, 0x0, 0x00000002);
-          writeWord(&spm::iValues::superDimentioBodyDefenses, 0x0, 0x00000002);
+        writeWord(&spm::others::superDimentioHeadDefenses, 0x0, 0x00000002);
+          writeWord(&spm::others::superDimentioBodyDefenses, 0x0, 0x00000002);
 }
 
 /*
