@@ -1,15 +1,17 @@
 #pragma once
-
-#include <common.h>
-
+#include "evt_cmd.h"
 namespace mod {
 
-#define MOD_VERSION "SPM Practice Codes v9"
+#define MOD_VERSION "SPM April Fools 2024"
 
 extern bool gIsDolphin;
-extern bool gIsRiivolution;
-extern bool gIsPatchedDisc;
-extern bool gIs4_3;
+
+extern "C" {
+
+EVT_DECLARE(evt_cutscene_pure_heart)
+EVT_DECLARE(evt_memcard_save)
+
+}
 
 void main();
 

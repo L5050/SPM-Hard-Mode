@@ -3,12 +3,11 @@
 #---------------------------------------------------------------------------------
 .SUFFIXES:
 #---------------------------------------------------------------------------------
-
-export TTYDTOOLS = ../ttyd-tools
-
 ifeq ($(strip $(DEVKITPPC)),)
 $(error "Please set DEVKITPPC in your environment. export DEVKITPPC=<path to>devkitPPC")
 endif
+
+export TTYDTOOLS=C:\Users\docaa\Documents\SPM-April-Fools-2024\spm-rel-loader\rel\ttyd-tools
 
 ifeq ($(strip $(TTYDTOOLS)),)
 $(error "Please set TTYDTOOLS in your environment. export TTYDTOOLS=<path to>ttyd-tools")
@@ -58,10 +57,9 @@ else
 #---------------------------------------------------------------------------------
 TARGET		:=	$(notdir $(CURDIR)).$(VERSION)
 BUILD		:=	build.$(VERSION)
-SOURCES		:=	source $(wildcard source/*)
-DATA		:=	data
-SPM_HEADERS :=  spm-headers
-INCLUDES	:=	include $(SPM_HEADERS)/mod $(SPM_HEADERS)/include
+SOURCES		:=	source $(wildcard source/*) vendor/EASTL/source $(wildcard vendor/EASTL/source/*)
+DATA		:=	data  
+INCLUDES	:=	include spm-headers/include spm-headers/mod vendor/EABase/include/Common vendor/EABase/include/Common vendor/EASTL/include
 
 #---------------------------------------------------------------------------------
 # options for code generation
@@ -69,11 +67,10 @@ INCLUDES	:=	include $(SPM_HEADERS)/mod $(SPM_HEADERS)/include
 
 MACHDEP		= -mno-sdata -mgcn -DGEKKO -mcpu=750 -meabi -mhard-float
 
-EXTRAFLAGS  ?=
-CFLAGS		= -nostdlib -ffreestanding -ffunction-sections -fdata-sections -g -O3 -Wall -Wextra -Wshadow $(MACHDEP) $(INCLUDE) $(EXTRAFLAGS)
+CFLAGS		= -nostdlib -ffunction-sections -fdata-sections -g -O3 -Wall $(MACHDEP) $(INCLUDE) -fpermissive -D__powerpc__ -DEA_PLATFORM_LINUX
 CXXFLAGS	= -fno-exceptions -fno-rtti -std=gnu++17 $(CFLAGS)
 
-LDFLAGS		= -r -e _prolog -u _prolog -u _epilog -u _unresolved -Wl,--gc-sections,--force-group-allocation -nostdlib -g $(MACHDEP) -Wl,-Map,$(notdir $@).map
+LDFLAGS		= -r -e _prolog -u _prolog -u _epilog -u _unresolved -Wl,--gc-sections -nostdlib -g $(MACHDEP) -Wl,-Map,$(notdir $@).map
 
 # Platform options
 ifeq ($(VERSION),us0)
@@ -112,7 +109,7 @@ endif
 #---------------------------------------------------------------------------------
 # any extra libraries we wish to link with the project
 #---------------------------------------------------------------------------------
-#LIBS	:= -lm
+LIBS	:=
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
@@ -160,7 +157,6 @@ export HFILES := $(addsuffix .h,$(subst .,_,$(BINFILES)))
 
 # For REL linking
 export LDFILES		:= $(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.ld)))
-# TODO: use SPM_HEADERS
 export MAPFILE		:= $(CURDIR)/spm-headers/linker/spm.$(LST).lst
 
 #---------------------------------------------------------------------------------
