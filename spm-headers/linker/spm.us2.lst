@@ -647,3 +647,7 @@
 8014CEE0:pouchGetCoin
 8014CEF0:pouchAddCoin
 8014F12C:pouchGetCardCount
+80101FC4:evt_npc_glide_to
+8010380C:evt_npc_get_unitwork
+801038F8:evt_npc_set_unitwork
+800D8A60:make_jump_table
