@@ -1202,6 +1202,22 @@ EVT_BEGIN(dimentioMusic1)
   USER_FUNC(spm::evt_snd::evt_snd_bgmon_f_d, 0, PTR("BGM_BTL_DIMEN1"), 2000)
 RETURN_FROM_CALL()
 
+EVT_BEGIN(dimentio_check_for_fall)
+LBL(0)
+USER_FUNC(spm::evt_npc::evt_npc_get_position, LW(10), LW(0), LW(1), LW(2))
+IF_SMALL(LW(1), FLOAT(-10.0))
+  USER_FUNC(spm::evt_eff::evt_eff, 0, PTR("dmen_warp"), 0, LW(0), LW(1), LW(2), 0, 0, 0, 0, 0, 0, 0, 0)
+  USER_FUNC(spm::evt_snd::evt_snd_sfxon_3d, PTR("SFX_BS_DMN_GOOUT1"), LW(0), LW(1), LW(2))
+  SET(LW(1), FLOAT(100.0))
+  USER_FUNC(spm::evt_npc::evt_npc_set_position, LW(10), LW(0), LW(1), LW(2))
+  USER_FUNC(spm::evt_eff::evt_eff, 0, PTR("dmen_warp"), 0, LW(0), LW(1), LW(2), 0, 0, 0, 0, 0, 0, 0, 0)
+  USER_FUNC(spm::evt_snd::evt_snd_sfxon_3d, PTR("SFX_BS_DMN_GOOUT1"), LW(0), LW(1), LW(2))
+  USER_FUNC(spm::evt_npc::evt_npc_restart_evt_id, LW(10))
+END_IF()
+WAIT_FRM(1)
+GOTO(0)
+EVT_END()
+
 EVT_BEGIN(dimiDeath)
   SET(LW(10), PTR("me"))
   USER_FUNC(spm::evt_mario::evt_mario_key_off, 0)
@@ -1249,6 +1265,7 @@ EVT_BEGIN(dimentioDialogue1)
   USER_FUNC(spm::evt_npc::evt_npc_tribe_agb_async, 225)
   USER_FUNC(spm::evt_npc::evt_npc_get_position, PTR("dimi"), LW(0), LW(1), LW(2))
   USER_FUNC(spm::evt_npc::evt_npc_entry_from_template, 0, 225, LW(0), LW(1), LW(2), LW(10), EVT_NULLPTR)
+  RUN_EVT(dimentio_check_for_fall)
   USER_FUNC(spm::evt_npc::evt_npc_set_unitwork, LW(10), 8, PTR(dimiDeath))
   USER_FUNC(spm::evt_npc::evt_npc_set_position, PTR("dimi"), 0, -1000, 0)
   USER_FUNC(spm::evt_door::evt_door_enable_disable_map_door_desc, 0, PTR("doa1_l"))
@@ -1450,13 +1467,13 @@ void hookMimiScripts()
   evtpatch::hookEvtReplace(mimiTrueHit, 39, (spm::evtmgr::EvtScriptCode*)turnNull);
   evtpatch::hookEvtReplace(mimiTrueHit, 43, (spm::evtmgr::EvtScriptCode*)turnNull);
   evtpatch::hookEvtReplace(mimiTrueHit, 53, (spm::evtmgr::EvtScriptCode*)turnNull);
-  #ifdef SPM_EU0
-  evtpatch::hookEvtReplace(mimiTrueHit, 72, (spm::evtmgr::EvtScriptCode*)checkForDan1);
-  evtpatch::hookEvtReplace(mimiTrueHit, 75, (spm::evtmgr::EvtScriptCode*)checkForDan2);
-  #else
-  evtpatch::hookEvtReplace(mimiTrueHit, 70, (spm::evtmgr::EvtScriptCode*)checkForDan1);
-  evtpatch::hookEvtReplace(mimiTrueHit, 73, (spm::evtmgr::EvtScriptCode*)checkForDan2);
-  #endif
+  #ifdef SPM_EU0 
+  evtpatch::hookEvtReplace(mimiTrueHit, 72, (spm::evtmgr::EvtScriptCode*)checkForDan1); 
+  evtpatch::hookEvtReplace(mimiTrueHit, 75, (spm::evtmgr::EvtScriptCode*)checkForDan2); 
+  #else 
+  evtpatch::hookEvtReplace(mimiTrueHit, 70, (spm::evtmgr::EvtScriptCode*)checkForDan1); 
+  evtpatch::hookEvtReplace(mimiTrueHit, 73, (spm::evtmgr::EvtScriptCode*)checkForDan2); 
+  #endif 
 
   evtpatch::hookEvt(mimiTrueHit, 116, (spm::evtmgr::EvtScriptCode*)mimiFlag8_2048);
   evtpatch::hookEvt(mimiUnk2, 33, (spm::evtmgr::EvtScriptCode*)changeMimiSpeed);
