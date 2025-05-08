@@ -722,7 +722,9 @@
 80222DF8:func_80224804
 80222E68:func_80224874
 80223974:func_80225380
+800FE9B4:evt_npc_set_scale
 80106804:evt_npc_spawn_sammer_guy
+8021D26C:ninjoe_thoreau_override
 
 // new to SPMMulti
 80179B10:seq_mapChangeInit
