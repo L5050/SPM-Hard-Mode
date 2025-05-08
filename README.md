@@ -9,9 +9,7 @@ Rel mod and for my Super Paper Mario Hard Mode mod.
 has a lot more balance changes than HardModeJr as well as much more willing to deviate from vanilla. Significantly more difficult difficulty curve compared to HardModeJr
 
 # Known Bugs (Rubies and Magic)
-* The boomer upgrade does not increase visual blast radius in the Flopside pit on US2
-* Dimentio softlock in chapter 5
-* Mimi crashing in 2-4
+* Currently none
 
 # Credit
 * SeekyCT for the rel mod loader, various functions, and the code documentation for SPM
