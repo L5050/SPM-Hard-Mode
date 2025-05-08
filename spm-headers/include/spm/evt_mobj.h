@@ -15,7 +15,7 @@ CPP_WRAPPER(spm::evt_mobj)
 EVT_DECLARE(mobj_save_blk_sysevt)
 
 UNKNOWN_FUNCTION(evt_mobj_entry);
-UNKNOWN_FUNCTION(evt_mobj_delete);
+EVT_UNKNOWN_USER_FUNC(evt_mobj_delete);
 EVT_UNKNOWN_USER_FUNC(evt_mobj_exec_cancel)
 
 // evt_mobj_hit_onoff(bool on, const char * name)

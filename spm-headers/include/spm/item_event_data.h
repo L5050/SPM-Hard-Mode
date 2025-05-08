@@ -24,7 +24,21 @@ extern ItemEventData itemEventDataTable[ITEM_EVENT_DATA_COUNT];
 
 typedef struct
 {
-/* 0x0 */ void * wp;
+/* 0x0 */ int npcId;
+/* 0x4 */ u8 unknown_0x4[0xb - 0x4];
+} ItemEventNpcRef;
+SIZE_ASSERT(ItemEventNpcRef, 0xc)
+
+typedef struct
+{
+/* 0x0 */ ItemEventNpcRef ItemNpcRef;
+/* 0xc */ u8 unknown_0xc[0x13f - 0xc];
+} ItemEvtWork2;
+SIZE_ASSERT(ItemEvtWork2, 0x140)
+
+typedef struct
+{
+/* 0x0 */ ItemEvtWork2 * wp;
 /* 0x4 */ u8 unknown_0x4[0x20 - 0x4];
 } ItemEventWork;
 SIZE_ASSERT(ItemEventWork, 0x20)
@@ -115,5 +129,7 @@ UNKNOWN_FUNCTION(func_800293a8);
 */
 // evt_itemdata_get_return_pipe_info(char * &mapNameOut, char * &doorNameOut)
 EVT_DECLARE_USER_FUNC(evt_itemdata_get_return_pipe_info, 2)
+
+EVT_DECLARE(default_item_use_evt)
 
 CPP_WRAPPER_END()

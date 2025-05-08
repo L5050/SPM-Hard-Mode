@@ -70,7 +70,7 @@ f32 PSVECDotProduct(Vec3 * src1, Vec3 * src2);
 void PSVECCrossProduct(Vec3 * src1, Vec3 * src2, Vec3 * dest);
 UNKNOWN_FUNCTION(VECHalfAngle);
 UNKNOWN_FUNCTION(VECReflect);
-UNKNOWN_FUNCTION(PSVECSquareDistance);
+f32 PSVECSquareDistance(Vec3 * src1, Vec3 * src2);
 UNKNOWN_FUNCTION(PSVECDistance);
 UNKNOWN_FUNCTION(QUATMtx);
 UNKNOWN_FUNCTION(QUATSlerp);

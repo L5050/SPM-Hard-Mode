@@ -73,7 +73,8 @@ typedef struct _CamEntry
 /* 0x18C */ f32 aspect;
 /* 0x190 */ f32 near;
 /* 0x194 */ f32 far;
-/* 0x198 */ u8 unknown_0x198[0x20c - 0x198];
+/* 0x198 */ s32 isOrthoToggle; //overwrites isOrthro every frame, change this if you want to make the world look 3d, not isOrthro
+/* 0x19C */ u8 unknown_0x19c[0x20c - 0x19c];
 /* 0x20C */ Vec3 zoomStartPos;
 /* 0x218 */ Vec3 zoomStartTarget;
 /* 0x224 */ Vec3 zoomDestPos;

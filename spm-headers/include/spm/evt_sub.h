@@ -36,7 +36,7 @@ UNKNOWN_FUNCTION(func_800d46a4);
 //evt_sub_set_game_speed(float newSpeed)
 EVT_DECLARE_USER_FUNC(evt_sub_set_game_speed, 1)
 
-UNKNOWN_FUNCTION(evt_sub_get_mapname);
+EVT_DECLARE_USER_FUNC(evt_sub_get_mapname, -1);
 
 
 // Returns the door/bero name
@@ -82,11 +82,14 @@ UNKNOWN_FUNCTION(func_800d776c);
 UNKNOWN_FUNCTION(func_800d7858);
 UNKNOWN_FUNCTION(evt_sub_get_save_name);
 UNKNOWN_FUNCTION(evt_zero_vector);
-EVT_UNKNOWN_USER_FUNC(func_800d7930)
+
+EVT_DECLARE_USER_FUNC(evt_sub_item_select_menu, 4)
+
 UNKNOWN_FUNCTION(func_800d7b9c);
 UNKNOWN_FUNCTION(func_800d7e70);
 UNKNOWN_FUNCTION(func_800d815c);
 UNKNOWN_FUNCTION(func_800d8498);
-UNKNOWN_FUNCTION(func_800d8700);
+
+EVT_DECLARE_USER_FUNC(func_800d8700, 1);
 
 CPP_WRAPPER_END()

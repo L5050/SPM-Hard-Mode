@@ -1,5 +1,3 @@
-#include <common.h>
-
 extern "C" {
 
 typedef void (*PFN_voidfunc)();
@@ -27,7 +25,7 @@ void _prolog()
     {
         (*ctor)();
     }
-
+    
     // Run mod main
     mod::main();
 }
@@ -43,5 +41,5 @@ void _epilog()
 
 void _unresolved(void)
 {
-
+    
 }

@@ -6,12 +6,14 @@
 #pragma once
 
 #include <common.h>
+#include <spm/setup_data.h>
 #include <spm/evtmgr.h>
 #include <wii/mtx.h>
 
 CPP_WRAPPER(spm::npcdrv)
 
 USING(spm::evtmgr::EvtScriptCode)
+USING(spm::setup_data::MiscSetupDataV6)
 USING(wii::mtx::Vec3)
 
 #define NPCTRIBE_MAX 535
@@ -35,16 +37,30 @@ typedef struct
 } NPCTribeAnimDef;
 SIZE_ASSERT(NPCTribeAnimDef, 0x8)
 
+typedef enum NPCMoveMode {
+    NPC_MOVE_WALK_NO_HIT=0,
+    NPC_MOVE_WALK=1,
+    NPC_MOVE_STAY_NO_DAMAGE=2,
+    NPC_MOVE_SPIN=3,
+    NPC_MOVE_WALK_NO_HIT_2=4
+} NPCMoveMode;
+SIZE_ASSERT(NPCMoveMode, 0x4)
+
 typedef struct
 {
 /* 0x00 */ u16 id;
-/* 0x02 */ u8 unknown_0x2[0x28 - 0x2];
+/* 0x02 */ s16 mode;
+/* 0x04 */ s32 minimum_damage;
+/* 0x08 */ Vec3 position;
+/* 0x14 */ u32 flag14; // assigned to flag2c in NPCPart
+/* 0x18 */ u32 hitFlags; // assigned to hitFlags in NPCPart
+/* 0x1c */ u8 unknown_0x1c[0x28 - 0x1c];
 /* 0x28 */ NPCDefense * defenses;
 /* 0x2C */ Unk * unknown_0x2c;
 /* 0x30 */ NPCPartUpdateFunc * updateFunc;
-/* 0x34 */ Unk * unknown_0x34;
+/* 0x34 */ const char * animPoseName;
 /* 0x38 */ NPCTribeAnimDef * animDefs;
-/* 0x3C */ u8 unknown_0x3c[0x48 - 0x3c];
+/* 0x3C */ Vec3 positionDelta;
 } NPCPartDef;
 SIZE_ASSERT(NPCPartDef, 0x48)
 
@@ -66,18 +82,31 @@ typedef struct
 /* 0x19 */ u8 partsCount;
 /* 0x1A */ // padding 0x1a-1b
 /* 0x1C */ NPCPartDef * partsList; // partsCount length
-/* 0x20 */ u8 unknown_0x20[0x38 - 0x20];
+/* 0x20 */ char * powBlockDeathSfx;
+/* 0x24 */ char * bowserFireDeathSfx;
+/* 0x28 */ char * boomerDeathSfx;
+/* 0x2c */ char * barryDeathSfx;
+/* 0x30 */ char * unused_sfx;
+/* 0x34 */ char * fireBurstDeathSfx;
 /* 0x38 */ s16 killXp;
-/* 0x40 */ u8 unknown_0x3a[0x46 - 0x3a];
+/* 0x3a */ s16 hitXp;
+/* 0x3c */ s16 stylishXp;
+/* 0x3e */ s16 stopWatchStunTime;
+/* 0x40 */ s16 sleepySheepStunTime;
+/* 0x42 */ s16 iceStormStunTime;
+/* 0x44 */ s16 voltShroomStunTime;
 /* 0x46 */ u16 coinDropChance; // chance of dropping any coins at all, percentage
 /* 0x48 */ u16 coinDropBaseCount; // minimum amount of coins to drop, if any are dropping
 /* 0x4A */ u16 coinDropExtraChance; // chance for each extra coin to drop, percentage
 /* 0x4C */ u16 coinDropExtraMax; // maximum amount of extra coins to drop on top of base count
 /* 0x4E */ u16 dropItemChance; // chance of dropping any item, percentage
 /* 0x50 */ NPCDropItem * dropItemList; // terminated by an entry with id 0
-/* 0x54 */ u8 unknown_0x54[0x64 - 0x54];
+/* 0x54 */ s32 unknown_0x54; // Sets a value in npcEntry which is unused
+/* 0x58 */ f32 bounceEjection1;
+/* 0x5c */ f32 bounceEjection2;
+/* 0x60 */ f32 unk_float;
 /* 0x64 */ u8 attackStrength; // only used for the tattle and turn-based combat, doesn't affect normal damage
-/* 0x65 */ u8 unknown_0x65[0x68 - 0x65];
+/* 0x65 */ u8 padding_0x65[0x68 - 0x65]; // paddhitFlagsing
 } NPCTribe;
 SIZE_ASSERT(NPCTribe, 0x68)
 
@@ -87,17 +116,25 @@ typedef struct
 /* 0x04 */ char animPoseName[32];
 /* 0x24 */ u8 unknown_0x24[0x48 - 0x24];
 /* 0x48 */ NPCTribeAnimDef * tribeAnims;
-/* 0x4C */ // unknown 0x4c+
-} NPCAnim; // unknown size
-OFFSET_ASSERT(NPCAnim, tribeAnims, 0x48)
+/* 0x4C */ u8 unknown_0x4C[0x70 - 0x4C];
+/* 0x70 */ Vec3 scriptRotation;
+/* 0x74 */ // unknown 0x4c+
+} NPCAnim; // unknown sizehitFlags
+OFFSET_ASSERT(NPCAnim, scriptRotation, 0x70)
 
 typedef struct _NPCPart
 {
 /* 0x000 */ u16 id;
-/* 0x002 */ u8 unknown_0x2[0x2c - 0x2];
+/* 0x002 */ s16 mode;
+/* 0x004 */ s32 minimum_damage;
+/* 0x008 */ Vec3 position;
+/* 0x014 */ Vec3 ownerPosLastAnimChange;
+/* 0x020 */ Vec3 positionDelta;
 /* 0x02C */ u32 flag2c;
-/* 0x030 */ u32 flag30;
-/* 0x034 */ u8 unknown_0x34[0x378 - 0x34];
+/* 0x030 */ u32 hitFlags;
+/* 0x034 */ u8 unknown_0x34[0x3c - 0x34];
+/* 0x03c */ Vec3 hitBoxScale;
+/* 0x034 */ u8 unknown_0x48[0x378 - 0x48];
 /* 0x378 */ s32 attackPower; // initialised as 1, changed by onSpawnScript if needed
 /* 0x37C */ u8 unknown_0x37c[0x388 - 0x37c];
 /* 0x388 */ struct _NPCEntry * owner;
@@ -124,7 +161,11 @@ typedef struct _NPCEntry
 /* 0x044 */ NPCAnim m_Anim; // unknown size
 /* ????? */ u8 unknown_unk[0x2a0 - 0x44 - sizeof(NPCAnim)];
 /* 0x2A0 */ Vec3 position;
-/* 0x2AC */ u8 unknown_0x2ac[0x348 - 0x2ac];
+/* 0x2AC */ u8 unknown_0x2ac[0x2ec - 0x2ac];
+/* 0x2EC */ s32 flippedTo3d;
+/* 0x2AC */ u8 unknown_0x2f0[0x2f8 - 0x2f0];
+/* 0x2F8 */ NPCMoveMode moveMode;
+/* 0x2FC */ u8 unknown_0x2fc[0x348 - 0x2fc];
 /* 0x348 */ EvtScriptCode * templateUnkScript1; // unkScript1 from spawning SetupEnemyTemplate
                                                 // (unknown for non-templated NPCs)
 /* 0x34C */ u8 unknown_0x34c[0x360 - 0x34c];
@@ -147,25 +188,32 @@ typedef struct _NPCEntry
 /* 0x380 */ u8 unknown_0x380[0x390 - 0x380];
 /* 0x390 */ s32 onSpawnEvtId; // id of the EvtEntry running a templated npc's onSpawn scripts
                               // (unknown for non-templated NPCs)
-/* 0x394 */ u8 unknown_0x394[0x39c - 0x394];
+/* 0x394 */ s32 unkEvtId;
+/* 0x398 */ u32 flags_398;
+/* 0x39c */ u8 unknown_0x39c[0x39c - 0x39c];
 /* 0x39C */ f32 tribeField0xE; // field 0xe of spawning NPCTribe cast to float
 /* 0x3A0 */ f32 tribeField0x10; // field 0x10 of spawning NPCTribe cast to float
 /* 0x3A4 */ f32 tribeField0x12; // field 0x12 of spawning NPCTribe cast to float
 /* 0x3A8 */ u8 unknown_0x3a8[0x3ac - 0x3a8];
 /* 0x3AC */ f32 unknown_0x3ac;
-/* 0x3B0 */ u8 unknown_0x3b0[0x46c - 0x3b0];
+/* 0x3B0 */ u8 unknown_0x3b0[0x400 - 0x3b0];
+/* 0x400 */ f32 unknown_0x400;
+/* 0x3B0 */ u8 unknown_0x404[0x46c - 0x404];
     /*
         0x80000000 is frozen
         0x40000 is on different pane to Mario
         0x20000 is hidden & frozen
     */
 /* 0x46C */ u32 flag46C;
-/* 0x470 */ u8 unknown_0x470[0x478 - 0x470];
-/* 0x478 */ u32 tribeField0x54; // field 0x54 of spawning NPCTribe
+/* 0x470 */ f32 gravity;
+/* 0x474 */ u8 unknown_0x474[0x478 - 0x474];
+/* 0x478 */ u32 tribeField0x54; // field 0x54 of spawning NPCTribe, unused
 /* 0x47C */ u8 unknown_0x47c[0x49c - 0x47c];
 /* 0x49C */ s32 tribeId; // id of the NPCTribe this NPC was spawned with
 /* 0x4A0 */ s32 tribeId2; // seemingly just a copy of tribeId
-/* 0x4A4 */ u8 unknown_0x4a4[0x4ec - 0x4a4];
+/* 0x4A4 */ u8 unknown_0x4a4[0x4d8 - 0x4a4];
+/* 0x4D8 */ f32 fleepStunTime;
+/* 0x4DC */ u8 unknown_0x4dc[0x4ec - 0x4dc];
 /* 0x4EC */ u32 maxHp; // copied from spawning NPCTribe, 1 for NPCs not spawned by tribe
 /* 0x4F0 */ u32 hp; // copied from spawning NPCTribe, 1 for NPCs not spawned by tribe
 /* 0x4F4 */ u8 unknown_0x4f4[0x508 - 0x4f4];
@@ -181,7 +229,9 @@ typedef struct _NPCEntry
                                    // (unknown for non-templated NPCs)
 /* 0x584 */ u32 templateField0x64; // field 0x64 of spawning SetupEnemyTemplate
                                    // (unknown for non-templated NPCs)
-/* 0x588 */ u8 unknown_0x588[0x714 - 0x588];
+/* 0x588 */ u8 unknown_0x588[0x624 - 0x588];
+/* 0x624 */ f32 stunTime;
+/* 0x628 */ u8 unknown_0x628[0x714 - 0x628];
 /* 0x714 */ NPCPart * parts; // made from tribe's NPCPartDef list, linked list
 /* 0x718 */ EvtScriptCode * templateField0x58; // field 0x58 from spawning SetupEnemyTemplate
                                                // g(unknown for non-templated NPCs)
@@ -211,6 +261,11 @@ DECOMP_STATIC(NPCWork * npcdrv_wp)
 
 typedef bool (EnemyCanSpawnFunction)();
 
+struct NPCEntryUnkDef {
+    int type;
+    void *value;
+};
+
 typedef struct
 {
 /* 0x00 */ u8 unknown_0x0;
@@ -236,7 +291,7 @@ typedef struct
 /* 0x4C */ EvtScriptCode * unkScript7;
 /* 0x50 */ EvtScriptCode * unkScript8;
 /* 0x54 */ EvtScriptCode * unkScript9;
-/* 0x58 */ void * unknown_0x58;
+/* 0x58 */ NPCEntryUnkDef * unkDefinitionTable;
 /* 0x5C */ u8 unknown_0x5c[0x68 - 0x5c]; // all left blank to be copied from SetupEnemy
 } NPCEnemyTemplate;
 SIZE_ASSERT(NPCEnemyTemplate, 0x68)
@@ -275,7 +330,7 @@ UNKNOWN_FUNCTION(func_801b2574);
 UNKNOWN_FUNCTION(func_801b2640);
 UNKNOWN_FUNCTION(func_801b285c);
 UNKNOWN_FUNCTION(func_801b2928);
-UNKNOWN_FUNCTION(func_801b33a0);
+void throwDamage(int* unknown); // pointer is to a non reverse engineered struct
 UNKNOWN_FUNCTION(npcDispSub);
 UNKNOWN_FUNCTION(func_801b3860);
 UNKNOWN_FUNCTION(mtx_setup);
@@ -328,7 +383,7 @@ UNKNOWN_FUNCTION(func_801bf5cc);
 UNKNOWN_FUNCTION(func_801bf60c);
 UNKNOWN_FUNCTION(func_801bf6a4);
 NPCEntry * npcEntryFromSetupEnemy(s32 setupFileIndex, Vec3 * pos, s32 nTemplateNo,
-                                  Unk * miscSetupData);
+                                  MiscSetupDataV6 * miscSetupData);
 s32 npcGetNextTemplateNpcId();
 UNKNOWN_FUNCTION(func_801bfc14);
 const char * npcSearchAnimDefs(NPCTribeAnimDef * defs, s32 id);
@@ -358,7 +413,7 @@ s32 npcGetMaxEntries();
 UNKNOWN_FUNCTION(func_801c213c);
 NPCPart * npcAddPart(NPCEntry * entry, NPCPartDef * partDef);
 UNKNOWN_FUNCTION(func_801c23b0);
-UNKNOWN_FUNCTION(npcGetPartById);
+NPCPart * npcGetPartById(NPCEntry *npc, u32 id);
 UNKNOWN_FUNCTION(func_801c2480);
 UNKNOWN_FUNCTION(func_801c24cc);
 UNKNOWN_FUNCTION(func_801c2558);
@@ -390,7 +445,9 @@ UNKNOWN_FUNCTION(func_801c45a4);
 UNKNOWN_FUNCTION(func_801c498c);
 UNKNOWN_FUNCTION(func_801c4afc);
 UNKNOWN_FUNCTION(func_801c5140);
-UNKNOWN_FUNCTION(func_801c65e8);
+
+s32 npcTakeDamage(NPCEntry *npcEntry, NPCPart *npcPart, s32 defenseType, s32 power, u32 param_5, s32 param_6);
+
 UNKNOWN_FUNCTION(func_801c7f68);
 UNKNOWN_FUNCTION(func_801c7fe0);
 UNKNOWN_FUNCTION(func_801c7ff0);
@@ -401,7 +458,7 @@ UNKNOWN_FUNCTION(npcTimerMain);
 UNKNOWN_FUNCTION(func_801c85e4);
 UNKNOWN_FUNCTION(func_801c85ec);
 UNKNOWN_FUNCTION(func_801c8760);
-UNKNOWN_FUNCTION(func_801c8b44);
+void npcFleeped(NPCEntry * entry);
 UNKNOWN_FUNCTION(func_801c8b7c);
 UNKNOWN_FUNCTION(func_801c8b98);
 UNKNOWN_FUNCTION(func_801c8d48);
@@ -418,7 +475,7 @@ NPCWork * npcGetWorkPtr();
 UNKNOWN_FUNCTION(func_801c9ae4);
 UNKNOWN_FUNCTION(func_801ca150);
 UNKNOWN_FUNCTION(func_801ca198);
-UNKNOWN_FUNCTION(func_801ca1a4);
+void func_801ca1a4(NPCEntry * npcEntry, NPCAnim * npcAnim);
 UNKNOWN_FUNCTION(func_801ca238);
 UNKNOWN_FUNCTION(func_801ca2d8);
 UNKNOWN_FUNCTION(func_801ca300);
@@ -442,7 +499,9 @@ UNKNOWN_FUNCTION(func_801cc0a0);
 UNKNOWN_FUNCTION(func_801cc0cc);
 UNKNOWN_FUNCTION(npcGetKillXp);
 UNKNOWN_FUNCTION(func_801cc134);
-UNKNOWN_FUNCTION(func_801cc150);
+
+s32 npcDamageMario(spm::npcdrv::NPCEntry *npcEntry, spm::npcdrv::NPCPart *part, wii::mtx::Vec3 *position, u32 param_4, s32 damage, u32 flags);
+
 UNKNOWN_FUNCTION(func_801cc644);
 UNKNOWN_FUNCTION(func_801cc8d0);
 UNKNOWN_FUNCTION(func_801cc9dc);

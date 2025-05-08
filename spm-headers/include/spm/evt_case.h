@@ -5,7 +5,9 @@
 
 CPP_WRAPPER(spm::evt_case)
 
-UNKNOWN_FUNCTION(evt_run_case_evt);
+// evt_run_case_evt(int caseType, int unk, const char * a2Name, const char * a3Name, EvtScriptCode * script, unk)
+EVT_DECLARE_USER_FUNC(evt_run_case_evt, 6)
+
 UNKNOWN_FUNCTION(evtRunCaseEntry);
 
 EVT_DECLARE_USER_FUNC(evt_exit_case_evt, 0)

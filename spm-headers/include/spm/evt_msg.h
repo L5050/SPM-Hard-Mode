@@ -12,10 +12,10 @@ UNKNOWN_FUNCTION(_evt_msg_print);
 // evt_msg_print(u32 flags, const char * msg, s32 mainFunc, const char * speaker)
 EVT_DECLARE_USER_FUNC(evt_msg_print, 4)
 
+// evt_msg_print_insert(u32 flags, const char * msg, s32 mainFunc, const char * speaker, insertion)
+EVT_DECLARE_USER_FUNC(evt_msg_print_insert, -1)
 
-UNKNOWN_FUNCTION(evt_msg_print_insert);
-
-//evt_msg_print_add(u32 flags, const char * message)
+// evt_msg_print_add(u32 flags, const char * message)
 EVT_DECLARE_USER_FUNC(evt_msg_print_add, 2)
 
 EVT_DECLARE_USER_FUNC(evt_msg_print_add_insert, -1)
@@ -25,7 +25,7 @@ EVT_DECLARE_USER_FUNC(evt_msg_continue, 0)
 
 UNKNOWN_FUNCTION(evt_msg_repeat);
 UNKNOWN_FUNCTION(evt_msg_close);
-UNKNOWN_FUNCTION(evt_msg_select);
+EVT_DECLARE_USER_FUNC(evt_msg_select, 2);
 
 EVT_DECLARE_USER_FUNC(evt_msg_toge, 4)
 

@@ -15,7 +15,7 @@ EVT_DECLARE_USER_FUNC(evt_snd_bgmoff, 1)
 EVT_DECLARE_USER_FUNC(evt_snd_bgmoff_f_d, 2)
 
 EVT_UNKNOWN_USER_FUNC(func_800d2268)
-EVT_UNKNOWN_USER_FUNC(func_800d2294)
+EVT_UNKNOWN_USER_FUNC(evt_snd_channel_fadeout)
 EVT_UNKNOWN_USER_FUNC(func_800d22d8)
 UNKNOWN_FUNCTION(func_800d231c);
 UNKNOWN_FUNCTION(func_800d2388);
@@ -79,7 +79,7 @@ EVT_DECLARE_USER_FUNC(evt_snd_sfx_wait_name, 1)
 UNKNOWN_FUNCTION(evt_snd_sfx_flag_on);
 UNKNOWN_FUNCTION(evt_snd_sfx_flag_off);
 UNKNOWN_FUNCTION(func_800d33dc);
-UNKNOWN_FUNCTION(evt_snd_envon);
+EVT_UNKNOWN_USER_FUNC(evt_snd_envon);
 EVT_DECLARE_USER_FUNC(evt_snd_envon_f, 3)
 EVT_DECLARE_USER_FUNC(evt_snd_string_call, 1)
 UNKNOWN_FUNCTION(func_800d34e4);

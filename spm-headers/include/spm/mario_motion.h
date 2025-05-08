@@ -1,8 +1,11 @@
 #pragma once
 
 #include <common.h>
+#include <spm/mario.h>
 
 CPP_WRAPPER(spm::mario_motion)
+
+USING(spm::mario::MarioMotFuncs)
 
 UNKNOWN_FUNCTION(marioMotion);
 void marioChgMot(s32 nextMotionId);
@@ -54,7 +57,9 @@ UNKNOWN_FUNCTION(marioChangeCharacter);
 UNKNOWN_FUNCTION(_marioChangeCharacter);
 UNKNOWN_FUNCTION(func_80147748);
 UNKNOWN_FUNCTION(mot_character_change);
-UNKNOWN_FUNCTION(marioChangePixl);
+
+void marioChangePixl(s32 prevPixl, s32 newPixl);
+
 UNKNOWN_FUNCTION(func_80147f14);
 UNKNOWN_FUNCTION(mot_pixl_change);
 UNKNOWN_FUNCTION(func_801484fc);
@@ -91,5 +96,9 @@ UNKNOWN_FUNCTION(mot_33);
 UNKNOWN_FUNCTION(func_8014be7c);
 UNKNOWN_FUNCTION(mot_34);
 UNKNOWN_FUNCTION(mot_34_post);
+
+int boomerFuseMain(void* boomerWork);
+
+extern MarioMotFuncs marioMotTbl[78]; // index motion id
 
 CPP_WRAPPER_END()

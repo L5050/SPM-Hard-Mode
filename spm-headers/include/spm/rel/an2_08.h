@@ -40,7 +40,7 @@ typedef struct An2_08Work {
 /* 0x0C */ RpgNPC rpgNpcInfo[3];
 /* 0x54 */ s32 unk_54;
 /* 0x58 */ s32 unk_58[15];
-/* 0x94 */ char unk_94[4];
+/* 0x94 */ s32 totalScore;
 } An2_08Work; //sizeof 0x98
 SIZE_ASSERT(An2_08Work, 0x98)
 

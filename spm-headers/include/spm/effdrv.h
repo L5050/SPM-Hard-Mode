@@ -112,6 +112,10 @@ void effSoftDelete(EffEntry * entry);
 */
 EffEntry * effNameToPtr(const char * name);
 
+EffEntry * eff_item_thunder(float x, float y, float z, s32 param_4, s32 param_5, s32 param_6, s32 param_7, s32 param_8);
+
+EffEntry * damageEffect(float x, float y, float z,int param_4, s32 damage);
+
 UNKNOWN_FUNCTION(func_80061c28);
 UNKNOWN_FUNCTION(func_80061cd0);
 s32 func_80061d78();
@@ -132,5 +136,9 @@ UNKNOWN_FUNCTION(func_80063308);
 UNKNOWN_FUNCTION(func_80063374);
 UNKNOWN_FUNCTION(func_8006339c);
 UNKNOWN_FUNCTION(func_800633fc);
+UNKNOWN_FUNCTION(func_800633fc);
+
+EffEntry* func_800a82c0(s32 type);
+void func_800a315c(EffEntry* entry, int blob, char name);
 
 CPP_WRAPPER_END()

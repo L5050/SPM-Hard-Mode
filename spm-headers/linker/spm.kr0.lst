@@ -282,7 +282,7 @@
 800FEA58:evt_npc_entry
 800FEB50:func_80103054
 800FEC04:evt_npc_set_anim
-80100190:func_80104694
+80100190:evt_npc_set_move_mode
 800FF188:evt_npc_flag8_onoff
 800FF4B4:evt_npc_animflag_onoff
 80100790:evt_npc_set_property

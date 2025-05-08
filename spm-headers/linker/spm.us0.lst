@@ -3,8 +3,6 @@
 800030c8:firstRel
 800030cc:lastRel
 
-8041BC28:superDimentioHeadDefenses
-8041BC40:superDimentioBodyDefenses
 // Automatically generated from spm.eu0.lst
 80004000:memcpy
 80004104:memset
@@ -294,7 +292,7 @@
 8010257C:evt_npc_entry
 80102674:func_80103054
 80102728:evt_npc_set_anim
-80103CB4:func_80104694
+80103CB4:evt_npc_set_move_mode
 80102CAC:evt_npc_flag8_onoff
 80102FD8:evt_npc_animflag_onoff
 801042B4:evt_npc_set_property
@@ -578,12 +576,12 @@
 80056948:cam3dMain
 804C8580:camPtrTbl
 801797CC:seq_mapChangeMain
-800250EC:getItemUseEvt
+80025074:getItemUseEvt
 8002F240:msgUnLoad
 8002F014:msgLoad
 1,1,27204:rpg_screen_draw
 1,1,31620:evt_an_init_tpl
-80107808:evt_npc_get_position
+800fd778:evt_npc_get_position
 1,5,a8cac:mr_l_appear_evt
 1,5,a9628:brobot_appear_evt
 80238AF4:spsndSFXOn
@@ -592,7 +590,7 @@
 800D2D8C:evt_snd_sfxon_npc_delay
 800E67A0:evt_env_static_blur_on
 1,1,166e4:func_80c5c36c
-80102A30:func_80103410
+80102A30:evt_npc_wait_anim_end
 800E62C4:evt_eff_softdelete
 800F2CB8:evt_mario_set_anim_change_handler
 800FF22C:evt_npc_walk_to
@@ -625,6 +623,12 @@
 8003F270:acEntry
 8003F4C0:acReturnResults
 8003F4C8:acDelete
+800D88D0:func_800d8700
+800F015C:evt_mario_walk_to
+800F0BB0:evt_mario_jump_to
+800DFF58:evt_cam_get_pos
+800BCA24:damageEffect
+803F84B8:script
 
 // new to rld3 v1
 8025C1B0:strcat
@@ -636,7 +640,7 @@
 8056db90:SaveStart
 8056db94:SaveEnd
 
-// new to SPM-Hard-Mode
+// new to SPM-Hard-Mode: Rubies and Magic
 8014C8A0:pouchSetAttack
 8014C8D4:pouchGetAttack
 8014C8E4:pouchAddAttack
@@ -651,3 +655,104 @@
 801033DC:evt_npc_get_unitwork
 801034C8:evt_npc_set_unitwork
 800D8ADC:make_jump_table
+8010241C:evt_npc_set_hp
+8010229C:evt_npc_get_hp
+8010235C:evt_npc_get_max_hp
+800d9b14:evtDelete
+8041BC28:superDimentioHeadDefenses
+8041BC40:superDimentioBodyDefenses
+800d8cfc:evtmgrReInit
+803E71D8:marioMotTbl
+803E26F0:saffronCookingScript
+804CEA28:marioStatusApplyStatuses
+803BFB70:default_item_use_evt
+80107D1C:evt_npc_get_active_count
+80102218:evt_npc_restart_evt_id
+800FEF4C:func_800ff8f8
+80107258:func_80107c38
+80104B70:evt_npc_wait_flip_finished
+80104BC4:evt_npc_finish_flip_instant
+80104D28:evt_npc_flip_to
+80104D88:evt_npc_flip
+801E41A0:evt_npc_dimen_determine_move_pos
+80417470:dimen_unk_fight_script_1
+804174C0:dimen_unk_fight_script_2
+80419300:dimen_unk_fight_script_3
+8019B804:distABf
+801046AC:evt_npc_get_property
+8021BA80:ninjoe_bomb_calc_chance
+80D4ACD0:tree_block_trigger
+801CA9EC:npcDamageMario
+8056CFF0:icondrv_wp
+804A2EE8:evt_memcard_save
+8012A5BC:marioSetInvincibility
+80C3B574:evt_npc_sammer_display_count
+800FBB60:evt_msg_select
+80104F44:evt_npc_get_axis_movement_unit
+800D4934:evt_sub_get_mapname
+800FB6EC:evt_msg_print_insert
+800ECB18:evt_item_entry
+800ECD6C:evt_item_flag_onoff
+800ECFC0:evt_item_wait_collected
+800EFE10:evt_mario_face_npc
+800FEAC4:evt_npc_set_rgba
+8010BED4:evt_pouch_get_coins
+8010BF20:evt_pouch_add_coins
+8016192C:boomerFuseMain
+8010BEA4:evt_pouch_set_coins
+800D7B58:evt_sub_item_select_menu
+800EFB38:evt_mario_get_height
+801C7950:npcFleeped
+80107B1C:npc_dimeen_l_box_deal_damage
+801B2358:throwDamage
+800FAD2C:evt_mobj_save_blk
+801C10B0:npcGetMaxEntries
+8010400C:func_801049ec
+8010405C:func_80104a3c
+801068C4:func_801072a4
+80213260:func_802154fc
+80213278:func_80215514
+802132A4:func_80215540
+80213CA8:func_80215f44
+80222460:func_80224804
+802224D0:func_80224874
+80222FDC:func_80225380
+801C5568:npcTakeDamage
+
+// new to SPMMulti
+801796A4:seq_mapChangeInit
+801083B8:evt_npc_set_part_attack_power
+801C8FB0:func_801ca1a4
+800FFD50:evt_npc_arc_to
+80102488:evt_npc_delete
+80109A38:evt_npc_wait_for
+8010292C:evt_npc_get_cur_anim
+800DEF88:evtGetFloat
+
+// 2023-09-02
+80295834:IOS_OpenAsync
+80295A6C:IOS_CloseAsync
+80295BD4:IOS_ReadAsync
+80295DDC:IOS_WriteAsync
+80295EDC:IOS_Write
+80295FE4:IOS_SeekAsync
+80296710:iosCreateHeap
+802960C4:IOS_IoctlAsync
+80296468:IOS_IoctlvAsync
+8029654C:IOS_Ioctlv
+80296840:iosAlloc
+8056DA70:errno
+80274EA0:OSCreateThread
+80274E64:OSYieldThread
+802753C8:OSResumeThread
+80258148:memcmp
+
+// new to april fools 2024
+800E63CC:evt_eff_exclamation_question
+800F1818:evt_mario_wait_anim
+80104FF0:evt_npc_set_axis_movement_unit
+80108A00:evt_npc_wait_axis_movement_unit_end
+803CEC30:evt_cutscene_pure_heart
+8010C6AC:evt_seq_mapchange
+800E7388:evt_set_transition
+800DA2A4:evt_lbl

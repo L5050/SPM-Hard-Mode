@@ -21,19 +21,19 @@
 using namespace std;
 namespace mod {
 
-EVT_DECLARE_USER_FUNC(itemCharm, 0)
+//EVT_DECLARE_USER_FUNC(itemCharm, 0)
 EVT_DECLARE_USER_FUNC(unPauseGame, 0)
 EVT_DECLARE_USER_FUNC(scriptTakeDamage, 0)
 
-EVT_BEGIN(charmAdd)
-SET(LW(0), 1)/*
+/*EVT_BEGIN(charmAdd) all of this is commented out for history's sake, none of it is planned on being used again
+SET(LW(0), 1)
 RUN_CHILD_EVT(spm::item_event_data::eventUseAnimation)
 RUN_CHILD_EVT(spm::item_event_data::eventFreezeGame)
 //USER_FUNC(spm::evt_ac::evt_ac_entry, PTR("ac"), 15)
 //USER_FUNC(spm::evt_ac::evt_ac_return_results, PTR("ac"), LW(10))
 //USER_FUNC(spm::evt_ac::evt_ac_delete, PTR("ac"))
-RUN_CHILD_EVT(spm::item_event_data::evt_unknownScript_1)*/
-USER_FUNC(itemCharm)/*
+RUN_CHILD_EVT(spm::item_event_data::evt_unknownScript_1)
+USER_FUNC(itemCharm)
 USER_FUNC(spm::item_event_data::drawBox, -1)
 USER_FUNC(spm::item_event_data::evt_unknownFunc_1, -1)
 USER_FUNC(spm::item_event_data::evt_unknownFunc_2, LW(0), LW(1), LW(2))
@@ -45,9 +45,8 @@ USER_FUNC(spm::item_event_data::addStatusEffect, 64, 30)
 USER_FUNC(spm::item_event_data::evt_mario_flag8_onoff, 1, 131072)
 USER_FUNC(spm::item_event_data::postActionMessage, 75)
 RUN_CHILD_EVT(spm::item_event_data::eventUnfreezeGame)
-USER_FUNC(spm::item_event_data::evt_mario_flag8_onoff, 0, 131072)*/
-RETURN()
-EVT_END()
+USER_FUNC(spm::item_event_data::evt_mario_flag8_onoff, 0, 131072)
+RETURN_FROM_CALL()*/
 
 EVT_BEGIN(iceStorm)
 USER_FUNC(spm::evt_msg::evt_msg_print, 0x1, PTR("When a boss reaches a certain\nhealth threshhold and you take\ndamage <wait 100>"), 0, PTR("me"))

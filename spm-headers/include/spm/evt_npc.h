@@ -2,12 +2,15 @@
 
 #include <common.h>
 #include <evt_cmd.h>
+#include <spm/evtmgr.h>
+#include <spm/npcdrv.h>
 
 CPP_WRAPPER(spm::evt_npc)
 
 UNKNOWN_FUNCTION(_intplGetFloat);
 UNKNOWN_FUNCTION(evtNpcNameToPtr);
-UNKNOWN_FUNCTION(evtNpcNameToPtr_NoAssert);
+
+spm::npcdrv::NPCEntry* evtNpcNameToPtr_NoAssert(spm::evtmgr::EvtEntry* evtEntry, char *name);
 
 // evt_npc_get_position(const char * name, f32& x, f32& y, f32& z)
 EVT_DECLARE_USER_FUNC(evt_npc_get_position, 4)
@@ -29,13 +32,16 @@ UNKNOWN_FUNCTION(func_800fec04);
 UNKNOWN_FUNCTION(func_800fecd0);
 UNKNOWN_FUNCTION(func_800fed9c);
 UNKNOWN_FUNCTION(func_800fee80);
-EVT_UNKNOWN_USER_FUNC(func_800fef30)
+
+// evt_npc_set_scale(const char * instanceName, f32 x, f32 y, f32 z)
+EVT_DECLARE_USER_FUNC(evt_npc_set_scale, 4)
+
 UNKNOWN_FUNCTION(func_800feffc);
 UNKNOWN_FUNCTION(func_800ff100);
 UNKNOWN_FUNCTION(func_800ff1cc);
 UNKNOWN_FUNCTION(func_800ff2a8);
 UNKNOWN_FUNCTION(func_800ff3ec);
-UNKNOWN_FUNCTION(func_800ff470);
+EVT_DECLARE_USER_FUNC(evt_npc_set_rgba, 5);
 UNKNOWN_FUNCTION(func_800ff5a4);
 UNKNOWN_FUNCTION(func_800ff6f4);
 UNKNOWN_FUNCTION(func_800ff86c);
@@ -47,7 +53,7 @@ EVT_DECLARE_USER_FUNC(evt_npc_walk_to, 8)
 // evt_npc_jump_to(const char * name, f32 destX, f32 destY, f32 destZ, f32 height, s32 length)
 EVT_DECLARE_USER_FUNC(evt_npc_jump_to, 6)
 
-UNKNOWN_FUNCTION(func_801006fc);
+EVT_UNKNOWN_USER_FUNC(evt_npc_arc_to);
 UNKNOWN_FUNCTION(func_80100df8);
 UNKNOWN_FUNCTION(func_80101328);
 UNKNOWN_FUNCTION(func_8010144c);
@@ -57,10 +63,13 @@ UNKNOWN_FUNCTION(func_80101e60);
 UNKNOWN_FUNCTION(func_80101f48);
 UNKNOWN_FUNCTION(func_80102424);
 EVT_UNKNOWN_USER_FUNC(evt_npc_glide_to)
-EVT_UNKNOWN_USER_FUNC(func_80102bf8)
-UNKNOWN_FUNCTION(evt_npc_get_hp);
+
+// evt_npc_restart_evt_id(const char * name)
+EVT_DECLARE_USER_FUNC(evt_npc_restart_evt_id, 1)
+
+EVT_UNKNOWN_USER_FUNC(evt_npc_get_hp)
 UNKNOWN_FUNCTION(evt_npc_get_max_hp);
-UNKNOWN_FUNCTION(evt_npc_set_hp);
+EVT_UNKNOWN_USER_FUNC(evt_npc_set_hp)
 
 // evt_npc_delete(const char * name)
 EVT_DECLARE_USER_FUNC(evt_npc_delete, 1)
@@ -77,11 +86,14 @@ EVT_DECLARE_USER_FUNC(evt_npc_add_flip_part, 1)
 EVT_DECLARE_USER_FUNC(evt_npc_set_anim, 3)
 UNKNOWN_FUNCTION(func_801031a0);
 UNKNOWN_FUNCTION(func_80103268);
-UNKNOWN_FUNCTION(evt_npc_get_cur_anim);
+
+// evt_npc_get_cur_anim(const char * name, s32 ret)
+EVT_DECLARE_USER_FUNC(evt_npc_get_cur_anim, 2);
+
 UNKNOWN_FUNCTION(evt_npc_search_anim_defs);
 
-// func_80103410(const char * npcName, s32 partId)
-EVT_DECLARE_USER_FUNC(func_80103410, 2)
+// evt_npc_wait_anim_end(const char * npcName, s32 partId)
+EVT_DECLARE_USER_FUNC(evt_npc_wait_anim_end, 2)
 
 UNKNOWN_FUNCTION(func_80103574);
 
@@ -89,7 +101,7 @@ UNKNOWN_FUNCTION(func_80103574);
 EVT_DECLARE_USER_FUNC(evt_npc_flag8_onoff, 3)
 
 UNKNOWN_FUNCTION(evt_npc_flagC_onoff);
-UNKNOWN_FUNCTION(evt_npc_flag46C_onoff);
+EVT_UNKNOWN_USER_FUNC(evt_npc_flag46C_onoff);
 UNKNOWN_FUNCTION(evt_npc_flag10_onoff);
 UNKNOWN_FUNCTION(evt_npc_part_flag_onoff);
 
@@ -100,7 +112,9 @@ UNKNOWN_FUNCTION(func_80103a44);
 UNKNOWN_FUNCTION(func_80103b40);
 UNKNOWN_FUNCTION(func_80103c24);
 UNKNOWN_FUNCTION(func_80103d20);
-UNKNOWN_FUNCTION(evt_npc_get_unitwork);
+
+// evt_npc_set_unitwork(const char * name, s32 idx, s32 ret)
+EVT_DECLARE_USER_FUNC(evt_npc_get_unitwork, 3);
 
 
 // evt_npc_set_unitwork(const char * name, s32 idx, s32 val)
@@ -118,7 +132,10 @@ UNKNOWN_FUNCTION(func_8010457c);
 UNKNOWN_FUNCTION(func_801045ac);
 UNKNOWN_FUNCTION(func_801045dc);
 UNKNOWN_FUNCTION(func_80104638);
-EVT_DECLARE_USER_FUNC(func_80104694, 2)
+
+// evt_npc_set_move_mode(const char * name, NPCMoveMode moveMode )
+EVT_DECLARE_USER_FUNC(evt_npc_set_move_mode, 2)
+
 UNKNOWN_FUNCTION(func_801046f4);
 UNKNOWN_FUNCTION(func_80104750);
 UNKNOWN_FUNCTION(func_801047ac);
@@ -127,7 +144,7 @@ UNKNOWN_FUNCTION(func_8010486c);
 UNKNOWN_FUNCTION(func_801048cc);
 UNKNOWN_FUNCTION(func_8010495c);
 EVT_UNKNOWN_USER_FUNC(func_801049ec)
-UNKNOWN_FUNCTION(func_80104a3c);
+EVT_UNKNOWN_USER_FUNC(func_80104a3c);
 UNKNOWN_FUNCTION(func_80104a94);
 UNKNOWN_FUNCTION(func_80104af0);
 UNKNOWN_FUNCTION(func_80104b4c);
@@ -139,13 +156,15 @@ EVT_DECLARE_USER_FUNC(evt_npc_set_property, 3)
 
 UNKNOWN_FUNCTION(modifyPartProperty);
 
+// evt_npc_get_property(const char * instanceName, s32 propertyId, EvtVar ret)
+EVT_DECLARE_USER_FUNC(evt_npc_get_property, 3)
+
 /*
     partId -1 updates all parts
 */
 // evt_npc_set_property(const char * instanceName, s32 partId, s32 propertyId, s32 value)
 EVT_DECLARE_USER_FUNC(evt_npc_modify_part, 4)
 
-UNKNOWN_FUNCTION(evt_npc_get_property);
 UNKNOWN_FUNCTION(func_80105248);
 UNKNOWN_FUNCTION(func_801053b4);
 UNKNOWN_FUNCTION(func_80105548);
@@ -161,7 +180,7 @@ UNKNOWN_FUNCTION(func_801058c8);
 // evt_npc_get_axis_movement_unit(const char * name, f32& ret)
 EVT_DECLARE_USER_FUNC(evt_npc_get_axis_movement_unit, 2)
 
-EVT_DECLARE_USER_FUNC(func_801059d0, 2)
+EVT_DECLARE_USER_FUNC(evt_npc_set_axis_movement_unit, 2)
 UNKNOWN_FUNCTION(func_80105a30);
 UNKNOWN_FUNCTION(func_80105b00);
 EVT_UNKNOWN_USER_FUNC(func_80105b94)
@@ -179,7 +198,10 @@ EVT_DECLARE_USER_FUNC(evt_npc_entry_from_template, 7)
 
 UNKNOWN_FUNCTION(func_80106904);
 UNKNOWN_FUNCTION(someEvtNpcTemplateSpawn2);
-UNKNOWN_FUNCTION(evt_npc_spawn_sammer_guy);
+
+// evt_npc_spawn_sammer_guy(s32 instanceId, s32 sammerId, f32 x, f32 y, f32 z, EvtVar ret)
+EVT_DECLARE_USER_FUNC(evt_npc_spawn_sammer_guy, 6);
+
 UNKNOWN_FUNCTION(func_80106f78);
 UNKNOWN_FUNCTION(func_80106ffc);
 UNKNOWN_FUNCTION(func_80107044);
@@ -187,7 +209,7 @@ UNKNOWN_FUNCTION(func_801070a4);
 UNKNOWN_FUNCTION(func_8010712c);
 UNKNOWN_FUNCTION(func_80107190);
 UNKNOWN_FUNCTION(func_801071f4);
-UNKNOWN_FUNCTION(func_801072a4);
+EVT_UNKNOWN_USER_FUNC(func_801072a4);
 UNKNOWN_FUNCTION(func_801072f8);
 UNKNOWN_FUNCTION(evt_npc_get_coin_drop_count);
 UNKNOWN_FUNCTION(evt_npc_get_drop_item_type);
@@ -227,17 +249,21 @@ UNKNOWN_FUNCTION(func_801083d8);
 UNKNOWN_FUNCTION(func_80108440);
 UNKNOWN_FUNCTION(func_801084fc);
 UNKNOWN_FUNCTION(func_801085e4);
-EVT_UNKNOWN_USER_FUNC(func_801086fc)
+EVT_UNKNOWN_USER_FUNC(evt_npc_get_active_count)
 UNKNOWN_FUNCTION(func_8010874c);
 UNKNOWN_FUNCTION(func_801087d8);
 UNKNOWN_FUNCTION(func_80108930);
 UNKNOWN_FUNCTION(func_801089d0);
+EVT_DECLARE_USER_FUNC(evt_npc_wait_axis_movement_unit_end, 1)
 UNKNOWN_FUNCTION(func_80108a2c);
 UNKNOWN_FUNCTION(func_80108ac0);
 UNKNOWN_FUNCTION(func_80108b8c);
 UNKNOWN_FUNCTION(func_80108bd4);
 UNKNOWN_FUNCTION(func_80108cc0);
-UNKNOWN_FUNCTION(evt_npc_set_part_attack_power);
+
+// evt_npc_set_part_attack_power(const char * name, npcPartIndex, attackPower)
+EVT_DECLARE_USER_FUNC(evt_npc_set_part_attack_power, 3);
+
 UNKNOWN_FUNCTION(func_80108ebc);
 UNKNOWN_FUNCTION(func_80108f50);
 UNKNOWN_FUNCTION(func_80108fe4);
@@ -247,10 +273,13 @@ UNKNOWN_FUNCTION(func_801091e0);
 UNKNOWN_FUNCTION(func_80109250);
 UNKNOWN_FUNCTION(func_801092c0);
 UNKNOWN_FUNCTION(func_80109370);
-UNKNOWN_FUNCTION(func_801093e0);
+
 UNKNOWN_FUNCTION(func_80109434);
 UNKNOWN_FUNCTION(func_801094b4);
-UNKNOWN_FUNCTION(func_80109548);
+
+// evt_npc_set_thoreau_override(const char * name, void *func)
+EVT_DECLARE_USER_FUNC(evt_npc_set_thoreau_override, 2);
+
 UNKNOWN_FUNCTION(func_801095b8);
 UNKNOWN_FUNCTION(func_80109628);
 UNKNOWN_FUNCTION(func_80109698);
@@ -263,7 +292,9 @@ UNKNOWN_FUNCTION(func_80109b10);
 UNKNOWN_FUNCTION(func_80109c20);
 UNKNOWN_FUNCTION(func_80109ca0);
 UNKNOWN_FUNCTION(func_80109d20);
-UNKNOWN_FUNCTION(evt_npc_set_disp_callback);
+
+EVT_UNKNOWN_USER_FUNC(evt_npc_set_disp_callback);
+
 UNKNOWN_FUNCTION(func_80109e18);
 UNKNOWN_FUNCTION(func_80109e94);
 UNKNOWN_FUNCTION(func_80109f18);
@@ -276,7 +307,10 @@ UNKNOWN_FUNCTION(func_8010a1e8);
 UNKNOWN_FUNCTION(func_8010a298);
 UNKNOWN_FUNCTION(evt_npc_try_catch_card);
 UNKNOWN_FUNCTION(func_8010a37c);
-UNKNOWN_FUNCTION(func_8010a418);
+
+// evt_npc_wait_for(const char * name, s32 timeInMiliseconds)
+EVT_DECLARE_USER_FUNC(evt_npc_wait_for, 2)
+
 UNKNOWN_FUNCTION(func_8010a4ec);
 UNKNOWN_FUNCTION(func_8010a5ec);
 UNKNOWN_FUNCTION(func_8010a788);
@@ -309,5 +343,20 @@ UNKNOWN_FUNCTION(func_8010c2e0);
 UNKNOWN_FUNCTION(func_8010c35c);
 UNKNOWN_FUNCTION(func_8010c3e8);
 UNKNOWN_FUNCTION(func_8010c440);
+EVT_UNKNOWN_USER_FUNC(evt_npc_dimen_determine_move_pos);
+
+EVT_UNKNOWN_USER_FUNC(func_802154fc)
+EVT_UNKNOWN_USER_FUNC(func_80215514)
+EVT_UNKNOWN_USER_FUNC(func_80215540)
+EVT_UNKNOWN_USER_FUNC(func_80215f44)
+
+EVT_DECLARE_USER_FUNC(bomb_damage_mario, 0)
+
+EVT_UNKNOWN_USER_FUNC(func_80224804)
+EVT_UNKNOWN_USER_FUNC(func_80224874)
+EVT_UNKNOWN_USER_FUNC(func_80225380)
+
+// evt_npc_sammer_display_count(s32 count)
+EVT_DECLARE_USER_FUNC(evt_npc_sammer_display_count, 1)
 
 CPP_WRAPPER_END()
