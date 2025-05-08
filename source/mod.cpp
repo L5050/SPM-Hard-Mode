@@ -1450,13 +1450,13 @@ void hookMimiScripts()
   evtpatch::hookEvtReplace(mimiTrueHit, 39, (spm::evtmgr::EvtScriptCode*)turnNull);
   evtpatch::hookEvtReplace(mimiTrueHit, 43, (spm::evtmgr::EvtScriptCode*)turnNull);
   evtpatch::hookEvtReplace(mimiTrueHit, 53, (spm::evtmgr::EvtScriptCode*)turnNull);
-  #ifdef SPM_EU0
-  evtpatch::hookEvtReplace(mimiTrueHit, 72, (spm::evtmgr::EvtScriptCode*)checkForDan1);
-  evtpatch::hookEvtReplace(mimiTrueHit, 75, (spm::evtmgr::EvtScriptCode*)checkForDan2);
-  #else
-  evtpatch::hookEvtReplace(mimiTrueHit, 70, (spm::evtmgr::EvtScriptCode*)checkForDan1);
-  evtpatch::hookEvtReplace(mimiTrueHit, 73, (spm::evtmgr::EvtScriptCode*)checkForDan2);
-  #endif
+  #ifdef SPM_EU0 
+  evtpatch::hookEvtReplace(mimiTrueHit, 72, (spm::evtmgr::EvtScriptCode*)checkForDan1); 
+  evtpatch::hookEvtReplace(mimiTrueHit, 75, (spm::evtmgr::EvtScriptCode*)checkForDan2); 
+  #else 
+  evtpatch::hookEvtReplace(mimiTrueHit, 70, (spm::evtmgr::EvtScriptCode*)checkForDan1); 
+  evtpatch::hookEvtReplace(mimiTrueHit, 73, (spm::evtmgr::EvtScriptCode*)checkForDan2); 
+  #endif 
 
   evtpatch::hookEvt(mimiTrueHit, 116, (spm::evtmgr::EvtScriptCode*)mimiFlag8_2048);
   evtpatch::hookEvt(mimiUnk2, 33, (spm::evtmgr::EvtScriptCode*)changeMimiSpeed);
