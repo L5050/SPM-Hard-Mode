@@ -54,9 +54,13 @@ void hookFleepTime(spm::npcdrv::NPCEntry *npcEntry)
   npcEntry->fleepStunTime = fleepValue;
   return;
 }
-
+#ifdef SPM_EU0
 void* boomerRetLocation1 = &spm::mario_motion::boomerFuseMain + 0x9D8;
 void* boomerRetLocation2 = &spm::mario_motion::boomerFuseMain + 0x90C;
+#else
+void* boomerRetLocation1 = &spm::mario_motion::boomerFuseMain + 0x9B4;
+void* boomerRetLocation2 = &spm::mario_motion::boomerFuseMain + 0x8E8;
+#endif
 void* npcTakeDamageRetLocation = &spm::npcdrv::npcTakeDamage + 0x1E0;
 f32 floatValue = 0.5; // Damage Radius
 f32 floatValue2 = 1.0; // Visual Radius

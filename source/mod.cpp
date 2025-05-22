@@ -1471,8 +1471,8 @@ void hookMimiScripts()
   evtpatch::hookEvtReplace(mimiTrueHit, 72, (spm::evtmgr::EvtScriptCode*)checkForDan1); 
   evtpatch::hookEvtReplace(mimiTrueHit, 75, (spm::evtmgr::EvtScriptCode*)checkForDan2); 
   #else 
-  evtpatch::hookEvtReplace(mimiTrueHit, 70, (spm::evtmgr::EvtScriptCode*)checkForDan1); 
-  evtpatch::hookEvtReplace(mimiTrueHit, 73, (spm::evtmgr::EvtScriptCode*)checkForDan2); 
+  evtpatch::hookEvtReplace(mimiTrueHit, 72, (spm::evtmgr::EvtScriptCode*)checkForDan1); 
+  evtpatch::hookEvtReplace(mimiTrueHit, 75, (spm::evtmgr::EvtScriptCode*)checkForDan2); 
   #endif 
 
   evtpatch::hookEvt(mimiTrueHit, 116, (spm::evtmgr::EvtScriptCode*)mimiFlag8_2048);
