@@ -174,7 +174,6 @@ static void patchBoomer()
   writeBranch( & spm::mario_motion::boomerFuseMain, 0x8E4, setBoomVisualFloat);
   writeWord(spm::mario_motion::boomerFuseMain, 0x8E0, 0x60000000);
   #endif
-  writeBranch( & spm::npcdrv::npcTakeDamage, 0x1DC, setCudgeFloat);
   
 }
 
@@ -820,7 +819,7 @@ EVT_BEGIN(dan_spawn_sammer_guy)
   SET(LW(2), 0)
   USER_FUNC(spm::evt_sub::evt_sub_random, 5, LW(10))
   //USER_FUNC(spm::evt_mobj::evt_mobj_get_position, PTR("lock_00"), LW(0), LW(1), LW(2))
-  IF_LARGE_EQUAL(GSW(1), 149)
+  IF_LARGE_EQUAL(GSW(1), 189)
     ADD(LW(10), 1)
   END_IF()
   SWITCH(LW(10))
@@ -835,7 +834,7 @@ EVT_BEGIN(dan_spawn_sammer_guy)
     CASE_EQUAL(4)
       SET(LW(10), 75)
     CASE_EQUAL(5)
-      SET(LW(10), 100)
+      SET(LW(10), 75)
     CASE_EQUAL(6)
       SET(LW(10), 100)
   END_SWITCH()
@@ -903,7 +902,8 @@ void patch_dan_main()
     evtpatch::hookEvtReplaceBlock(spm::dan::dan_chest_room_init_evt, 7, turnNull, 47);
     evtpatch::hookEvtReplace(spm::dan::dan_enemy_room_init_evt, 33, override_dan_key);
     evtpatch::hookEvt(spm::dan::dan_enemy_room_init_evt, 3, override_miniboss_rooms);
-    patchBoomer();
+    writeBranch( & spm::npcdrv::npcTakeDamage, 0x1DC, setCudgeFloat);
+    //patchBoomer();
     patchFleep();
     patchThoreau();
     patchPiccolo();

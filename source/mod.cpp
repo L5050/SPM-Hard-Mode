@@ -94,7 +94,7 @@ static void seq_titleMainOverride(spm::seqdrv::SeqWork *wp)
     255
   };
     f32 scale = 0.8f;
-    const char * msg = "SPM Hard Mode";
+    const char * msg = "SPM Hard Mode v1.0.8";
     spm::fontmgr::FontDrawStart();
     spm::fontmgr::FontDrawEdge();
     spm::fontmgr::FontDrawColor(&green);
@@ -200,13 +200,13 @@ int checkBossHealth() {
     if (plotValue == 0xd4){
         bossSequence = 1;
     }
-    if (plotValue == 0xd5){
+    if (plotValue == 0xd5 || plotValue == 0xd4){
     for (int i = 0; i < num; i++) {
       if (NPCWork->entries[i].tribeId == 272) {
         health = NPCWork->entries[i].hp;
       }
     }}
-    if (plotValue == 0xdb){
+    if (plotValue == 0xdb || plotValue == 0xda){
     for (int i = 0; i < num; i++) {
       if (NPCWork->entries[i].tribeId == 319) {
         health = NPCWork->entries[i].hp;
@@ -1349,6 +1349,14 @@ EVT_BEGIN(sammerBboxCheck)
   USER_FUNC(spm::evt_sub::evt_sub_get_mapname, 0, LW(11))
   USER_FUNC(compareStrings, LW(11), PTR("dan"), LW(13))
   IF_EQUAL(LW(13), 0)
+    USER_FUNC(spm::evt_mario::evt_mario_get_character, LW(13))
+    IF_NOT_EQUAL(LW(13), 2)
+      SET(LW(13), 1)
+    ELSE()
+      SET(LW(13), 0)
+    END_IF()
+  END_IF()
+  IF_EQUAL(LW(13), 0)
     USER_FUNC(spm::evt_npc::evt_npc_get_position, PTR("me"), LW(1), LW(2), LW(3))
     USER_FUNC(spm::evt_mario::evt_mario_get_pos, LW(5), LW(6), LW(7))
     IF_LARGE(LW(1), LW(5))
@@ -1455,10 +1463,11 @@ void hookMimiScripts()
   spm::evtmgr::EvtScriptCode* mimiMoneyWave = getInstructionEvtArg(mimiUnk2, 65, 0);
   #ifdef SPM_EU0
     spm::evtmgr::EvtScriptCode* mimiTrueHit = getInstructionEvtArg(mimiOnHitScript, 55, 0);
-    evtpatch::patchEvtInstruction(mimiTrueHit, 74, EVT_CAST(IF_LARGE(GSW(0), 0)));
+    //evtpatch::patchEvtInstruction(mimiTrueHit, 74, EVT_CAST(IF_LARGE(GSW(0), 0)));
   #else
     spm::evtmgr::EvtScriptCode* mimiTrueHit = getInstructionEvtArg(mimiOnHitScript, 54, 0);
-    evtpatch::patchEvtInstruction(mimiTrueHit, 73, EVT_CAST(IF_LARGE(GSW(0), 0)));
+    wii::os::OSReport("mimi true hit scriipt %p\n", mimiTrueHit);
+    //evtpatch::patchEvtInstruction(mimiTrueHit, 69, EVT_CAST(IF_LARGE(GSW(0), 0)));
   #endif
   //evtpatch::hookEvt(mimiUnk2, 54, (spm::evtmgr::EvtScriptCode*)removeMimiBasicWalk);
   evtpatch::hookEvtReplace(mimiMainAttack, 31, (spm::evtmgr::EvtScriptCode*)turnNull);
@@ -1471,8 +1480,8 @@ void hookMimiScripts()
   evtpatch::hookEvtReplace(mimiTrueHit, 72, (spm::evtmgr::EvtScriptCode*)checkForDan1); 
   evtpatch::hookEvtReplace(mimiTrueHit, 75, (spm::evtmgr::EvtScriptCode*)checkForDan2); 
   #else 
-  evtpatch::hookEvtReplace(mimiTrueHit, 72, (spm::evtmgr::EvtScriptCode*)checkForDan1); 
-  evtpatch::hookEvtReplace(mimiTrueHit, 75, (spm::evtmgr::EvtScriptCode*)checkForDan2); 
+  evtpatch::hookEvtReplace(mimiTrueHit, 71, (spm::evtmgr::EvtScriptCode*)checkForDan1); 
+  evtpatch::hookEvtReplace(mimiTrueHit, 74, (spm::evtmgr::EvtScriptCode*)checkForDan2); 
   #endif 
 
   evtpatch::hookEvt(mimiTrueHit, 116, (spm::evtmgr::EvtScriptCode*)mimiFlag8_2048);
