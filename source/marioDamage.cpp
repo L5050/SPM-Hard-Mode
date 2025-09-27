@@ -190,7 +190,7 @@ static void patchMarioDamage(){
     [](s32 damageType, s32 tribeId)
             {
               //spm::npcdrv::NPCWork * NPCWork = spm::npcdrv::npcGetWorkPtr();
-              //wii::os::OSReport("tribe %d\n", tribeId);
+              wii::os::OSReport("tribe %d\n", tribeId);
               wii::os::OSReport("damageType %d, tribeId %d\n", tribeId);
               if (damageType == 8 && tribeId == 381) return 0;
               if (damageType == 8 && tribeId == 386) return 0;
@@ -214,6 +214,9 @@ static void patchMarioDamage(){
                 damage = 1;
                 break;
                 case 270:
+                damage = 100;
+                break;
+                case 271:
                 damage = 100;
                 break;
                 case 272:
@@ -255,6 +258,9 @@ static void patchMarioDamage(){
                   damage = 1;
                 } else {return 1;}*/
                 break;
+                case 315:
+                return 100;
+                break;
                 case 316:
                 damage = 3;
                 break;
@@ -275,6 +281,13 @@ static void patchMarioDamage(){
                 break;
                 case 333:
                 damage = 5;
+                break;
+                case 412:
+                damage = 4;
+                break;
+                case 437:
+                damage = marioCalcDamageToEnemy(0, tribeId);
+                if (damage <= 5) return 5;
                 break;
                 case 532:
                 damage = 1;
