@@ -3,7 +3,6 @@
 800030c8:firstRel
 800030cc:lastRel
 
-
 // Automatically generated from spm.eu0.lst
 80004000:memcpy
 80004104:memset
@@ -293,7 +292,7 @@
 8010257C:evt_npc_entry
 80102674:func_80103054
 80102728:evt_npc_set_anim
-80103CB4:evt_npc_set_move_mode
+80103CB4:func_80104694
 80102CAC:evt_npc_flag8_onoff
 80102FD8:evt_npc_animflag_onoff
 801042B4:evt_npc_set_property
@@ -515,7 +514,7 @@
 80129C24:marioTakeDamage
 1,5,fcf54:begin_rpg_parent_evt
 800D3258:evt_snd_get_last_sfx_id
-800D31CC:func_800d2fa4
+800D31CC:evt_snd_sfx_fadeout
 1,1,29620:evt_rpg_calc_damage_to_enemy
 1,1,2c998:evt_rpg_char_death_check
 1,1,2ca30:evt_rpg_status_remove
@@ -591,7 +590,7 @@
 800D2D8C:evt_snd_sfxon_npc_delay
 800E67A0:evt_env_static_blur_on
 1,1,166e4:func_80c5c36c
-80102A30:evt_npc_wait_anim_end
+80102A30:func_80103410
 800E62C4:evt_eff_softdelete
 800F2CB8:evt_mario_set_anim_change_handler
 800FF22C:evt_npc_walk_to
@@ -609,7 +608,7 @@
 800FFB14:evt_npc_jump_to
 1,1,2c998:evt_rpg_enemy_death_check
 1,5,aa450:evt_door_openable_onoff
-1,6,920:an2_08_wp
+1,6,920:rpgdrv_wp
 1,1,26c80:func_80c6c908
 8014E58C:pouchGetPixlInfo
 8019C0F0:qqsort
@@ -624,12 +623,55 @@
 8003F270:acEntry
 8003F4C0:acReturnResults
 8003F4C8:acDelete
-800D88D0:func_800d8700
-800F015C:evt_mario_walk_to
-800F0BB0:evt_mario_jump_to
-800DFF58:evt_cam_get_pos
+8028E9D4:GXInitTexObj
+8028EC28:GXInitTexObjLOD
+802E02C8:TPLGetGXTexObjFromPalette
+800725F8:iconEntry
+80073868:iconGX
+800720DC:iconMain
+8004454C:animPoseGetLoopTimes
 800BCA24:damageEffect
-803CD718:script
+800B5B34:effMapBlockDelEntry
+800C1F5C:effSmallStarEntry
+800DEF88:evtGetFloat
+800E7580:evt_fairy_all_enter_run_mode1
+800E75D4:evt_fairy_all_enter_run_mode2
+800E7F04:evt_fairy_fly_to
+800E8660:evt_fairy_reset
+800E8858:evt_fairy_set_anim
+800E88C4:evt_fairy_wait_anim_end
+800F0BB0:evt_mario_jump_to
+80478188:evt_memcard_save
+800F39E8:evt_mobj_set_rotation
+800F38E0:evt_mobj_set_scale
+801093C0:evt_npc_set_disp_callback
+80109A38:evt_npc_wait_for
+8010BF50:evt_pouch_add_item
+8010C11C:evt_pouch_set_pixl_selected
+801059B0:evt_read_setup_file
+8002EC64:func_8002ed80
+8002EC74:func_8002ed90
+800D88D0:func_800d8700
+800F0FF4:func_800f119c
+800F18A4:func_800f1a4c
+801EF3A8:func_801f0d30
+801EFEF8:func_801f1880
+801F112C:func_801f2af8
+8006B9A8:hitDelete
+805422F0:icondrv_wp
+8018054C:levelUpWindowMain
+80108F20:marioLuigiNpcDispCb
+8002C8E8:mobjCalcMtx
+8002B548:mobjDelete
+8002B274:mobjEntry
+8002EA1C:mobjGetModelName
+8002D524:mobjHitOff
+8002C864:mobjRunEvent
+8002B610:mobjSetPosition
+801B5390:npcEntry
+805424A8:npcdrv_wp
+80109340:oChunksNpcDispCb
+8014EE84:pouchSetEnemiesDefeated
 
 // new to rld3 v1
 8025C158:strcat
@@ -750,3 +792,4 @@
 8010C6AC:evt_seq_mapchange
 800E7388:evt_set_transition
 800DA2A4:evt_lbl
+

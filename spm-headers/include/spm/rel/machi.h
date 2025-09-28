@@ -2,6 +2,7 @@
 
 #include <common.h>
 #include <evt_cmd.h>
+
 CPP_WRAPPER(spm::machi)
 
 typedef struct
@@ -24,5 +25,7 @@ EVT_DECLARE_USER_FUNC(evt_machi_set_elv_descs, 2)
 EVT_UNKNOWN_USER_FUNC(func_80c4d444)
 
 // ...
+
+EVT_DECLARE(mac_06_pure_heart_return_evt)
 
 CPP_WRAPPER_END()
