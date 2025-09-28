@@ -601,24 +601,24 @@ typedef struct _NPCEntry
 /* 0x2F0 */ u8 unknown_0x2f0[0x2f8 - 0x2f0];
 /* 0x2F8 */ NPCMoveMode moveMode;
 /* 0x2FC */ u8 unknown_0x2fc[0x348 - 0x2fc];
-/* 0x348 */ EvtScriptCode * templateUnkScript1; // unkScript1 from spawning SetupEnemyTemplate
+/* 0x348 */ EvtScriptCode * templateinitScript; // initScript from spawning SetupEnemyTemplate
                                                 // (unknown for non-templated NPCs)
 /* 0x34C */ u8 unknown_0x34c[0x360 - 0x34c];
-/* 0x360 */ EvtScriptCode * templateUnkScript2; // unkScript2 from spawning SetupEnemyTemplate4
+/* 0x360 */ EvtScriptCode * templatemoveScript; // moveScript from spawning SetupEnemyTemplate4
                                                 // (unknown for non-templated NPCs)
-/* 0x364 */ EvtScriptCode * templateUnkScript3; // unkScript3 from spawning SetupEnemyTemplate4
+/* 0x364 */ EvtScriptCode * templateonHitScript; // onHitScript from spawning SetupEnemyTemplate4
                                                 // (unknown for non-templated NPCs)
-/* 0x368 */ EvtScriptCode * templateUnkScript4; // unkScript4 from spawning SetupEnemyTemplate4
+/* 0x368 */ EvtScriptCode * templatepickupScript; // pickupScript from spawning SetupEnemyTemplate4
                                                 // (unknown for non-templated NPCs)
-/* 0x36C */ EvtScriptCode * templateUnkScript5; // unkScript5 from spawning SetupEnemyTemplate4
+/* 0x36C */ EvtScriptCode * templatethrowScript; // throwScript from spawning SetupEnemyTemplate4
                                                 // (unknown for non-templated NPCs)
-/* 0x370 */ EvtScriptCode * templateUnkScript9; // unkScript9 from spawning SetupEnemyTemplate4
+/* 0x370 */ EvtScriptCode * templatekouraKickScript; // kouraKickScript from spawning SetupEnemyTemplate4
                                                 // (unknown for non-templated NPCs)
-/* 0x374 */ EvtScriptCode * templateUnkScript6; // unkScript6 from spawning SetupEnemyTemplate4
+/* 0x374 */ EvtScriptCode * templatedeathScript; // deathScript from spawning SetupEnemyTemplate4
                                                 // (unknown for non-templated NPCs)
-/* 0x378 */ EvtScriptCode * templateUnkScript7; // unkScript7 from spawning SetupEnemyTemplate4
+/* 0x378 */ EvtScriptCode * templateatkScript; // atkScript from spawning SetupEnemyTemplate4
                                                 // (unknown for non-templated NPCs)
-/* 0x37C */ EvtScriptCode * templateUnkScript8; // unkScript8 from spawning SetupEnemyTemplate4
+/* 0x37C */ EvtScriptCode * templatemiscScript; // miscScript from spawning SetupEnemyTemplate4
                                                 // (unknown for non-templated NPCs)
 /* 0x380 */ u8 unknown_0x380[0x390 - 0x380];
 /* 0x390 */ s32 onSpawnEvtId; // id of the EvtEntry running a templated npc's onSpawn scripts

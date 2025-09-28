@@ -146,7 +146,7 @@ USER_FUNC(spm::evt_snd::evt_snd_bgmon_f_d, 0, PTR("BGM_BTL_BOSS_KOOPA1"), 1000)
 USER_FUNC(spm::evt_mario::evt_mario_key_off, 0)
 USER_FUNC(spm::evt_npc::evt_npc_tribe_agb_async, 285)
 USER_FUNC(spm::evt_npc::evt_npc_entry_from_template, 0, 285, 0, -100, 0, LW(10), EVT_NULLPTR)
-USER_FUNC(spm::evt_npc::evt_npc_set_rgba, LW(10), 0, 0, 0, 0xff)
+USER_FUNC(spm::evt_npc::evt_npc_set_color, LW(10), 0, 0, 0, 0xff)
 USER_FUNC(spm::evt_npc::evt_npc_set_anim, LW(10), 0, 1)
 USER_FUNC(spm::evt_npc::func_80107c38, LW(10), 0)
 USER_FUNC(spm::evt_npc::evt_npc_flag8_onoff, LW(10), 0, 8)
@@ -200,7 +200,7 @@ USER_FUNC(spm::evt_snd::evt_snd_bgmon_f_d, 0, PTR("BGM_BTL_DODONTAS1"), 1000)
 USER_FUNC(spm::evt_mario::evt_mario_key_off, 0)
 USER_FUNC(spm::evt_npc::evt_npc_tribe_agb_async, 183)
 USER_FUNC(spm::evt_npc::evt_npc_entry_from_template, 0, 183, 0, -100, 0, LW(10), EVT_NULLPTR)
-USER_FUNC(spm::evt_npc::evt_npc_set_rgba, LW(10), 0, 0, 0, 0xff)
+USER_FUNC(spm::evt_npc::evt_npc_set_color, LW(10), 0, 0, 0, 0xff)
 USER_FUNC(spm::evt_npc::evt_npc_set_anim, LW(10), 0, 1)
 USER_FUNC(spm::evt_npc::func_80107c38, LW(10), 0)
 USER_FUNC(spm::evt_npc::evt_npc_flag8_onoff, LW(10), 0, 8)
@@ -254,7 +254,7 @@ USER_FUNC(spm::evt_snd::evt_snd_bgmon_f_d, 0, PTR("BGM_BTL_MONEYLA1"), 1000)
 USER_FUNC(spm::evt_mario::evt_mario_key_off, 0)
 USER_FUNC(spm::evt_npc::evt_npc_tribe_agb_async, 187)
 USER_FUNC(spm::evt_npc::evt_npc_entry_from_template, 0, 187, 0, -100, 0, LW(10), EVT_NULLPTR)
-USER_FUNC(spm::evt_npc::evt_npc_set_rgba, LW(10), 0, 0, 0, 0xff)
+USER_FUNC(spm::evt_npc::evt_npc_set_color, LW(10), 0, 0, 0, 0xff)
 USER_FUNC(spm::evt_npc::evt_npc_set_anim, LW(10), 0, 1)
 USER_FUNC(spm::evt_npc::func_80107c38, LW(10), 0)
 USER_FUNC(spm::evt_npc::evt_npc_flag8_onoff, LW(10), 0, 8)
@@ -308,7 +308,7 @@ USER_FUNC(spm::evt_snd::evt_snd_bgmon_f_d, 0, PTR("BGM_BTL_DIMEN1"), 1000)
 USER_FUNC(spm::evt_mario::evt_mario_key_off, 0)
 USER_FUNC(spm::evt_npc::evt_npc_tribe_agb_async, 226)
 USER_FUNC(spm::evt_npc::evt_npc_entry_from_template, 0, 226, 0, -100, 0, LW(10), EVT_NULLPTR)
-USER_FUNC(spm::evt_npc::evt_npc_set_rgba, LW(10), 0, 0, 0, 0xff)
+USER_FUNC(spm::evt_npc::evt_npc_set_color, LW(10), 0, 0, 0, 0xff)
 USER_FUNC(spm::evt_npc::evt_npc_set_anim, LW(10), 0, 1)
 USER_FUNC(spm::evt_npc::func_80107c38, LW(10), 0)
 USER_FUNC(spm::evt_npc::evt_npc_flag8_onoff, LW(10), 0, 8)
@@ -364,7 +364,7 @@ USER_FUNC(spm::evt_snd::evt_snd_bgmoff_f_d, 0, 500)
 WAIT_MSEC(500)
 USER_FUNC(spm::evt_npc::evt_npc_tribe_agb_async, 32)
 USER_FUNC(spm::evt_npc::evt_npc_entry_from_template, 0, 32, 0, -100, 0, LW(10), EVT_NULLPTR)
-USER_FUNC(spm::evt_npc::evt_npc_set_rgba, LW(10), 0, 0, 0, 0xff)
+USER_FUNC(spm::evt_npc::evt_npc_set_color, LW(10), 0, 0, 0, 0xff)
 USER_FUNC(spm::evt_npc::evt_npc_set_anim, LW(10), 0, 1)
 USER_FUNC(spm::evt_npc::func_80107c38, LW(10), 0)
 USER_FUNC(spm::evt_npc::evt_npc_flag8_onoff, LW(10), 0, 8)
@@ -527,7 +527,7 @@ EVT_BEGIN(peachReplacementAttackScript)
         USER_FUNC(spm::evt_npc::evt_npc_set_axis_movement_unit, PTR("me"), 1)
       END_IF()
       USER_FUNC(spm::evt_npc::evt_npc_entry_from_template, 0, 390, LW(11), LW(12), LW(13), LW(10), EVT_NULLPTR)
-      USER_FUNC(spm::evt_npc::evt_npc_set_rgba, LW(10), 0, 0, 0, 0xff)
+      USER_FUNC(spm::evt_npc::evt_npc_set_color, LW(10), 0, 0, 0, 0xff)
       USER_FUNC(spm::evt_npc::func_80108194, PTR("me"), 0)
       USER_FUNC(spm::evt_npc::evt_npc_set_anim, PTR("me"), 31, 1)
       USER_FUNC(spm::evt_npc::evt_npc_wait_anim_end, PTR("me"), 1)
@@ -601,7 +601,7 @@ EVT_BEGIN(marioReplacementAttackScript)
       USER_FUNC(spm::evt_npc::evt_npc_entry_from_template, 0, 390, LW(11), LW(12), LW(13), LW(10), EVT_NULLPTR)
       USER_FUNC(spm::evt_npc::evt_npc_set_property, LW(10), 14, PTR(boomDefs))
       USER_FUNC(spm::evt_npc::func_80108194, LW(10), 0)
-      USER_FUNC(spm::evt_npc::evt_npc_set_rgba, LW(10), 0, 0, 0, 0xff)
+      USER_FUNC(spm::evt_npc::evt_npc_set_color, LW(10), 0, 0, 0, 0xff)
       USER_FUNC(spm::evt_npc::func_80108194, PTR("me"), 0)
       USER_FUNC(spm::evt_npc::evt_npc_set_anim, PTR("me"), 31, 1)
       USER_FUNC(spm::evt_npc::evt_npc_wait_anim_end, PTR("me"), 1)
@@ -644,26 +644,26 @@ spm::evtmgr::EvtScriptCode luigiPatch2[] = { USER_FUNC(spm::evt_npc::evt_npc_arc
 
 static void hookShadooScripts()
 {
-  spm::evtmgr::EvtScriptCode* luigi_attack_script = spm::npcdrv::npcEnemyTemplates[286].unkScript7;
-  spm::evtmgr::EvtScriptCode* luigi_idle_script = spm::npcdrv::npcEnemyTemplates[286].unkScript2;
+  spm::evtmgr::EvtScriptCode* luigi_attack_script = spm::npcdrv::npcEnemyTemplates[286].atkScript;
+  spm::evtmgr::EvtScriptCode* luigi_idle_script = spm::npcdrv::npcEnemyTemplates[286].moveScript;
   evtpatch::hookEvt(luigi_idle_script, 6, (spm::evtmgr::EvtScriptCode*)luigiReset);
   evtpatch::hookEvtReplace(luigi_attack_script, 9, (spm::evtmgr::EvtScriptCode*)luigiUnk7_1);
   evtpatch::hookEvtReplace(luigi_attack_script, 2, (spm::evtmgr::EvtScriptCode*)luigiUnk7_2);
   evtpatch::patchEvtInstruction(luigi_attack_script, 3, luigiPatch);
   evtpatch::hookEvt(spm::dan::dan_70_init_evt, 39, (spm::evtmgr::EvtScriptCode*)shadooSave);
   
-  spm::npcdrv::npcEnemyTemplates[288].unkScript7 = peachReplacementAttackScript;
+  spm::npcdrv::npcEnemyTemplates[288].atkScript = peachReplacementAttackScript;
   spm::npcdrv::npcTribes[332].voltShroomStunTime = 0;
-  spm::npcdrv::npcEnemyTemplates[287].unkScript7 = marioReplacementAttackScript;
+  spm::npcdrv::npcEnemyTemplates[287].atkScript = marioReplacementAttackScript;
 
   evtpatch::hookEvtReplaceBlock(spm::dan::dan_shadoo_fight_evt, 1, (spm::evtmgr::EvtScriptCode*)shadoo_fight_evt, 91);
   evtpatch::patchEvtInstruction(spm::dan::dan_shadoo_main_evt, 126, EVT_CAST(USER_FUNC(spm::evt_snd::evt_snd_bgmon, 0, PTR("BGM_BTL_BOSS_STG4"))));
   evtpatch::hookEvt(spm::npcdrv::npcEnemyTemplates[183].onSpawnScript, 85, (spm::evtmgr::EvtScriptCode*)returnChunksDeathScript);
-  evtpatch::hookEvt(spm::npcdrv::npcEnemyTemplates[183].unkScript6, 1, (spm::evtmgr::EvtScriptCode*)hookChunksDeathScript); //Fix for if O'Chunks is killed outside of boss rooms
-  evtpatch::hookEvt(spm::npcdrv::npcEnemyTemplates[422].unkScript3, 71, (spm::evtmgr::EvtScriptCode*)mariounk3);
-  evtpatch::hookEvt(spm::npcdrv::npcEnemyTemplates[288].unkScript3, 82, (spm::evtmgr::EvtScriptCode*)mariounk3);
-  //spm::evtmgr::EvtScriptCode* dark_peach_on_hit = getInstructionEvtArg(spm::npcdrv::npcEnemyTemplates[288].unkScript3, 62, 0);
-  evtpatch::hookEvtReplace(spm::npcdrv::npcEnemyTemplates[288].unkScript3, 62, turnNull);
+  evtpatch::hookEvt(spm::npcdrv::npcEnemyTemplates[183].deathScript, 1, (spm::evtmgr::EvtScriptCode*)hookChunksDeathScript); //Fix for if O'Chunks is killed outside of boss rooms
+  evtpatch::hookEvt(spm::npcdrv::npcEnemyTemplates[422].onHitScript, 71, (spm::evtmgr::EvtScriptCode*)mariounk3);
+  evtpatch::hookEvt(spm::npcdrv::npcEnemyTemplates[288].onHitScript, 82, (spm::evtmgr::EvtScriptCode*)mariounk3);
+  //spm::evtmgr::EvtScriptCode* dark_peach_on_hit = getInstructionEvtArg(spm::npcdrv::npcEnemyTemplates[288].onHitScript, 62, 0);
+  evtpatch::hookEvtReplace(spm::npcdrv::npcEnemyTemplates[288].onHitScript, 62, turnNull);
 }
 
 void shadooMain() {

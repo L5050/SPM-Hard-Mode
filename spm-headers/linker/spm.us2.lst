@@ -715,7 +715,6 @@
 8014CB20:pouchSetLevel
 8014CCF8:pouchSetAttack
 8014CEAC:pouchSetCoin
-<<<<<<< HEAD
 8014CEE0:pouchGetCoin
 8014CEF0:pouchAddCoin
 8014F12C:pouchGetCardCount
@@ -770,8 +769,7 @@
 800EFDF8:evt_mario_get_height
 801C7CC4:npcFleeped
 80107F4C:npc_dimeen_l_box_deal_damage
-801B26CC:throwDamage
-800FEEF4:evt_npc_set_rgba
+801B26CC:npcHandleCollision
 8010C304:evt_pouch_get_coins
 801c58dc:npcTakeDamage
 800FB15C:evt_mobj_save_blk
@@ -795,7 +793,6 @@
 80179B10:seq_mapChangeInit
 801087E8:evt_npc_set_part_attack_power
 801C9324:func_801ca1a4
-=======
 803D654C:evt_door_dan_dokan_left_one
 803D6618:evt_door_dan_dokan_left_two
 803D6668:evt_door_dan_dokan_left_three
@@ -810,7 +807,6 @@
 8049CF44:skellobits_unk7
 8049CD28:skellobits_unk2
 8049D2B4:skellobits_unk8
->>>>>>> refs/subrepo/spm-headers/fetch
 80100180:evt_npc_arc_to
 80101FC4:evt_npc_glide_to
 80105374:evt_npc_get_axis_movement_unit
