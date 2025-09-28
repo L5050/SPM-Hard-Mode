@@ -1888,7 +1888,7 @@ setFloats:
 
     static void dimenPatch()
         { //thanks to eemuh
-            patch::hookFunction(spm::evt_npc::evt_npc_dimen_determine_move_pos, dimen_determine_move_pos_new);
+            patch::hookFunction(spm::npc_dimeen_l::npc_dimeen_l_determine_move_pos, dimen_determine_move_pos_new);
 
             //evtpatch::hookEvt(spm::npc_dimeen_l::dimen_unk_fight_script_1, 1, patch_dimen);
             //evtpatch::hookEvt(spm::npc_dimeen_l::dimen_unk_fight_script_2, 1, patch_dimen);

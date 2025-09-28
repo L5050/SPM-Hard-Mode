@@ -677,7 +677,7 @@
 80104FF4:evt_npc_finish_flip_instant
 80105158:evt_npc_flip_to
 801051B8:evt_npc_flip
-801E4A68:evt_npc_dimen_determine_move_pos
+801E4A68:npc_dimeen_l_determine_move_pos
 804189E0:dimen_unk_fight_script_1
 80418A30:dimen_unk_fight_script_2
 8041A8A0:dimen_unk_fight_script_3

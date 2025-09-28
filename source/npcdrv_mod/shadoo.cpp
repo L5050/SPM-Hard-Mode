@@ -22,6 +22,7 @@
 #include <spm/evt_mobj.h>
 #include <spm/evt_msg.h>
 #include <spm/evt_npc.h>
+#include <spm/npc_shadoo.h>
 #include <spm/memory.h>
 #include <spm/evt_env.h>
 #include <spm/evt_seq.h>
@@ -507,7 +508,7 @@ RETURN_FROM_CALL()
 
 EVT_BEGIN(peachReplacementAttackScript)
     USER_FUNC(spm::evt_npc::evt_npc_set_move_mode, PTR("me"), 1)
-    USER_FUNC(spm::evt_npc::func_80224804)
+    USER_FUNC(spm::npc_shadoo::func_80224804)
     USER_FUNC(spm::evt_npc::evt_npc_flag8_onoff, PTR("me"), 1, 2048)
     USER_FUNC(spm::evt_npc::func_801049ec, PTR("me"))
     USER_FUNC(spm::evt_npc::func_80104a3c, PTR("me"))
@@ -537,11 +538,11 @@ EVT_BEGIN(peachReplacementAttackScript)
       WAIT_FRM(5)
       USER_FUNC(spm::evt_npc::evt_npc_set_unitwork, LW(10), 1, 1)
     END_IF()
-    USER_FUNC(spm::evt_npc::func_80224804)
+    USER_FUNC(spm::npc_shadoo::func_80224804)
     USER_FUNC(spm::evt_npc::evt_npc_flag8_onoff, PTR("me"), 0, 2048)
     LBL(0)
-    USER_FUNC(spm::evt_npc::func_80224874)
-    USER_FUNC(spm::evt_npc::func_80225380)
+    USER_FUNC(spm::npc_shadoo::func_80224874)
+    USER_FUNC(spm::npc_shadoo::func_80225380)
     WAIT_FRM(1)
     USER_FUNC(spm::evt_mario::evt_mario_get_character, LW(0))
     IF_NOT_EQUAL(LW(0), 2)
@@ -580,8 +581,8 @@ EVT_END()
 
 EVT_BEGIN(marioReplacementAttackScript)
     USER_FUNC(spm::evt_npc::evt_npc_set_move_mode, PTR("me"), 1)
-    USER_FUNC(spm::evt_npc::func_802154fc)
-    USER_FUNC(spm::evt_npc::func_80215514)
+    USER_FUNC(spm::npc_shadoo::func_802154fc)
+    USER_FUNC(spm::npc_shadoo::func_80215514)
     USER_FUNC(spm::evt_npc::func_801049ec, PTR("me"))
     USER_FUNC(spm::evt_npc::func_80104a3c, PTR("me"))
     USER_FUNC(spm::evt_npc::func_801072a4, PTR("me"))
@@ -614,8 +615,8 @@ EVT_BEGIN(marioReplacementAttackScript)
       USER_FUNC(spm::evt_npc::evt_npc_set_property, PTR("me"), 14, PTR(ogMarioDefs))
     END_IF()
     LBL(0)
-    USER_FUNC(spm::evt_npc::func_80215540)
-    USER_FUNC(spm::evt_npc::func_80215f44)
+    USER_FUNC(spm::npc_shadoo::func_80215540)
+    USER_FUNC(spm::npc_shadoo::func_80215f44)
     WAIT_FRM(1)
     USER_FUNC(spm::evt_mario::evt_mario_get_character, LW(0))
     IF_EQUAL(LW(0), 2)
@@ -646,8 +647,8 @@ static void hookShadooScripts()
   spm::evtmgr::EvtScriptCode* luigi_attack_script = spm::npcdrv::npcEnemyTemplates[286].unkScript7;
   spm::evtmgr::EvtScriptCode* luigi_idle_script = spm::npcdrv::npcEnemyTemplates[286].unkScript2;
   evtpatch::hookEvt(luigi_idle_script, 6, (spm::evtmgr::EvtScriptCode*)luigiReset);
-  evtpatch::hookEvtReplace(luigi_attack_script, 9, luigiUnk7_1);
-  evtpatch::hookEvtReplace(luigi_attack_script, 2, luigiUnk7_2);
+  evtpatch::hookEvtReplace(luigi_attack_script, 9, (spm::evtmgr::EvtScriptCode*)luigiUnk7_1);
+  evtpatch::hookEvtReplace(luigi_attack_script, 2, (spm::evtmgr::EvtScriptCode*)luigiUnk7_2);
   evtpatch::patchEvtInstruction(luigi_attack_script, 3, luigiPatch);
   evtpatch::hookEvt(spm::dan::dan_70_init_evt, 39, (spm::evtmgr::EvtScriptCode*)shadooSave);
   

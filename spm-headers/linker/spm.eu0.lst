@@ -432,15 +432,6 @@
 8010a418:evt_npc_wait_for
 8010a910:evt_npc_teleport_effect
 8010be80:evt_npc_tribe_agb_async
-801e59c4:evt_npc_dimen_determine_move_pos
-802154fc:func_802154fc
-80215514:func_80215514
-80215540:func_80215540
-80215f44:func_80215f44
-8021fbac:bomb_damage_mario
-80224804:func_80224804
-80224874:func_80224874
-80225380:func_80225380
 80c6a8e0:evt_npc_sammer_display_count
 
 // more
@@ -740,11 +731,11 @@
 801c2148:npcAddPart
 801c2458:npcGetPartById
 801c65e8:npcTakeDamage
+801c82a8:npcHandleHitXp
+801c8b44:npcFleeped
 801c9adc:npcGetWorkPtr
 801cc150:npcDamageMario
-801e3a1c:npcDropItem
 801ca1a4:func_801ca1a4
-801c8b44:npcFleeped
 801e5fd0:func_801e5fd0
 // more
 // data
@@ -753,9 +744,14 @@
 80449888:npcEnemyTemplates
 // more
 
+// npcmisc.c
+// TODO: this isn't a proper file, figure out what it really is
+801e3a1c:npcDropItem
+
 // npc_dimeen_l.c
 // text
 801084fc:npc_dimeen_l_box_deal_damage
+801e59c4:npc_dimeen_l_determine_move_pos
 // data
 80457140:dimen_unk_fight_script_1
 80457190:dimen_unk_fight_script_2
@@ -764,9 +760,19 @@
 8045B9F8:superDimentioBodyDefenses
 //more
 
+// npc_shadoo
+802154fc:func_802154fc
+80215514:func_80215514
+80215540:func_80215540
+80215f44:func_80215f44
+80224804:func_80224804
+80224874:func_80224874
+80225380:func_80225380
+
 // npc_ninja.c
 // data
 8021de00:ninjoe_bomb_calc_chance
+8021fbac:bomb_damage_mario
 8021ec54:ninjoe_thoreau_override
 //more
 
@@ -1056,8 +1062,7 @@
 // more
 
 // ta3_02
-//todo: convert to rel address
-80d7ac80:tree_block_trigger
+1,5,85b00:tree_block_trigger
 // more
 
 // sp4_13.c
