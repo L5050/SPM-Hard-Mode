@@ -186,7 +186,7 @@ static void patchFleep()
 static void patchThoreau()
 {
   //writeBranch( & spm::npcdrv::throwDamage, 0x10C, setThrowDamage);
-  writeBranchLink( & spm::npcdrv::throwDamage, 0x110, hookThoreauDamage);
+  writeBranchLink( & spm::npcdrv::npcHandleCollision, 0x110, hookThoreauDamage);
 }
 
 static void patchPiccolo()
@@ -452,9 +452,9 @@ s32 setHitboxSize(spm::evtmgr::EvtEntry *evtEntry, bool firstRun)
     spm::evtmgr::EvtVar *args = (spm::evtmgr::EvtVar *)evtEntry->pCurData;
     char * name = (char*)spm::evtmgr_cmd::evtGetValue(evtEntry, args[0]);
     spm::npcdrv::NPCEntry* ownerNpc = spm::npcdrv::npcNameToPtr(name);
-    ownerNpc->parts[0].hitBoxScale.x *= 0.4;
-    ownerNpc->parts[0].hitBoxScale.y *= 0.4;
-    ownerNpc->parts[0].hitBoxScale.z *= 0.4;
+    ownerNpc->parts[0].hitboxSize.x *= 0.4;
+    ownerNpc->parts[0].hitboxSize.y *= 0.4;
+    ownerNpc->parts[0].hitboxSize.z *= 0.4;
     return 2;
 }
 EVT_DECLARE_USER_FUNC(setHitboxSize, 1)
@@ -797,7 +797,7 @@ EVT_BEGIN(lore_setup)
     USER_FUNC(spm::evt_npc::evt_npc_entry, PTR("lore"), PTR("n_machi_dearle"), 0)
     USER_FUNC(spm::evt_npc::evt_npc_set_position, PTR("lore"), 75, 25, FLOAT(-87.5))
     USER_FUNC(spm::evt_npc::evt_npc_set_property, PTR("lore"), 14, PTR(loreAnims))
-    USER_FUNC(spm::evt_npc::evt_npc_set_rgba, PTR("lore"), 0, 0, 0, 0xff)
+    USER_FUNC(spm::evt_npc::evt_npc_set_color, PTR("lore"), 0, 0, 0, 0xff)
     USER_FUNC(spm::evt_npc::evt_npc_set_anim, PTR("lore"), 0, 0)
     USER_FUNC(spm::evt_npc::evt_npc_set_property, PTR("lore"), 9, PTR(fwd_lore_speech))
 RETURN_FROM_CALL()
@@ -839,7 +839,7 @@ EVT_BEGIN(dan_spawn_sammer_guy)
       SET(LW(10), 100)
   END_SWITCH()
   USER_FUNC(spm::evt_npc::evt_npc_spawn_sammer_guy, 0, LW(10), LW(0), LW(1), LW(2), LW(3))
-  USER_FUNC(spm::evt_npc::evt_npc_set_rgba, LW(3), 0, 0, 0, 0xff)
+  USER_FUNC(spm::evt_npc::evt_npc_set_color, LW(3), 0, 0, 0, 0xff)
   USER_FUNC(spm::evt_npc::evt_npc_flip_to, LW(3), 1)
   USER_FUNC(spm::evt_npc::evt_npc_finish_flip_instant, LW(3))
   USER_FUNC(set_item_id, LW(3))

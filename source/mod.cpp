@@ -1018,7 +1018,7 @@ END_IF()
 END_IF()
 RETURN_FROM_CALL()
 
-spm::evtmgr::EvtScriptCode* mimiUnk2 = spm::npcdrv::npcEnemyTemplates[130].unkScript2;
+spm::evtmgr::EvtScriptCode* mimiUnk2 = spm::npcdrv::npcEnemyTemplates[130].moveScript;
 spm::evtmgr::EvtScriptCode* mimiRollAttack = getInstructionEvtArg(mimiUnk2, 63, 0);
 spm::npcdrv::NPCDefense * chaosHeartDefense = getInstructionEvtDefense(mimiRollAttack, 20, 3);
 
@@ -1281,7 +1281,7 @@ RETURN_FROM_CALL()
 void hookBowserScripts()
 {
   spm::evtmgr::EvtScriptCode* bowserOnSpawn = spm::npcdrv::npcEnemyTemplates[285].onSpawnScript;
-  spm::evtmgr::EvtScriptCode* mainLogic = spm::npcdrv::npcEnemyTemplates[285].unkScript7;
+  spm::evtmgr::EvtScriptCode* mainLogic = spm::npcdrv::npcEnemyTemplates[285].atkScript;
   evtpatch::hookEvt(mainLogic, 37, (spm::evtmgr::EvtScriptCode*)changeBowserScript);
   evtpatch::hookEvt(mainLogic, 172, (spm::evtmgr::EvtScriptCode*)makeBowserJump);
   evtpatch::hookEvt(mainLogic, 228, fixBowserAnims);
@@ -1297,7 +1297,7 @@ void hookLs4_11()
 
 void hookSuperDimentioScripts()
 {
-  spm::evtmgr::EvtScriptCode* mainLogic = spm::npcdrv::npcEnemyTemplates[255].unkScript7;
+  spm::evtmgr::EvtScriptCode* mainLogic = spm::npcdrv::npcEnemyTemplates[255].atkScript;
   evtpatch::hookEvtReplace(mainLogic, 10, (spm::evtmgr::EvtScriptCode*)increaseLuigiShits);
   evtpatch::hookEvtReplace(mainLogic, 34, (spm::evtmgr::EvtScriptCode*)makePhase1LastLessTime);
   //spm::evtmgr::EvtScriptCode* throwAttack = getInstructionEvtArg(mainLogic, 65, 0);
@@ -1432,9 +1432,9 @@ void hookChunkScripts()
 
 void hookBleckScripts()
 {
-  spm::evtmgr::EvtScriptCode* bleckUnk2 = spm::npcdrv::npcEnemyTemplates[196].unkScript2;
-  spm::evtmgr::EvtScriptCode* mainLogic = spm::npcdrv::npcEnemyTemplates[196].unkScript7;
-  spm::evtmgr::EvtScriptCode* bigVoidMainLogic = spm::npcdrv::npcEnemyTemplates[198].unkScript2;
+  spm::evtmgr::EvtScriptCode* bleckUnk2 = spm::npcdrv::npcEnemyTemplates[196].moveScript;
+  spm::evtmgr::EvtScriptCode* mainLogic = spm::npcdrv::npcEnemyTemplates[196].atkScript;
+  spm::evtmgr::EvtScriptCode* bigVoidMainLogic = spm::npcdrv::npcEnemyTemplates[198].moveScript;
   bleckMovementScript = getInstructionEvtArg(mainLogic, 34, 0);
   spm::evtmgr::EvtScriptCode* shootVoid = getInstructionEvtArg(mainLogic, 22, 0);
   //spm::evtmgr::EvtScriptCode* shootBigVoid = getInstructionEvtArg(mainLogic, 128, 0);
@@ -1455,7 +1455,7 @@ void hookBleckScripts()
 
 void hookMimiScripts()
 {
-  spm::evtmgr::EvtScriptCode* mimiOnHitScript = spm::npcdrv::npcEnemyTemplates[130].unkScript3;
+  spm::evtmgr::EvtScriptCode* mimiOnHitScript = spm::npcdrv::npcEnemyTemplates[130].onHitScript;
   spm::evtmgr::EvtScriptCode* mimiMovement = getInstructionEvtArg(mimiUnk2, 56, 0);
   spm::evtmgr::EvtScriptCode* mimiMainAttack = getInstructionEvtArg(mimiUnk2, 58, 0);
   spm::evtmgr::EvtScriptCode* mimiCeilingMovement = getInstructionEvtArg(mimiUnk2, 60, 0);
@@ -1521,7 +1521,7 @@ RETURN_FROM_CALL()
 
 void hookOtherMimiScripts()
 {
-  spm::evtmgr::EvtScriptCode* mimiOnHitScript = spm::npcdrv::npcEnemyTemplates[187].unkScript3;
+  spm::evtmgr::EvtScriptCode* mimiOnHitScript = spm::npcdrv::npcEnemyTemplates[187].onHitScript;
   spm::evtmgr::EvtScriptCode* script_2 = getInstructionEvtArg(mimiOnHitScript, 10, 0);
   #ifdef SPM_EU0
   spm::evtmgr::EvtScriptCode* standard_onhit = getInstructionEvtArg(script_2, 1, 0);
@@ -1791,7 +1791,7 @@ RETURN_FROM_CALL()
 
 void hookSammerScripts()
 {
-  spm::evtmgr::EvtScriptCode* sammerIdle = spm::npcdrv::npcEnemyTemplates[426].unkScript3;
+  spm::evtmgr::EvtScriptCode* sammerIdle = spm::npcdrv::npcEnemyTemplates[426].onHitScript;
   evtpatch::hookEvt(sammerIdle, 2, (spm::evtmgr::EvtScriptCode*)sammerBboxCheck);
   spm::map_data::MapData * wa1_02_md = spm::map_data::mapDataPtr("wa1_02");
   spm::evtmgr::EvtScriptCode* sammer_fight_setup_evt = getInstructionEvtArg(wa1_02_md->initScript, 62, 0);
@@ -1811,7 +1811,7 @@ void hookSammerScripts()
 
 spm::evtmgr::EvtScriptCode* getStandardDeathScript()
 {
-  spm::evtmgr::EvtScriptCode* dimentioOnDeath = spm::npcdrv::npcEnemyTemplates[225].unkScript6;
+  spm::evtmgr::EvtScriptCode* dimentioOnDeath = spm::npcdrv::npcEnemyTemplates[225].deathScript;
   return getInstructionEvtArg(dimentioOnDeath, 20, 0);
 }
 

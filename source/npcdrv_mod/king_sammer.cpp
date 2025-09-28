@@ -91,7 +91,7 @@ static NPCTribeAnimDef tonoAnims[] = {
     ADD(LW(0), 150)
     USER_FUNC(spm::evt_npc::evt_npc_arc_to, PTR("me"), LW(0), LW(1), LW(2), 200, 0, FLOAT(100.0), 0, 256, 0)
     USER_FUNC(evt_npc_set_move_mode, PTR("me"), 1)
-    RUN_CHILD_EVT(npcEnemyTemplates[2].unkScript3)
+    RUN_CHILD_EVT(npcEnemyTemplates[2].onHitScript)
   RETURN()
   EVT_END()
 
@@ -422,16 +422,16 @@ static void createKingNpc() {
   npcEnemyTemplates[32].unknown_0x8 = 0;
   npcEnemyTemplates[32].flags = 0x18;
   npcEnemyTemplates[32].onSpawnScript = sammerOnSpawn;
-  npcEnemyTemplates[32].unkScript1 = npcEnemyTemplates[2].unkScript1;
+  npcEnemyTemplates[32].initScript = npcEnemyTemplates[2].initScript;
 
-  npcEnemyTemplates[32].unkScript2 = sammerAttack;
-  npcEnemyTemplates[32].unkScript3 = sammerOnHit;
-  npcEnemyTemplates[32].unkScript4 = npcEnemyTemplates[2].unkScript4;
-  npcEnemyTemplates[32].unkScript5 = npcEnemyTemplates[2].unkScript5;
-  npcEnemyTemplates[32].unkScript6 = checkForDanSammer;
-  npcEnemyTemplates[32].unkScript7 = nullptr;
-  npcEnemyTemplates[32].unkScript8 = nullptr;
-  npcEnemyTemplates[32].unkScript9 = nullptr;
+  npcEnemyTemplates[32].moveScript = sammerAttack;
+  npcEnemyTemplates[32].onHitScript = sammerOnHit;
+  npcEnemyTemplates[32].pickupScript = npcEnemyTemplates[2].pickupScript;
+  npcEnemyTemplates[32].throwScript = npcEnemyTemplates[2].throwScript;
+  npcEnemyTemplates[32].deathScript = checkForDanSammer;
+  npcEnemyTemplates[32].atkScript = nullptr;
+  npcEnemyTemplates[32].miscScript = nullptr;
+  npcEnemyTemplates[32].kouraKickScript = nullptr;
   npcEnemyTemplates[32].unkDefinitionTable = nullptr;
   npcTribes[532].catchCardItemId = 299;
   npcTribes[532].catchCardDefense = 1;
