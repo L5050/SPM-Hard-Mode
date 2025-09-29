@@ -268,7 +268,6 @@
 800d218c:evt_snd_bgmon_f_d
 800d21f8:evt_snd_bgmoff
 800d2224:evt_snd_bgmoff_f_d
-800d2268:evt_snd_idfk
 800d22d8:evt_snd_bgm_fadein
 800d23cc:evt_snd_bgm_set_vol
 800d24b8:evt_snd_get_bgm_wait_time
