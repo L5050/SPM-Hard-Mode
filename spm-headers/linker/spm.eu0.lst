@@ -1122,7 +1122,6 @@
 // runtime.c
 802560a4:__div2i
 // more
-
 // MSL_C.PPCEABI.bare.H.a
 // printf.c
 8025cf40:vsprintf
@@ -1133,7 +1132,6 @@
 // string.c
 8025ec04:strstr
 // more
-
 // string.c
 8025a874:memmove
 8025a998:memcmp
@@ -1152,7 +1150,6 @@
 
 // s_cos.c
 80263ea0:cos
-
 // s_sin.c
 802642ac:sin
 
